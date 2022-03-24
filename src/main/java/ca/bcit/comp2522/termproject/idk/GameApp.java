@@ -2,9 +2,24 @@ package ca.bcit.comp2522.termproject.idk;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.entity.GameWorld;
 
+import static com.almasb.fxgl.dsl.FXGL.*;
+
+/**
+ * Drives the game.
+ *
+ * @author Nikolay Rozanov
+ * @version 2022
+ */
 public class GameApp extends GameApplication{
+    /**
+     * Represents the native width of the screen for the game.
+     */
     public final static int SCREEN_WIDTH = 1050;
+    /**
+     * Represents the native height of the screen for the game.
+     */
     public final static int SCREEN_HEIGHT = 700;
 
     @Override
@@ -13,7 +28,12 @@ public class GameApp extends GameApplication{
         gameSettings.setHeight(SCREEN_HEIGHT);
     }
 
-    public static void main(String[] args) {
+    @Override
+    protected void initGame() {
+        setLevelFromMap("game.tmx");
+    }
+
+    public static void main(final String[] args) {
         launch(args);
     }
 }
