@@ -8,6 +8,7 @@ module ca.bcit.comp2522.termproject.idk {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires com.almasb.fxgl.all;
 
     opens ca.bcit.comp2522.termproject.idk to javafx.fxml;
     exports ca.bcit.comp2522.termproject.idk;
