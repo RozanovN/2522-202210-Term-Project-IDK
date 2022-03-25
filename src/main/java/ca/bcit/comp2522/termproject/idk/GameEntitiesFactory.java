@@ -9,6 +9,9 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Represents the class for the factory of tiles.
@@ -67,6 +70,23 @@ public class GameEntitiesFactory implements EntityFactory{
     }
 
     /**
+     * Builds a Wall Entity.
+     *
+     * @param data a spawnData representing the Wall tile
+     * @return Entity representing the Wall tile
+     */
+    @Spawns("Wall")
+    public Entity newWall(final SpawnData data) {
+        return FXGL
+                .entityBuilder(data)
+                .bbox(
+                        new HitBox(
+                                BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .build();
+    }
+
+    /**
      * Builds a Trap Entity.
      *
      * @param data a spawnData representing the Trap tile
@@ -82,4 +102,20 @@ public class GameEntitiesFactory implements EntityFactory{
                 .with(new PhysicsComponent(), new CollidableComponent())
                 .build();
     }
+//
+//    /**
+//     * Demo of player for testing purpose, to be changed later.
+//     *
+//     * @return Entity representing player
+//     */
+//    @Spawns("Player")
+//    public Entity newPlayer() {
+//        PhysicsComponent physicsComponent = new PhysicsComponent();
+//        physicsComponent.setBodyType(BodyType.DYNAMIC);
+//        return FXGL
+//                .entityBuilder()
+//                .view(new Rectangle(25, 25, Color.BLUE))
+//                .with(physicsComponent, new CollidableComponent())
+//                .build();
+//    }
 }
