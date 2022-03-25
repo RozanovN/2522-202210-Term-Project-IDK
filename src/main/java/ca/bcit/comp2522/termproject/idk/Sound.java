@@ -10,8 +10,11 @@ public class Sound {
 
     MediaPlayer mediaPlayer;
 
-    public void gameSound() {
-        String audio = "src/main/resources/assets/sounds/gamesoundintro.wav";
+    /**
+     * Play game sound
+     */
+    public void playGameIntroSound() {
+        String audio = "src/main/resources/assets/Sounds/gamesoundintro.wav";
         Media media = new Media(Paths.get(audio).toUri().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
