@@ -2,8 +2,6 @@ package ca.bcit.comp2522.termproject.idk;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.entity.GameWorld;
-
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 /**
