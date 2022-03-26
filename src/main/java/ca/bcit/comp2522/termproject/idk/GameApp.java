@@ -36,7 +36,7 @@ public class GameApp extends GameApplication{
     /**
      * Represents the native height of the screen for the game.
      */
-    public final static int SCREEN_HEIGHT = 720;
+    public final static int SCREEN_HEIGHT = 1220;
     private Entity player;
 
     /**
@@ -53,6 +53,7 @@ public class GameApp extends GameApplication{
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setWidth(SCREEN_WIDTH);
         gameSettings.setHeight(SCREEN_HEIGHT);
+        gameSettings.setDeveloperMenuEnabled(true);
     }
 
     /**
@@ -104,11 +105,16 @@ public class GameApp extends GameApplication{
 
         return FXGL
                 .entityBuilder()
-                .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
-                .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
+                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(32, 35)))
                 .at(25, 1)
                 .with(physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent())
                 .buildAndAttach();
+    }
+
+    @Override
+    protected void initPhysics() {
+        getPhysicsWorld().setGravity(0, 360);
+//        getPhysicsWorld().addCollisionHandler();
     }
 
     /**
@@ -120,8 +126,8 @@ public class GameApp extends GameApplication{
         setLevelFromMap("game.tmx");
         player = createPlayer();
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(0, 0, 250, 500);
-        viewport.bindToEntity(player, getAppWidth(), getAppHeight());
+        viewport.setBounds(-250, -250, 250, 500);
+//        viewport.bindToEntity(player, 250, 250);
         viewport.setLazy(true);
     }
 
