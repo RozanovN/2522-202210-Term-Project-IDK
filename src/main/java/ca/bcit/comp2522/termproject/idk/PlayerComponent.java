@@ -28,13 +28,12 @@ public class PlayerComponent extends Component {
     public PlayerComponent() {
         Image idleImage = image("2D_SL_Knight_v1.0/Idle.png");
         Image movingImage = image("2D_SL_Knight_v1.0/Run.png");
-
         idleAnimation = new AnimationChannel(idleImage, 2, 128, 64,
                 Duration.seconds(1), 0, 7);
         walkingAnimation = new AnimationChannel(movingImage, 2, 128, 64,
                 Duration.seconds(1), 0, 7);
         animatedTexture = new AnimatedTexture(idleAnimation);
-        speed = 150;
+        speed = 75;
         numberOfJumps = 1;
         animatedTexture.loop();
     }
@@ -44,7 +43,7 @@ public class PlayerComponent extends Component {
      */
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(16, 21));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(50, 50));
         entity.getViewComponent().addChild(animatedTexture);
 
         physicsComponent.onGroundProperty().addListener((obs, old, isOnGround) -> {
@@ -67,8 +66,7 @@ public class PlayerComponent extends Component {
             }
 
         } else {
-            if (animatedTexture.getAnimationChannel() != walkingAnimation) {
-                speed = 0;
+            if (animatedTexture.getAnimationChannel() != idleAnimation) {
                 animatedTexture.loopAnimationChannel(idleAnimation);
             }
         }
@@ -78,6 +76,7 @@ public class PlayerComponent extends Component {
      * Moves the player right by 150 pixels.
      */
     public void moveRight() {
+//        physicsComponent.setVelocityX(speed);
         physicsComponent.setVelocityX(speed);
         getEntity().setScaleX(1);
     }
@@ -94,9 +93,11 @@ public class PlayerComponent extends Component {
      * Moves the player up by 150 pixels if player has a positive number of jumps.
      */
     public void Jump() {
+        final int jumpBoost = 3;
         if (numberOfJumps == 0)
             return;
-        physicsComponent.setVelocityY(-speed);
+        System.out.println("jump");
+        physicsComponent.setVelocityY(-speed * jumpBoost);
         numberOfJumps--;
         getEntity().setScaleY(1);
     }
@@ -113,7 +114,7 @@ public class PlayerComponent extends Component {
      * Moves the player down by 150 pixels.
      */
     public void Descend() {
-        physicsComponent.setVelocityY(speed);
+        physicsComponent.setVelocityY(-speed);
         getEntity().setScaleY(-1);
     }
 }
