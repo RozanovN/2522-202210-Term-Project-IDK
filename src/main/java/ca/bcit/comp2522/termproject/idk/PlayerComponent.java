@@ -13,13 +13,17 @@ import static com.almasb.fxgl.dsl.FXGL.image;
 
 /**
  * Represents a Component of the player's Entity.
+ *
+ * @author Nikolay Rozanov
+ * @version 2022
+ * @see com.almasb.fxgl.entity.component.Component
  */
 public class PlayerComponent extends Component {
     private PhysicsComponent physicsComponent;
     final private AnimatedTexture animatedTexture;
     final private AnimationChannel idleAnimation;
     final private AnimationChannel walkingAnimation;
-    private int speed;
+    private final int speed;
     private int numberOfJumps;
 
     /**
@@ -48,6 +52,7 @@ public class PlayerComponent extends Component {
 
         physicsComponent.onGroundProperty().addListener((obs, old, isOnGround) -> {
             if (isOnGround) {
+                System.out.println("onGround");
                 numberOfJumps = 1;
             }
         });
@@ -93,7 +98,7 @@ public class PlayerComponent extends Component {
      * Moves the player up by 150 pixels if player has a positive number of jumps.
      */
     public void Jump() {
-        final int jumpBoost = 3;
+        final float jumpBoost = 3.3f;
         if (numberOfJumps == 0)
             return;
         System.out.println("jump");
