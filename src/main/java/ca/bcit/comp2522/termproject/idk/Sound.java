@@ -17,6 +17,7 @@ public class Sound {
         String audio = "src/main/resources/assets/Sounds/gamesoundintro.wav";
         Media media = new Media(Paths.get(audio).toUri().toString());
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
 
     }
