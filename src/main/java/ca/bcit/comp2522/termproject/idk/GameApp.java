@@ -1,7 +1,9 @@
 package ca.bcit.comp2522.termproject.idk;
 
+import com.almasb.fxgl.achievement.Achievement;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -15,12 +17,17 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.ui.Position;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+
 import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
 
 /**
  * Drives the game.
@@ -53,9 +60,30 @@ public class GameApp extends GameApplication{
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setWidth(SCREEN_WIDTH);
         gameSettings.setHeight(SCREEN_HEIGHT);
-        gameSettings.setDeveloperMenuEnabled(true);
-    }
 
+
+//        game menu
+        gameSettings.setDeveloperMenuEnabled(true);
+        gameSettings.setTitle("Castle adventure");
+        gameSettings.setMainMenuEnabled(true);
+        gameSettings.setGameMenuEnabled(true);
+        gameSettings.setFullScreenAllowed(true);
+        gameSettings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
+
+//        Add game developer credits
+        gameSettings.getCredits().addAll(Arrays.asList(
+                "Prince Chabveka",
+                "Nikolay Rozanov"
+
+        ));
+
+//        view game achievements, will add more
+        gameSettings.getAchievements().add(new Achievement("Player 1",
+                "description", "", 0));
+        gameSettings.getAchievements().add(new Achievement("Player 2",
+                "description2", "", 1));
+
+    }
     /**
      * Reads Player's input.
      */
@@ -129,6 +157,24 @@ public class GameApp extends GameApplication{
         viewport.setBounds(-250, -250, 250, 500);
 //        viewport.bindToEntity(player, 250, 250);
         viewport.setLazy(true);
+
+        //        Game menu bar, with score.
+        ProgressBar hpBar = new ProgressBar();
+        hpBar.setMinValue(0);
+        hpBar.setMaxValue(100);
+        hpBar.setCurrentValue(40);
+        hpBar.setWidth(300);
+        hpBar.setLabelVisible(true);
+        hpBar.setLabelPosition(Position.RIGHT);
+        hpBar.setFill(Color.GREEN);
+// Node to add the bar
+        addUINode(hpBar);
+
+        Sound gameSound = new Sound();
+
+
+    gameSound.playGameIntroSound();
+
     }
 
     /**
