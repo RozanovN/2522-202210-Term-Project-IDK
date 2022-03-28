@@ -15,6 +15,8 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * Represents the class for the factory of tiles.
+ * @author Nikolay Rozanov
+ * @version 2022
  */
 public class GameEntitiesFactory implements EntityFactory{
 

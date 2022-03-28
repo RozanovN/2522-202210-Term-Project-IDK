@@ -37,7 +37,7 @@ public class PlayerComponent extends Component {
         walkingAnimation = new AnimationChannel(movingImage, 2, 128, 64,
                 Duration.seconds(1), 0, 7);
         animatedTexture = new AnimatedTexture(idleAnimation);
-        speed = 75;
+        speed = 150;
         numberOfJumps = 1;
         animatedTexture.loop();
     }

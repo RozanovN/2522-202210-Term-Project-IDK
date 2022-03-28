@@ -32,6 +32,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
 /**
  * Drives the game.
  *
+ * @author Prince Chabveka
  * @author Nikolay Rozanov
  * @version 2022
  */
@@ -127,9 +128,9 @@ public class GameApp extends GameApplication{
     private Entity createPlayer() {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
-        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(16, 38),
-                BoundingShape.box(6, 8)));
-        physicsComponent.setFixtureDef(new FixtureDef().friction(0.0f));
+        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(16, 64),
+                BoundingShape.box(6, 12)));
+        physicsComponent.setFixtureDef(new FixtureDef().friction(1f));
 
         return FXGL
                 .entityBuilder()
@@ -141,8 +142,8 @@ public class GameApp extends GameApplication{
 
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 360);
-//        getPhysicsWorld().addCollisionHandler();
+        getPhysicsWorld().setGravity(0, 760);
+        // getPhysicsWorld().addCollisionHandler();
     }
 
     /**
@@ -154,11 +155,12 @@ public class GameApp extends GameApplication{
         setLevelFromMap("game.tmx");
         player = createPlayer();
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(-250, -250, 250, 500);
-//        viewport.bindToEntity(player, 250, 250);
-        viewport.setLazy(true);
+        viewport.setBounds(0, -1150, 11550, 1550);
+        viewport.setZoom(2);
+        viewport.bindToEntity(player, 500, 550);
+        viewport.setLazy(false);
 
-        //        Game menu bar, with score.
+        // Game menu bar, with score.
         ProgressBar hpBar = new ProgressBar();
         hpBar.setMinValue(0);
         hpBar.setMaxValue(100);
@@ -167,14 +169,10 @@ public class GameApp extends GameApplication{
         hpBar.setLabelVisible(true);
         hpBar.setLabelPosition(Position.LEFT);
         hpBar.setFill(Color.GREEN);
-// Node to add the bar
+        // Node to add the bar
         addUINode(hpBar);
-
         Sound gameSound = new Sound();
-
-
-    gameSound.playGameIntroSound();
-
+        gameSound.playGameIntroSound();
     }
 
     /**
