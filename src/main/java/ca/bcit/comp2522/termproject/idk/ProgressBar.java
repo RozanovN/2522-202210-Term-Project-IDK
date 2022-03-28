@@ -309,10 +309,19 @@ public final class ProgressBar extends Parent {
         minValue.set(value);
     }
 
+    /**
+     *
+     * @return
+     */
     public DoubleProperty minValueProperty() {
         return minValue;
     }
 
+
+    /**
+     *
+     * @param value
+     */
     public void setCurrentValue(double value) {
         double newValue = value;
 
@@ -353,6 +362,11 @@ public final class ProgressBar extends Parent {
         return maxValue;
     }
 
+
+    /**
+     *
+     * @return bar object
+     */
     public static ProgressBar makeHPBar() {
         ProgressBar bar = new ProgressBar();
         bar.setHeight(25);
@@ -362,6 +376,11 @@ public final class ProgressBar extends Parent {
         return bar;
     }
 
+
+    /**
+     *
+     * @return object of type bar.
+     */
     public static ProgressBar makeSkillBar() {
         ProgressBar bar = new ProgressBar();
         bar.setHeight(25);

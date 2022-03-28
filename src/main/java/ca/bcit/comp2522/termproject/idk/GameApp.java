@@ -165,7 +165,7 @@ public class GameApp extends GameApplication{
         hpBar.setCurrentValue(40);
         hpBar.setWidth(300);
         hpBar.setLabelVisible(true);
-        hpBar.setLabelPosition(Position.RIGHT);
+        hpBar.setLabelPosition(Position.LEFT);
         hpBar.setFill(Color.GREEN);
 // Node to add the bar
         addUINode(hpBar);
