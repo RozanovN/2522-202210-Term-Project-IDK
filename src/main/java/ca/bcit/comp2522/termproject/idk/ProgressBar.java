@@ -21,24 +21,8 @@ package ca.bcit.comp2522.termproject.idk;
         import javafx.util.Duration;
 
 /**
- * A generic progress bar. Can be used to show
- * health, mana, experience, quest progress, reloading times, etc
- * <pre>
- * Example:
+ * Progress bar, to show player's health.
  *
- * ProgressBar hpBar = new ProgressBar();
- * hpBar.setMinValue(0);
- * hpBar.setMaxValue(1000);
- * hpBar.setCurrentValue(1000);
- * hpBar.setWidth(300);
- * hpBar.setLabelVisible(true);
- * hpBar.setLabelPosition(Position.RIGHT);
- * hpBar.setFill(Color.GREEN);
- *
- * addUINodes(hpBar);
- * </pre>
- *
- * @author Almas Baimagambetov (AlmasB) (almaslvl@gmail.com)
  */
 public final class ProgressBar extends Parent {
 
@@ -133,7 +117,7 @@ public final class ProgressBar extends Parent {
             trace.setArcWidth(innerBar.getArcWidth());
             trace.setArcHeight(innerBar.getArcHeight());
             trace.setTranslateX(Math.min(innerBar.getWidth(), newWidth));
-            trace.setTranslateY(3);
+            trace.setTranslateY(7);
             trace.setFill(traceFill);
             trace.setOpacity(0.55);
             trace.setEffect(new Glow(0.5));
@@ -189,6 +173,11 @@ public final class ProgressBar extends Parent {
         backgroundBar.setFill(color);
     }
 
+
+    /**
+     *
+     * @param color color type
+     */
     public void setFill(Color color) {
         innerBar.setFill(color);
         DropShadow ds = new DropShadow(15, color);
@@ -196,14 +185,26 @@ public final class ProgressBar extends Parent {
         innerBar.setEffect(ds);
     }
 
+    /**
+     *
+     * @param color
+     */
     public void setLabelFill(Paint color) {
         label.setTextFill(color);
     }
 
+    /**
+     *
+     * @param color
+     */
     public void setTraceFill(Paint color) {
         traceFill = color;
     }
 
+    /**
+     *
+     * @param b
+     */
     public void setLabelVisible(boolean b) {
         if (!b) {
             getChildren().remove(label);
@@ -217,6 +218,10 @@ public final class ProgressBar extends Parent {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isLabelVisible() {
         return getChildren().contains(label);
     }
@@ -261,6 +266,11 @@ public final class ProgressBar extends Parent {
         }
     }
 
+
+    /**
+     *
+     * @param value a double
+     */
     public void setWidth(double value) {
         if (value <= 0)
             throw new IllegalArgumentException("Width must be > 0");
@@ -269,6 +279,11 @@ public final class ProgressBar extends Parent {
         update.changed(currentValue, currentValue.get(), currentValue.get());
     }
 
+
+    /**
+     *
+     * @param value
+     */
     public void setHeight(double value) {
         if (value <= 0)
             throw new IllegalArgumentException("Height must be > 0");
@@ -276,6 +291,10 @@ public final class ProgressBar extends Parent {
         height.set(value);
     }
 
+    /**
+     *
+     * @param value
+     */
     public void setMinValue(double value) {
         if (value > currentValue.get()) {
             log.warning("Current value < min value. Setting min value as current");
