@@ -44,7 +44,7 @@ public class GameApp extends GameApplication{
     /**
      * Represents the native height of the screen for the game.
      */
-    public final static int SCREEN_HEIGHT = 1220;
+    public final static int SCREEN_HEIGHT = 720;
     private Entity player;
 
     /**
@@ -157,7 +157,7 @@ public class GameApp extends GameApplication{
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, -1150, 11550, 1550);
         viewport.setZoom(2);
-        viewport.bindToEntity(player, 500, 550);
+        viewport.bindToEntity(player, 500, 250);
         viewport.setLazy(false);
 
         // Game menu bar, with score.
