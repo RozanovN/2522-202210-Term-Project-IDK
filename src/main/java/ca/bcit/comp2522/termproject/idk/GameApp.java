@@ -17,7 +17,6 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-import com.almasb.fxgl.time.TimerAction;
 import com.almasb.fxgl.ui.Position;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
@@ -39,7 +38,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
  * @version 2022
  */
 public class GameApp extends GameApplication{
-
 
 
     /**
@@ -169,13 +167,14 @@ public class GameApp extends GameApplication{
 
         // Game menu bar, with score.
         ProgressBar hpBar = new ProgressBar();
-        hpBar.setMinValue(0);
         hpBar.setMaxValue(100);
+        hpBar.setMinValue(0);
         hpBar.setCurrentValue(40);
         hpBar.setWidth(300);
         hpBar.setLabelVisible(true);
         hpBar.setLabelPosition(Position.LEFT);
         hpBar.setFill(Color.GREEN);
+        hpBar.getInnerBar();
         // Node to add the bar
         addUINode(hpBar);
         Sound gameSound = new Sound();
@@ -183,9 +182,15 @@ public class GameApp extends GameApplication{
 
 
 
-//        Game timer
+//        Game timer, for now,
         GameTimer gameTime = new GameTimer();
         gameTime.initGameTimer();
+
+
+//        Notifications, press F for demo
+
+        Notifications notify = new Notifications();
+        notify.notification();
 
 }
 
