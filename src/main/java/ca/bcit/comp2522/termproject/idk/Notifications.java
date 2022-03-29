@@ -5,7 +5,11 @@ import javafx.scene.input.KeyCode;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 /**
- * Add various notifications to user.
+ * Add various notifications to the user.
+ *
+ * @author Prince Chabveka
+ * @author Nikolay Rozanov
+ * @version 2022
  */
     public class Notifications {
 
