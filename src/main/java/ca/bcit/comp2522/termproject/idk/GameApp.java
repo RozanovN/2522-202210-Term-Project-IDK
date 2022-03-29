@@ -17,11 +17,13 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.time.TimerAction;
 import com.almasb.fxgl.ui.Position;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -37,6 +39,9 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
  * @version 2022
  */
 public class GameApp extends GameApplication{
+
+
+
     /**
      * Represents the native width of the screen for the game.
      */
@@ -90,6 +95,8 @@ public class GameApp extends GameApplication{
      */
     @Override
     protected void initInput() {
+
+
         getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
@@ -173,7 +180,14 @@ public class GameApp extends GameApplication{
         addUINode(hpBar);
         Sound gameSound = new Sound();
         gameSound.playGameIntroSound();
-    }
+
+
+
+//        Game timer
+        GameTimer gameTime = new GameTimer();
+        gameTime.initGameTimer();
+
+}
 
     /**
      * Drives the game.
