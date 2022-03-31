@@ -1,24 +1,24 @@
 package ca.bcit.comp2522.termproject.idk;
 
 
-        import com.almasb.fxgl.logging.Logger;
-        import com.almasb.fxgl.ui.Position;
-        import javafx.animation.*;
-        import javafx.beans.binding.DoubleBinding;
-        import javafx.beans.property.DoubleProperty;
-        import javafx.beans.property.SimpleDoubleProperty;
-        import javafx.beans.value.ChangeListener;
-        import javafx.scene.Group;
-        import javafx.scene.Parent;
-        import javafx.scene.control.Label;
-        import javafx.scene.effect.DropShadow;
-        import javafx.scene.effect.Glow;
-        import javafx.scene.paint.Color;
-        import javafx.scene.paint.Paint;
-        import javafx.scene.shape.Rectangle;
-        import javafx.scene.text.Font;
-        import javafx.scene.text.Text;
-        import javafx.util.Duration;
+import com.almasb.fxgl.logging.Logger;
+import com.almasb.fxgl.ui.Position;
+import javafx.animation.*;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 /**
  * Progress bar, to show player's health.
@@ -32,22 +32,22 @@ public final class ProgressBar extends Parent {
     private DoubleProperty currentValue = new SimpleDoubleProperty(0.0);
     private DoubleProperty maxValue = new SimpleDoubleProperty(100.0);
 
-    private DoubleProperty width = new SimpleDoubleProperty(200.0);
-    private DoubleProperty height = new SimpleDoubleProperty(10.0);
+    private final DoubleProperty width = new SimpleDoubleProperty(200.0);
+    private final DoubleProperty height = new SimpleDoubleProperty(10.0);
 
     private final Rectangle backgroundBar = new Rectangle();
     private final Rectangle innerBar = new Rectangle();
 
-    private Group barGroup = new Group();
+    private final Group barGroup = new Group();
 
-    private Label label = new Label();
+    private final Label label = new Label();
     private Position labelPosition = Position.BOTTOM;
 
     private Paint traceFill = Color.WHITE;
 
-    private Timeline timeline = new Timeline();
+    private final Timeline timeline = new Timeline();
 
-    private ChangeListener<Number> update;
+    private final ChangeListener<Number> update;
 
     public ProgressBar() {
         this(true);
