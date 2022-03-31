@@ -1,8 +1,8 @@
 package ca.bcit.comp2522.termproject.idk;
 
 
+import ca.bcit.comp2522.termproject.idk.ui.Position;
 import com.almasb.fxgl.logging.Logger;
-import com.almasb.fxgl.ui.Position;
 import javafx.animation.*;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
@@ -388,5 +388,8 @@ public final class ProgressBar extends Parent {
         bar.setTraceFill(Color.BLUE);
         bar.setLabelVisible(true);
         return bar;
+    }
+
+    public void setLabelPosition(com.almasb.fxgl.ui.Position left) {
     }
 }
