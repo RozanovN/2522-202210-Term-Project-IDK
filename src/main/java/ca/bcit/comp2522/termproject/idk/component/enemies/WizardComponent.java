@@ -1,7 +1,5 @@
 package ca.bcit.comp2522.termproject.idk.component.enemies;
 
-import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
@@ -10,27 +8,25 @@ import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.image;
 
-public class WizardComponent extends Component{
-    private PhysicsComponent physicsComponent;
-    final private AnimatedTexture animatedTexture;
+public class WizardComponent extends AbstractEnemyComponent {
     final private AnimationChannel idleAnimation;
     final private AnimationChannel walkingAnimation;
     private int moveSpeed;
-    private int attackSpeed;
 
     /**
      * Constructs this Component.
      */
     public WizardComponent() {
+        super(EnemyInfo.WIZARD_DAMAGE, EnemyInfo.ALL_ENEMIES_ATTACK_SPEED);
+
         Image idleImage = image("Evil Wizard/Sprites/Idle.png");
         Image movingImage = image("Evil Wizard/Sprites/Move.png");
-        idleAnimation = new AnimationChannel(idleImage, 8, 150, 150,
-                Duration.seconds(1), 0, 7);
+        this.moveSpeed = EnemyInfo.WIZARD_MOVE_SPEED;
         walkingAnimation = new AnimationChannel(movingImage, 8, 150, 150,
                 Duration.seconds(1), 0, 7);
+        idleAnimation = new AnimationChannel(idleImage, 8, 150, 150,
+                Duration.seconds(1), 0, 7);
         animatedTexture = new AnimatedTexture(idleAnimation);
-        this.moveSpeed = 50;
-        this.attackSpeed = 50;
         animatedTexture.loop();
     }
 
