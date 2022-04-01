@@ -19,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * Represents the class for the factory of tiles.
+ *
  * @author Nikolay Rozanov
  * @version 2022
  */
@@ -109,6 +110,12 @@ public class GameEntitiesFactory implements EntityFactory{
                 .build();
     }
 
+    /**
+     * Builds a Fire Wizard entity.
+     *
+     * @param data unused
+     * @return Entity representing the Fire Wizard
+     */
     @Spawns("FireWizard")
     public Entity newFireWizard(SpawnData data) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
@@ -119,9 +126,11 @@ public class GameEntitiesFactory implements EntityFactory{
 
         return FXGL
                 .entityBuilder()
+                .type(EntityType.ENEMY)
                 .bbox(new HitBox(new Point2D(55,50), BoundingShape.box(35, 50)))
                 .at(25, 1)
-                .with(physicsComponent, new CollidableComponent(true), new WizardComponent(), new HealthIntComponent())
+                .with(physicsComponent, new CollidableComponent(true),
+                        new WizardComponent(), new HealthIntComponent(25))
                 .build();
     }
 }
