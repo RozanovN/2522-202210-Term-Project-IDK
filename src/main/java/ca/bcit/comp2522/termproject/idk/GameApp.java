@@ -8,6 +8,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
@@ -32,13 +33,10 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
  * Drives the game.
  *
  * @author Prince Chabveka
- * @author Nikolay Rozanovt
+ * @author Nikolay Rozanov
  * @version 2022
  */
 public class GameApp extends GameApplication{
-
-
-
         /**
      * Represents the native width of the screen for the game.
      */
@@ -65,9 +63,6 @@ public class GameApp extends GameApplication{
         gameSettings.setWidth(SCREEN_WIDTH);
         gameSettings.setHeight(SCREEN_HEIGHT);
 
-
-
-
 //        game menu
         gameSettings.setDeveloperMenuEnabled(true);
         gameSettings.setTitle("Castle adventure");
@@ -76,6 +71,13 @@ public class GameApp extends GameApplication{
         gameSettings.setFullScreenAllowed(true);
         gameSettings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
 
+        gameSettings.setSceneFactory(new SceneFactory() {
+
+            @Override
+            public FXGLMenu newMainMenu() {
+                return new GameMainMenu();
+            }
+        });
 
         gameSettings.getCredits().addAll(Arrays.asList(
                 "Prince Chabveka",
@@ -130,20 +132,21 @@ public class GameApp extends GameApplication{
     }
 
     /*
-    * Creates a player.
+     * Creates a player.
      */
     private Entity createPlayer() {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
-        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(16, 64),
+        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
                 BoundingShape.box(6, 12)));
-        physicsComponent.setFixtureDef(new FixtureDef().friction(1f));
+        physicsComponent.setFixtureDef(new FixtureDef().friction(0f));
 
         return FXGL
                 .entityBuilder()
-                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(32, 35)))
+                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
                 .at(25, 1)
-                .with(physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent())
+                .with(physicsComponent, new CollidableComponent(true), new IrremovableComponent(),
+                        new PlayerComponent(), new HealthIntComponent())
                 .buildAndAttach();
     }
 
@@ -161,8 +164,10 @@ public class GameApp extends GameApplication{
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
         player = createPlayer();
+
+        // Camera settings
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(0, -1150, 11550, 1550);
+        viewport.setBounds(0, -4550, 11550, 1915);
         viewport.setZoom(2);
         viewport.bindToEntity(player, 500, 250);
         viewport.setLazy(false);
@@ -197,7 +202,16 @@ public class GameApp extends GameApplication{
         notify.notification();
 
 
-}
+    }
+
+    public void gameOver() {
+        getGameController().gotoMainMenu();
+    }
+
+    public void Victory() {
+        //message
+        gameOver();
+    }
 
     /**
      * Drives the game.
