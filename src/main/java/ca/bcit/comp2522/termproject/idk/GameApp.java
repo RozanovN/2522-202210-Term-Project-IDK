@@ -1,5 +1,8 @@
 package ca.bcit.comp2522.termproject.idk;
 
+import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
+import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
+import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
@@ -14,9 +17,7 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
-import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.Position;
@@ -65,7 +66,7 @@ public class GameApp extends GameApplication{
         gameSettings.setWidth(SCREEN_WIDTH);
         gameSettings.setHeight(SCREEN_HEIGHT);
 
-//        game menu
+        // game menu
         gameSettings.setDeveloperMenuEnabled(true);
         gameSettings.setTitle("Castle adventure");
         gameSettings.setMainMenuEnabled(true);
@@ -87,21 +88,22 @@ public class GameApp extends GameApplication{
 
         ));
 
-//        view game achievements, will add more
+        // view game achievements, will add more
         gameSettings.getAchievements().add(new Achievement("Player 1",
                 "description", "", 0));
         gameSettings.getAchievements().add(new Achievement("Player 2",
                 "description2", "", 1));
 
     }
+
     /**
      * Reads Player's input.
      */
     @Override
     protected void initInput() {
 
-
         getInput().addAction(new UserAction("Left") {
+
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).moveLeft();
@@ -152,6 +154,7 @@ public class GameApp extends GameApplication{
 
         return FXGL
                 .entityBuilder()
+                .type(EntityType.PLAYER)
                 .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
                 .at(25, 1)
                 .with(physicsComponent, new CollidableComponent(true), new IrremovableComponent(),
@@ -159,10 +162,53 @@ public class GameApp extends GameApplication{
                 .buildAndAttach();
     }
 
+    /**
+     * Defines the physics in the game.
+     * Handles the collisions.
+     */
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 760);
-        // getPhysicsWorld().addCollisionHandler();
+        PhysicsWorld physicsWorld = getPhysicsWorld();
+        physicsWorld.setGravity(0, 760);
+
+        /*
+         * Represents the enemyAttack.
+         */
+        CollisionHandler enemyAttack = new CollisionHandler(EntityType.PLAYER, EntityType.ENEMY) {
+
+            @Override
+            protected void onCollisionBegin(Entity player, Entity foe) {
+                HealthIntComponent hp = player.getComponent(HealthIntComponent.class);
+                int damage = foe.getComponent(WizardComponent.class).getDamage();
+                hp.setValue(hp.getValue() - damage);
+
+                System.out.println("Deal damage to player leaving " + hp.getValue());
+                if (hp.isZero()) {
+                    gameOver();
+                }
+            }
+        };
+
+        /*
+         * Represents the playerAttack.
+         */
+        CollisionHandler playerAttack = new CollisionHandler(EntityType.PLAYER, EntityType.ENEMY) {
+
+            @Override
+            protected void onCollisionBegin(Entity player, Entity foe) {
+                HealthIntComponent hp = foe.getComponent(HealthIntComponent.class);
+                int damage = player.getComponent(PlayerComponent.class).getDamage();
+                hp.setValue(hp.getValue() - damage);
+
+                System.out.println("Deal damage to " + foe);
+                if (hp.isZero()) {
+                    foe.removeFromWorld();
+                }
+            }
+        };
+
+        physicsWorld.addCollisionHandler(playerAttack);
+        physicsWorld.addCollisionHandler(enemyAttack);
     }
 
     /**
@@ -170,7 +216,7 @@ public class GameApp extends GameApplication{
      */
     @Override
     protected void initGame() {
-        getGameScene().setCursor(Cursor.NONE);
+        getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
         player = createPlayer();
@@ -187,7 +233,7 @@ public class GameApp extends GameApplication{
         hpBar.setMaxValue(100);
         hpBar.setMinValue(0);
 
-//        will need to modify current value based on
+        // will need to modify current value based on
         hpBar.setCurrentValue(40);
         hpBar.setWidth(300);
         hpBar.setLabelVisible(true);
@@ -199,28 +245,31 @@ public class GameApp extends GameApplication{
         Sound gameSound = new Sound();
         gameSound.playGameIntroSound();
 
-
-
 //        Game timer, for now,
 //        GameTimer gameTime = new GameTimer();
 //        gameTime.initGameTimer();
 
-
-//        Notifications, press F for demo
-
+        // Notifications, press F for demo
         Notifications notify = new Notifications();
         notify.notification();
-
-
     }
 
-    public void gameOver() {
+    /*
+     * Returns the user to the main menu if player's hp gets 0 or lower.
+     * Displays the game over message.
+     */
+    private void gameOver() {
+        getDialogService().showMessageBox("You died...");
         getGameController().gotoMainMenu();
     }
 
-    public void Victory() {
-        //message
-        gameOver();
+    /*
+     * Returns the user to the main menu if boss' hp gets 0 or lower.
+     * Displays the victory message.
+     */
+    private void Victory() {
+        getDialogService().showMessageBox("You won! Congratulations!");
+        getGameController().gotoMainMenu();
     }
 
     /**
