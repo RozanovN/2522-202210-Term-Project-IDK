@@ -1,6 +1,5 @@
 package ca.bcit.comp2522.termproject.idk;
 
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -16,15 +15,17 @@ import static com.almasb.fxgl.dsl.FXGL.image;
  *
  * @author Nikolay Rozanov
  * @version 2022
- * @see com.almasb.fxgl.entity.component.Component
+ * @see Component
  */
 public class PlayerComponent extends Component {
     private PhysicsComponent physicsComponent;
     final private AnimatedTexture animatedTexture;
     final private AnimationChannel idleAnimation;
     final private AnimationChannel walkingAnimation;
-    private final int speed;
+    final private AnimationChannel frontDefaultAttackingAnimation;
+    private int moveSpeed;
     private int numberOfJumps;
+    private int attackSpeed;
 
     /**
      * Constructs this Component.
@@ -32,12 +33,16 @@ public class PlayerComponent extends Component {
     public PlayerComponent() {
         Image idleImage = image("2D_SL_Knight_v1.0/Idle.png");
         Image movingImage = image("2D_SL_Knight_v1.0/Run.png");
+        Image attackImage = image("2D_SL_Knight_v1.0/Attacks.png");
+
         idleAnimation = new AnimationChannel(idleImage, 2, 128, 64,
                 Duration.seconds(1), 0, 7);
         walkingAnimation = new AnimationChannel(movingImage, 2, 128, 64,
                 Duration.seconds(1), 0, 7);
+        frontDefaultAttackingAnimation = new AnimationChannel(attackImage, 8, 128,
+                64, Duration.seconds(1), 2, 9);
         animatedTexture = new AnimatedTexture(idleAnimation);
-        speed = 150;
+        moveSpeed = 150;
         numberOfJumps = 1;
         animatedTexture.loop();
     }
@@ -82,7 +87,7 @@ public class PlayerComponent extends Component {
      */
     public void moveRight() {
 //        physicsComponent.setVelocityX(speed);
-        physicsComponent.setVelocityX(speed);
+        physicsComponent.setVelocityX(moveSpeed);
         getEntity().setScaleX(1);
     }
 
@@ -90,19 +95,19 @@ public class PlayerComponent extends Component {
      * Moves the player left by 150 pixels.
      */
     public void moveLeft() {
-        physicsComponent.setVelocityX(-speed);
+        physicsComponent.setVelocityX(-moveSpeed);
         getEntity().setScaleX(-1);
     }
 
     /**
-     * Moves the player up by 150 pixels if player has a positive number of jumps.
+     * Moves the player up if player has a positive number of jumps.
      */
     public void Jump() {
-        final float jumpBoost = 3.3f;
+        final float jumpBoost = 2.8f;
         if (numberOfJumps == 0)
             return;
         System.out.println("jump");
-        physicsComponent.setVelocityY(-speed * jumpBoost);
+        physicsComponent.setVelocityY(-moveSpeed * jumpBoost);
         numberOfJumps--;
         getEntity().setScaleY(1);
     }
@@ -119,7 +124,11 @@ public class PlayerComponent extends Component {
      * Moves the player down by 150 pixels.
      */
     public void Descend() {
-        physicsComponent.setVelocityY(-speed);
+        physicsComponent.setVelocityY(-moveSpeed);
         getEntity().setScaleY(-1);
+    }
+
+    public void frontDefaultAttack() {
+        animatedTexture.loopAnimationChannel(frontDefaultAttackingAnimation);
     }
 }
