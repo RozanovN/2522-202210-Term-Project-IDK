@@ -1,14 +1,17 @@
 package ca.bcit.comp2522.termproject.idk;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.image;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.runOnce;
 
 /**
  * Represents a Component of the player's Entity.
@@ -25,7 +28,9 @@ public class PlayerComponent extends Component {
     final private AnimationChannel frontDefaultAttackingAnimation;
     private int moveSpeed;
     private int numberOfJumps;
-    private int attackSpeed;
+    private double attackSpeed;
+    private LocalTimer attackTimer;
+    private boolean canAttack;
 
     /**
      * Constructs this Component.
@@ -43,7 +48,10 @@ public class PlayerComponent extends Component {
                 64, Duration.seconds(1), 2, 9);
         animatedTexture = new AnimatedTexture(idleAnimation);
         moveSpeed = 150;
+        attackSpeed = 1.0;
         numberOfJumps = 1;
+        attackTimer = FXGL.newLocalTimer();
+        canAttack = true;
         animatedTexture.loop();
     }
 
@@ -64,19 +72,23 @@ public class PlayerComponent extends Component {
     }
 
     /**
-     * Reflects speed and animation changes on frame update.
+     * Reflects animation changes on frame update.
      *
      * @param timePerFrame double representing the time one frame takes
      */
     @Override
     public void onUpdate(final double timePerFrame) {
+        if (attackTimer.elapsed(Duration.seconds(attackSpeed))) {
+            canAttack = true;
+        }
+
         if (physicsComponent.isMovingX()) {
             if (animatedTexture.getAnimationChannel() == idleAnimation) {
                 animatedTexture.loopAnimationChannel(walkingAnimation);
             }
 
         } else {
-            if (animatedTexture.getAnimationChannel() != idleAnimation) {
+            if (animatedTexture.getAnimationChannel() != idleAnimation && canAttack) {
                 animatedTexture.loopAnimationChannel(idleAnimation);
             }
         }
@@ -129,6 +141,10 @@ public class PlayerComponent extends Component {
     }
 
     public void frontDefaultAttack() {
-        animatedTexture.loopAnimationChannel(frontDefaultAttackingAnimation);
+        if (canAttack) {
+            animatedTexture.playAnimationChannel(frontDefaultAttackingAnimation);
+            attackTimer.capture();
+            canAttack = false;
+        }
     }
 }
