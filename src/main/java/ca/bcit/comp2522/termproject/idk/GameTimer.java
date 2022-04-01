@@ -21,6 +21,7 @@ public class GameTimer {
      * Game timer.
      *
      * Counts how long the user has been in the castle using seconds
+     * @return
      */
     protected void initGameTimer() {
         timerAction = FXGL.getGameTimer().runAtInterval(() -> System.out.println("Seconds: " + FXGL.getGameTimer().getNow()), Duration.seconds(1.0));

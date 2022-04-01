@@ -1,15 +1,16 @@
 package ca.bcit.comp2522.termproject.idk;
 
+import com.almasb.fxgl.app.MenuItem;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.achievement.Achievement;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
-import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.BoundingShape;
@@ -21,9 +22,6 @@ import com.almasb.fxgl.ui.Position;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-
 import java.util.Arrays;
 import java.util.EnumSet;
 
@@ -34,13 +32,14 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
  * Drives the game.
  *
  * @author Prince Chabveka
- * @author Nikolay Rozanov
+ * @author Nikolay Rozanovt
  * @version 2022
  */
 public class GameApp extends GameApplication{
 
 
-    /**
+
+        /**
      * Represents the native width of the screen for the game.
      */
     public final static int SCREEN_WIDTH = 1280;
@@ -55,6 +54,7 @@ public class GameApp extends GameApplication{
      */
     public GameApp() {}
 
+
     /**
      * Configures this Game settings.
      *
@@ -66,6 +66,8 @@ public class GameApp extends GameApplication{
         gameSettings.setHeight(SCREEN_HEIGHT);
 
 
+
+
 //        game menu
         gameSettings.setDeveloperMenuEnabled(true);
         gameSettings.setTitle("Castle adventure");
@@ -74,7 +76,7 @@ public class GameApp extends GameApplication{
         gameSettings.setFullScreenAllowed(true);
         gameSettings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
 
-//        Add game developer credits
+
         gameSettings.getCredits().addAll(Arrays.asList(
                 "Prince Chabveka",
                 "Nikolay Rozanov"
@@ -169,6 +171,8 @@ public class GameApp extends GameApplication{
         ProgressBar hpBar = new ProgressBar();
         hpBar.setMaxValue(100);
         hpBar.setMinValue(0);
+
+//        will need to modify current value based on
         hpBar.setCurrentValue(40);
         hpBar.setWidth(300);
         hpBar.setLabelVisible(true);
@@ -183,14 +187,15 @@ public class GameApp extends GameApplication{
 
 
 //        Game timer, for now,
-        GameTimer gameTime = new GameTimer();
-        gameTime.initGameTimer();
+//        GameTimer gameTime = new GameTimer();
+//        gameTime.initGameTimer();
 
 
 //        Notifications, press F for demo
 
         Notifications notify = new Notifications();
         notify.notification();
+
 
 }
 
