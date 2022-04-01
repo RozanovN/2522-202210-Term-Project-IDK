@@ -21,7 +21,9 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.Position;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -129,6 +131,13 @@ public class GameApp extends GameApplication{
                 player.getComponent(PlayerComponent.class).Jump();
             }
         }, KeyCode.W, VirtualButton.A);
+
+        getInput().addAction(new UserAction("Default Attack") {
+            @Override
+            protected void onActionBegin() {
+                player.getComponent(PlayerComponent.class).frontDefaultAttack();
+            }
+        }, MouseButton.PRIMARY);
     }
 
     /*
@@ -146,7 +155,7 @@ public class GameApp extends GameApplication{
                 .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
                 .at(25, 1)
                 .with(physicsComponent, new CollidableComponent(true), new IrremovableComponent(),
-                        new PlayerComponent(), new HealthIntComponent())
+                        new PlayerComponent(), new HealthIntComponent(100))
                 .buildAndAttach();
     }
 
@@ -161,6 +170,7 @@ public class GameApp extends GameApplication{
      */
     @Override
     protected void initGame() {
+        getGameScene().setCursor(Cursor.NONE);
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
         player = createPlayer();
