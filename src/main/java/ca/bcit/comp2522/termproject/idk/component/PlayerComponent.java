@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject.idk;
+package ca.bcit.comp2522.termproject.idk.component;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
@@ -22,15 +22,16 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.runOnce;
  */
 public class PlayerComponent extends Component {
     private PhysicsComponent physicsComponent;
-    final private AnimatedTexture animatedTexture;
     final private AnimationChannel idleAnimation;
     final private AnimationChannel walkingAnimation;
     final private AnimationChannel frontDefaultAttackingAnimation;
+    final private AnimatedTexture animatedTexture;
     private int moveSpeed;
-    private int numberOfJumps;
     private double attackSpeed;
-    private LocalTimer attackTimer;
+    private int numberOfJumps;
+    private final LocalTimer attackTimer;
     private boolean canAttack;
+    private int damage;
 
     /**
      * Constructs this Component.
@@ -46,12 +47,15 @@ public class PlayerComponent extends Component {
                 Duration.seconds(1), 0, 7);
         frontDefaultAttackingAnimation = new AnimationChannel(attackImage, 8, 128,
                 64, Duration.seconds(1), 2, 9);
+
         animatedTexture = new AnimatedTexture(idleAnimation);
         moveSpeed = 150;
         attackSpeed = 1.0;
         numberOfJumps = 1;
         attackTimer = FXGL.newLocalTimer();
         canAttack = true;
+        damage = 10;
+
         animatedTexture.loop();
     }
 
@@ -143,8 +147,13 @@ public class PlayerComponent extends Component {
     public void frontDefaultAttack() {
         if (canAttack) {
             animatedTexture.playAnimationChannel(frontDefaultAttackingAnimation);
+
             attackTimer.capture();
             canAttack = false;
         }
+    }
+
+    public int getDamage() {
+        return damage;
     }
 }
