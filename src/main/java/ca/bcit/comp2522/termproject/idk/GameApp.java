@@ -1,5 +1,6 @@
 package ca.bcit.comp2522.termproject.idk;
 
+import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
 import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
 import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
 import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
@@ -157,8 +158,10 @@ public class GameApp extends GameApplication{
                 .type(EntityType.PLAYER)
                 .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
                 .at(25, 1)
-                .with(physicsComponent, new CollidableComponent(true), new IrremovableComponent(),
-                        new PlayerComponent(), new HealthIntComponent(100))
+                .with(
+                    physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
+                    new HealthIntComponent(100), new AttackComponent(15)
+                )
                 .buildAndAttach();
     }
 
@@ -174,12 +177,12 @@ public class GameApp extends GameApplication{
         /*
          * Represents the enemyAttack.
          */
-        CollisionHandler enemyAttack = new CollisionHandler(EntityType.PLAYER, EntityType.ENEMY) {
+        CollisionHandler enemyAttack = new CollisionHandler(EntityType.ENEMY_ATTACK, EntityType.PLAYER) {
 
             @Override
-            protected void onCollisionBegin(Entity player, Entity foe) {
+            protected void onCollisionBegin(Entity attack, Entity player) {
                 HealthIntComponent hp = player.getComponent(HealthIntComponent.class);
-                int damage = foe.getComponent(WizardComponent.class).getDamage();
+                int damage = attack.getComponent(AttackComponent.class).getDamage();
                 hp.setValue(hp.getValue() - damage);
 
                 System.out.println("Deal damage to player leaving " + hp.getValue());
@@ -192,15 +195,17 @@ public class GameApp extends GameApplication{
         /*
          * Represents the playerAttack.
          */
-        CollisionHandler playerAttack = new CollisionHandler(EntityType.PLAYER, EntityType.ENEMY) {
+        CollisionHandler playerAttack = new CollisionHandler(EntityType.PLAYER_ATTACK, EntityType.ENEMY) {
 
             @Override
-            protected void onCollisionBegin(Entity player, Entity foe) {
+            protected void onCollisionBegin(Entity attack, Entity foe) {
                 HealthIntComponent hp = foe.getComponent(HealthIntComponent.class);
-                int damage = player.getComponent(PlayerComponent.class).getDamage();
+                int damage = attack.getComponent(AttackComponent.class).getDamage();
+
                 hp.setValue(hp.getValue() - damage);
 
-                System.out.println("Deal damage to " + foe);
+                System.out.println("foe has " + hp.getValue() + "hp");
+                System.out.println("Deal damage" + damage);
                 if (hp.isZero()) {
                     foe.removeFromWorld();
                 }
@@ -220,7 +225,6 @@ public class GameApp extends GameApplication{
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
         player = createPlayer();
-
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, -4550, 11550, 1915);

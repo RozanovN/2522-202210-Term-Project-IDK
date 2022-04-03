@@ -1,5 +1,6 @@
 package ca.bcit.comp2522.termproject.idk.component.enemies;
 
+import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -11,29 +12,21 @@ import com.almasb.fxgl.texture.AnimatedTexture;
  * @version 2022
  */
 public abstract class AbstractEnemyComponent extends Component {
-    protected final int damage;
     protected AnimatedTexture animatedTexture;
     protected PhysicsComponent physicsComponent;
     protected final int attackSpeed;
+    protected final int moveSpeed;
 
     /**
      * Constructs AbstractEnemyComponent.
      *
-     * @param damage an int that represents the enemy's damage
      * @param attackSpeed an int that represents the enemy's attackSpeed
      */
-    public AbstractEnemyComponent(final int damage, final int attackSpeed) {
-        this.damage = damage;
+    public AbstractEnemyComponent(final int attackSpeed, final int moveSpeed) {
         this.attackSpeed = attackSpeed;
+        this.moveSpeed = moveSpeed;
     }
 
-    /**
-     * Returns the enemy's damage.
-     *
-     * @return an int representing damage
-     */
-    public int getDamage() {
-        return damage;
-    }
+    public abstract void defaultAttack();
 
 }

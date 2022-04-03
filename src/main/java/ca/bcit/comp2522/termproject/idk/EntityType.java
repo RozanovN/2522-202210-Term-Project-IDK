@@ -16,7 +16,11 @@ public enum EntityType {
      */
     ENEMY,
     /**
-     * Represents the attack.
+     * Represents the player's attack.
      */
-    ATTACK
+    PLAYER_ATTACK,
+    /**
+     * Represents the enemy's attack.
+     */
+    ENEMY_ATTACK
 }

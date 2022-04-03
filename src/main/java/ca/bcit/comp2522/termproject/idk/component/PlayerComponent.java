@@ -1,7 +1,17 @@
 package ca.bcit.comp2522.termproject.idk.component;
 
+import ca.bcit.comp2522.termproject.idk.EntityType;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.GameWorld;
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
@@ -10,7 +20,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-import static com.almasb.fxgl.dsl.FXGL.image;
+import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.runOnce;
 
 /**
@@ -31,7 +41,6 @@ public class PlayerComponent extends Component {
     private int numberOfJumps;
     private final LocalTimer attackTimer;
     private boolean canAttack;
-    private int damage;
 
     /**
      * Constructs this Component.
@@ -54,7 +63,6 @@ public class PlayerComponent extends Component {
         numberOfJumps = 1;
         attackTimer = FXGL.newLocalTimer();
         canAttack = true;
-        damage = 10;
 
         animatedTexture.loop();
     }
@@ -94,6 +102,7 @@ public class PlayerComponent extends Component {
         } else {
             if (animatedTexture.getAnimationChannel() != idleAnimation && canAttack) {
                 animatedTexture.loopAnimationChannel(idleAnimation);
+                moveSpeed = 150;
             }
         }
     }
@@ -102,7 +111,6 @@ public class PlayerComponent extends Component {
      * Moves the player right by 150 pixels.
      */
     public void moveRight() {
-//        physicsComponent.setVelocityX(speed);
         physicsComponent.setVelocityX(moveSpeed);
         getEntity().setScaleX(1);
     }
@@ -136,24 +144,17 @@ public class PlayerComponent extends Component {
         physicsComponent.setVelocityX(stop);
     }
 
-    /**
-     * Moves the player down by 150 pixels.
-     */
-    public void Descend() {
-        physicsComponent.setVelocityY(-moveSpeed);
-        getEntity().setScaleY(-1);
-    }
 
     public void frontDefaultAttack() {
         if (canAttack) {
+            System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
+            SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY());
+            spawn("Attack", spawnData);
             animatedTexture.playAnimationChannel(frontDefaultAttackingAnimation);
-
             attackTimer.capture();
             canAttack = false;
+            moveSpeed = 0;
         }
     }
 
-    public int getDamage() {
-        return damage;
-    }
 }
