@@ -3,7 +3,13 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.Media;
 import java.nio.file.Paths;
 
-
+/**
+ * Play in game sounds.
+ *
+ * @author Prince Chabveka
+ * @author Nikolay Rozanov
+ * @version 2022
+ */
 public class Sound {
 
     MediaPlayer mediaPlayer;
@@ -16,6 +22,5 @@ public class Sound {
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
-
     }
 }
