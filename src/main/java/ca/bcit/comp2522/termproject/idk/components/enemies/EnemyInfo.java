@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject.idk.component.enemies;
+package ca.bcit.comp2522.termproject.idk.components.enemies;
 
 /**
  * Represents a utility class that stores enemy information as constants.
