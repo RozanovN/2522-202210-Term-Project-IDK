@@ -1,9 +1,9 @@
 package ca.bcit.comp2522.termproject.idk;
 
-import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
-import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
-import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
-import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
+import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
+import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
+import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
