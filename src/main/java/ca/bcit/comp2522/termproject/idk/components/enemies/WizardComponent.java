@@ -20,7 +20,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
 public class WizardComponent extends AbstractEnemyComponent {
     private final  AnimationChannel idleAnimation;
     private final  AnimationChannel walkingAnimation;
-    private final AnimationChannel meleeAttackAnimation;
+//    private final AnimationChannel meleeAttackAnimation;
 
     /**
      * Constructs this Component.
@@ -69,15 +69,15 @@ public class WizardComponent extends AbstractEnemyComponent {
 
     @Override
     public void meleeAttack() {
-        if (canAttack) {
-            System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
-            SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY());
-            spawn("Attack", spawnData);
-            animatedTexture.playAnimationChannel(meleeAttackAnimation);
-            attackTimer.capture();
-            canAttack = false;
-            moveSpeed = 0;
-        }
+//        if (canAttack) {
+//            System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
+//            SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY());
+//            spawn("Attack", spawnData);
+//            animatedTexture.playAnimationChannel(meleeAttackAnimation);
+//            attackTimer.capture();
+//            canAttack = false;
+//            moveSpeed = 0;
+//        }
     }
 
 }
