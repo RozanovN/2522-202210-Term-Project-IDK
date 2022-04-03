@@ -1,6 +1,11 @@
 package ca.bcit.comp2522.termproject.idk;
 
+import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.component.enemies.EnemyInfo;
+import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -10,16 +15,20 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.ui.Position;
+import javafx.geometry.Point2D;
+import javafx.util.Duration;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 /**
  * Represents the class for the factory of tiles.
+ *
  * @author Nikolay Rozanov
  * @version 2022
  */
-public class GameEntitiesFactory implements EntityFactory{
-
+public class GameEntitiesFactory implements EntityFactory {
     /**
      * Builds a Platform Entity.
      *
@@ -104,20 +113,58 @@ public class GameEntitiesFactory implements EntityFactory{
                 .with(new PhysicsComponent(), new CollidableComponent())
                 .build();
     }
-//
-//    /**
-//     * Demo of player for testing purpose, to be changed later.
-//     *
-//     * @return Entity representing player
-//     */
-//    @Spawns("Player")
-//    public Entity newPlayer() {
-//        PhysicsComponent physicsComponent = new PhysicsComponent();
-//        physicsComponent.setBodyType(BodyType.DYNAMIC);
-//        return FXGL
-//                .entityBuilder()
-//                .view(new Rectangle(25, 25, Color.BLUE))
-//                .with(physicsComponent, new CollidableComponent())
-//                .build();
-//    }
+
+    /**
+     * Builds a Fire Wizard entity.
+     *
+     * @param data unused
+     * @return Entity representing the Fire Wizard
+     */
+    @Spawns("FireWizard")
+    public Entity newFireWizard(SpawnData data) {
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.DYNAMIC);
+        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
+                BoundingShape.box(6, 12)));
+        physicsComponent.setFixtureDef(new FixtureDef().friction(100f));
+
+        return FXGL
+                .entityBuilder()
+                .type(EntityType.ENEMY)
+                .bbox(new HitBox(new Point2D(55,50), BoundingShape.box(35, 50)))
+                .at(25, 1)
+                .with(
+                    physicsComponent, new CollidableComponent(true), new WizardComponent(),
+                    new HealthIntComponent(EnemyInfo.WIZARD_MAX_HP), new AttackComponent(EnemyInfo.WIZARD_DAMAGE)
+                )
+                .build();
+    }
+
+    /**
+     * Spawns an attack entity for 2 seconds.
+     *
+     * @param data a SpawnData that represents the position of the spawn point
+     * @return Entity representing an attack
+     */
+    @Spawns("Attack")
+    public Entity newAttack(SpawnData data) {
+        System.out.println("built a box at" + data.getX() + " and " + data.getY());
+        Point2D position = new Point2D(data.getX(), data.getY());
+        EntityType type;
+        if ((Enum<?>) getGameWorld().getEntitiesAt(position).get(0).getType() == EntityType.PLAYER) {
+            type = EntityType.PLAYER_ATTACK;
+        } else {
+            type = EntityType.ENEMY_ATTACK;
+        }
+        return FXGL
+                .entityBuilder()
+                .type(type)
+                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(40, 35)))
+                .at(data.getX(), data.getY())
+                .with(new CollidableComponent(true))
+                .with(new ExpireCleanComponent(Duration.seconds(2)))
+                .with(new AttackComponent(getGameWorld().getEntitiesAt(position).get(0).getComponent(AttackComponent.class).getDamage()))
+                .build();
+
+    }
 }

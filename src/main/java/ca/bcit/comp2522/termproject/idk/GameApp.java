@@ -1,5 +1,9 @@
 package ca.bcit.comp2522.termproject.idk;
 
+import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
+import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
+import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
@@ -8,19 +12,20 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
-import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.Position;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -32,13 +37,10 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
  * Drives the game.
  *
  * @author Prince Chabveka
- * @author Nikolay Rozanovt
+ * @author Nikolay Rozanov
  * @version 2022
  */
 public class GameApp extends GameApplication{
-
-
-
         /**
      * Represents the native width of the screen for the game.
      */
@@ -65,10 +67,7 @@ public class GameApp extends GameApplication{
         gameSettings.setWidth(SCREEN_WIDTH);
         gameSettings.setHeight(SCREEN_HEIGHT);
 
-
-
-
-//        game menu
+        // game menu
         gameSettings.setDeveloperMenuEnabled(true);
         gameSettings.setTitle("Castle adventure");
         gameSettings.setMainMenuEnabled(true);
@@ -76,6 +75,13 @@ public class GameApp extends GameApplication{
         gameSettings.setFullScreenAllowed(true);
         gameSettings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
 
+        gameSettings.setSceneFactory(new SceneFactory() {
+
+            @Override
+            public FXGLMenu newMainMenu() {
+                return new GameMainMenu();
+            }
+        });
 
         gameSettings.getCredits().addAll(Arrays.asList(
                 "Prince Chabveka",
@@ -83,21 +89,22 @@ public class GameApp extends GameApplication{
 
         ));
 
-//        view game achievements, will add more
+        // view game achievements, will add more
         gameSettings.getAchievements().add(new Achievement("Player 1",
                 "description", "", 0));
         gameSettings.getAchievements().add(new Achievement("Player 2",
                 "description2", "", 1));
 
     }
+
     /**
      * Reads Player's input.
      */
     @Override
     protected void initInput() {
 
-
         getInput().addAction(new UserAction("Left") {
+
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).moveLeft();
@@ -127,30 +134,86 @@ public class GameApp extends GameApplication{
                 player.getComponent(PlayerComponent.class).Jump();
             }
         }, KeyCode.W, VirtualButton.A);
+
+        getInput().addAction(new UserAction("Default Attack") {
+            @Override
+            protected void onActionBegin() {
+                player.getComponent(PlayerComponent.class).frontDefaultAttack();
+            }
+        }, MouseButton.PRIMARY);
     }
 
     /*
-    * Creates a player.
+     * Creates a player.
      */
     private Entity createPlayer() {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
-        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(16, 64),
+        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
                 BoundingShape.box(6, 12)));
-        physicsComponent.setFixtureDef(new FixtureDef().friction(1f));
+        physicsComponent.setFixtureDef(new FixtureDef().friction(0f));
 
         return FXGL
                 .entityBuilder()
-                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(32, 35)))
+                .type(EntityType.PLAYER)
+                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
                 .at(25, 1)
-                .with(physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent())
+                .with(
+                    physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
+                    new HealthIntComponent(100), new AttackComponent(15)
+                )
                 .buildAndAttach();
     }
 
+    /**
+     * Defines the physics in the game.
+     * Handles the collisions.
+     */
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 760);
-        // getPhysicsWorld().addCollisionHandler();
+        PhysicsWorld physicsWorld = getPhysicsWorld();
+        physicsWorld.setGravity(0, 760);
+
+        /*
+         * Represents the enemyAttack.
+         */
+        CollisionHandler enemyAttack = new CollisionHandler(EntityType.ENEMY_ATTACK, EntityType.PLAYER) {
+
+            @Override
+            protected void onCollisionBegin(Entity attack, Entity player) {
+                HealthIntComponent hp = player.getComponent(HealthIntComponent.class);
+                int damage = attack.getComponent(AttackComponent.class).getDamage();
+                hp.setValue(hp.getValue() - damage);
+
+                System.out.println("Deal damage to player leaving " + hp.getValue());
+                if (hp.isZero()) {
+                    gameOver();
+                }
+            }
+        };
+
+        /*
+         * Represents the playerAttack.
+         */
+        CollisionHandler playerAttack = new CollisionHandler(EntityType.PLAYER_ATTACK, EntityType.ENEMY) {
+
+            @Override
+            protected void onCollisionBegin(Entity attack, Entity foe) {
+                HealthIntComponent hp = foe.getComponent(HealthIntComponent.class);
+                int damage = attack.getComponent(AttackComponent.class).getDamage();
+
+                hp.setValue(hp.getValue() - damage);
+
+                System.out.println("foe has " + hp.getValue() + "hp");
+                System.out.println("Deal damage" + damage);
+                if (hp.isZero()) {
+                    foe.removeFromWorld();
+                }
+            }
+        };
+
+        physicsWorld.addCollisionHandler(playerAttack);
+        physicsWorld.addCollisionHandler(enemyAttack);
     }
 
     /**
@@ -158,11 +221,13 @@ public class GameApp extends GameApplication{
      */
     @Override
     protected void initGame() {
+        getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
         player = createPlayer();
+        // Camera settings
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(0, -1150, 11550, 1550);
+        viewport.setBounds(0, -4550, 11550, 1915);
         viewport.setZoom(2);
         viewport.bindToEntity(player, 500, 250);
         viewport.setLazy(false);
@@ -172,7 +237,7 @@ public class GameApp extends GameApplication{
         hpBar.setMaxValue(100);
         hpBar.setMinValue(0);
 
-//        will need to modify current value based on
+        // will need to modify current value based on
         hpBar.setCurrentValue(40);
         hpBar.setWidth(300);
         hpBar.setLabelVisible(true);
@@ -184,20 +249,32 @@ public class GameApp extends GameApplication{
         Sound gameSound = new Sound();
         gameSound.playGameIntroSound();
 
-
-
 //        Game timer, for now,
 //        GameTimer gameTime = new GameTimer();
 //        gameTime.initGameTimer();
 
-
-//        Notifications, press F for demo
-
+        // Notifications, press F for demo
         Notifications notify = new Notifications();
         notify.notification();
+    }
 
+    /*
+     * Returns the user to the main menu if player's hp gets 0 or lower.
+     * Displays the game over message.
+     */
+    private void gameOver() {
+        getDialogService().showMessageBox("You died...");
+        getGameController().gotoMainMenu();
+    }
 
-}
+    /*
+     * Returns the user to the main menu if boss' hp gets 0 or lower.
+     * Displays the victory message.
+     */
+    private void Victory() {
+        getDialogService().showMessageBox("You won! Congratulations!");
+        getGameController().gotoMainMenu();
+    }
 
     /**
      * Drives the game.
