@@ -246,8 +246,6 @@ public class GameApp extends GameApplication{
         hpBar.getInnerBar();
         // Node to add the bar
         addUINode(hpBar);
-        Sound gameSound = new Sound();
-        gameSound.playGameIntroSound();
 
 //        Game timer, for now,
 //        GameTimer gameTime = new GameTimer();
@@ -256,6 +254,12 @@ public class GameApp extends GameApplication{
         // Notifications, press F for demo
         Notifications notify = new Notifications();
         notify.notification();
+
+        Sound gameSound = new Sound();
+        final String inGameSound = "src/main/resources/assets/Sounds/epic_battle_music_1-6275.mp3";
+        gameSound.playGameIntroSound(inGameSound);
+
+
     }
 
     /*
