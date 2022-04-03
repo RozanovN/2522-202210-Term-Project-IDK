@@ -1,37 +1,39 @@
-package ca.bcit.comp2522.termproject.idk;
 
-import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
-import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
-import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
-import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
-import com.almasb.fxgl.app.MenuItem;
-import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.achievement.Achievement;
-import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.app.scene.Viewport;
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.HealthIntComponent;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.entity.components.IrremovableComponent;
-import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.input.virtual.VirtualButton;
-import com.almasb.fxgl.physics.*;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-import com.almasb.fxgl.ui.Position;
-import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.paint.Color;
-import java.util.Arrays;
-import java.util.EnumSet;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
+        package ca.bcit.comp2522.termproject.idk;
+
+        import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
+        import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
+        import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
+        import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
+        import com.almasb.fxgl.app.MenuItem;
+        import com.almasb.fxgl.app.scene.FXGLMenu;
+        import com.almasb.fxgl.app.scene.SceneFactory;
+        import com.almasb.fxgl.achievement.Achievement;
+        import com.almasb.fxgl.app.GameApplication;
+        import com.almasb.fxgl.app.GameSettings;
+        import com.almasb.fxgl.app.scene.Viewport;
+        import com.almasb.fxgl.dsl.FXGL;
+        import com.almasb.fxgl.dsl.components.HealthIntComponent;
+        import com.almasb.fxgl.entity.Entity;
+        import com.almasb.fxgl.entity.components.CollidableComponent;
+        import com.almasb.fxgl.entity.components.IrremovableComponent;
+        import com.almasb.fxgl.input.UserAction;
+        import com.almasb.fxgl.input.virtual.VirtualButton;
+        import com.almasb.fxgl.physics.*;
+        import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+        import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+        import com.almasb.fxgl.ui.Position;
+        import javafx.geometry.Point2D;
+        import javafx.scene.Cursor;
+        import javafx.scene.input.KeyCode;
+        import javafx.scene.input.MouseButton;
+        import javafx.scene.paint.Color;
+        import java.util.Arrays;
+        import java.util.EnumSet;
+
+        import static com.almasb.fxgl.dsl.FXGL.*;
+        import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
 
 /**
  * Drives the game.
@@ -41,7 +43,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
  * @version 2022
  */
 public class GameApp extends GameApplication{
-        /**
+    /**
      * Represents the native width of the screen for the game.
      */
     public final static int SCREEN_WIDTH = 1280;
@@ -159,8 +161,8 @@ public class GameApp extends GameApplication{
                 .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
                 .at(25, 1)
                 .with(
-                    physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
-                    new HealthIntComponent(100), new AttackComponent(15)
+                        physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
+                        new HealthIntComponent(100), new AttackComponent(15)
                 )
                 .buildAndAttach();
     }
@@ -246,8 +248,6 @@ public class GameApp extends GameApplication{
         hpBar.getInnerBar();
         // Node to add the bar
         addUINode(hpBar);
-        Sound gameSound = new Sound();
-        gameSound.playGameIntroSound();
 
 //        Game timer, for now,
 //        GameTimer gameTime = new GameTimer();
@@ -256,6 +256,12 @@ public class GameApp extends GameApplication{
         // Notifications, press F for demo
         Notifications notify = new Notifications();
         notify.notification();
+
+        Sound gameSound = new Sound();
+        final String inGameSound = "src/main/resources/assets/Sounds/epic_battle_music_1-6275.mp3";
+        gameSound.playGameIntroSound(inGameSound);
+
+
     }
 
     /*
