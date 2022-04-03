@@ -1,5 +1,7 @@
-package ca.bcit.comp2522.termproject.idk.component.enemies;
+package ca.bcit.comp2522.termproject.idk.components.enemies;
 
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
@@ -7,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.image;
+import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 /**
  * Represents the WizardComponent.
@@ -17,6 +20,7 @@ import static com.almasb.fxgl.dsl.FXGL.image;
 public class WizardComponent extends AbstractEnemyComponent {
     private final  AnimationChannel idleAnimation;
     private final  AnimationChannel walkingAnimation;
+    private final AnimationChannel meleeAttackAnimation;
 
     /**
      * Constructs this Component.
@@ -51,20 +55,29 @@ public class WizardComponent extends AbstractEnemyComponent {
      */
     @Override
     public void onUpdate(final double timePerFrame) {
-        if (physicsComponent.isMovingX()) {
+        if (entity.getComponent(PhysicsComponent.class).isMovingX()) {
             if (animatedTexture.getAnimationChannel() == idleAnimation) {
                 animatedTexture.loopAnimationChannel(walkingAnimation);
             }
 
         } else {
-            if (animatedTexture.getAnimationChannel() != idleAnimation) {
+            if (animatedTexture.getAnimationChannel() != idleAnimation && canAttack) {
                 animatedTexture.loopAnimationChannel(idleAnimation);
             }
         }
     }
 
     @Override
-    public void defaultAttack() {
-        //in dev
+    public void meleeAttack() {
+        if (canAttack) {
+            System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
+            SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY());
+            spawn("Attack", spawnData);
+            animatedTexture.playAnimationChannel(meleeAttackAnimation);
+            attackTimer.capture();
+            canAttack = false;
+            moveSpeed = 0;
+        }
     }
+
 }
