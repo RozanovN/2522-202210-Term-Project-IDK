@@ -277,10 +277,8 @@ public class GameApp extends GameApplication {
         notify.notification();
 
 
-        Sound gameSound = new Sound();
         final String inGameSound = "src/main/resources/assets/Sounds/epic_battle_music_1-6275.mp3";
-        gameSound.playGameIntroSound(inGameSound);
-
+        Sound.playSound(inGameSound, true);
 
     }
 
@@ -390,15 +388,6 @@ public class GameApp extends GameApplication {
                 ex.printStackTrace();
             }
 
-//        create sql query as string and then add to batch
-//            String sql1 = "INSERT INTO users VALUES('gamer', 'forlife')";
-//            try {
-//                stmt.addBatch(sql1);
-//            } catch (SQLException ex) {
-//                ex.printStackTrace();
-//            }
-
-//        execute the batch
             try {
                 stmt.executeBatch();
             } catch (SQLException ex) {
