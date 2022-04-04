@@ -11,15 +11,24 @@ import java.nio.file.Paths;
  */
 public class Sound {
 
-    MediaPlayer mediaPlayer;
+    static MediaPlayer mediaPlayer;
 
     /**
-     * Play game sound
+     * Play game sound indefinitely
      */
-    public void playGameIntroSound(String filename) {
+    public static void playSound(String filename, boolean indefinitely) {
         Media media = new Media(Paths.get(filename).toUri().toString());
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
+        if (indefinitely) {
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
+        }
+        else {
+            mediaPlayer.play();
+        }
+
     }
+
+
+
 }
