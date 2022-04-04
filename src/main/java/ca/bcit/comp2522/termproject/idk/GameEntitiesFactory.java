@@ -126,7 +126,7 @@ public class GameEntitiesFactory implements EntityFactory {
         physicsComponent.setBodyType(BodyType.DYNAMIC);
         physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
                 BoundingShape.box(6, 12)));
-        physicsComponent.setFixtureDef(new FixtureDef().friction(0f));
+        physicsComponent.setFixtureDef(new FixtureDef().friction(1f));
 
         return FXGL
                 .entityBuilder()
@@ -159,7 +159,8 @@ public class GameEntitiesFactory implements EntityFactory {
         return FXGL
                 .entityBuilder()
                 .type(type)
-                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(40, 35)))
+                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(
+                        getGameWorld().getEntitiesAt(position).get(0).getWidth() * 2, 35)))
                 .at(data.getX(), data.getY())
                 .with(
                     new CollidableComponent(true),
