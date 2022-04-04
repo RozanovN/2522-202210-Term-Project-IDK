@@ -402,6 +402,13 @@ public class GameApp extends GameApplication {
                     String userID = rs.getString("userID");
                     String gamerName = rs.getString("UserName");
                     String gamerPassword = rs.getString("UserPassword");
+                    //check if gamer is in database
+                    if ((gamerName.equals(user) && gamerPassword.equals(gamerPassword))){
+                        System.out.println("User exists");
+                        getNotificationService().pushNotification("Hello " + user);
+                        String audioFile = "src/main/resources/assets/Sounds/notification.mp3";
+                        Sound.playSound(audioFile, false);
+                    }
                     System.out.println(userID + "\t\t" + gamerPassword + "\t\t" + gamerName);
                 }
             } catch (SQLException ex) {
