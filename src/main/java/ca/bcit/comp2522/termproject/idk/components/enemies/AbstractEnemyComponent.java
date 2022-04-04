@@ -88,13 +88,20 @@ public abstract class AbstractEnemyComponent extends Component {
         @Override
         protected void onUpdate(final double tpf) {
 
-            if (entity.distance(player) > 20) {
-                moveSpeed = defaultMoveSpeed;
+            System.out.println(entity.distance(player));
+            if (entity.distance(player) > 100) {
+                if (entity.getX() - player.getX() < 0) {
+                    getEntity().setScaleX(1);
+                    moveSpeed = defaultMoveSpeed;
+                } else {
+                    getEntity().setScaleX(-1);
+                    moveSpeed = -defaultMoveSpeed;
+                }
                 entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
-                getEntity().setScaleX(-1);
             } else {
                 System.out.println("attacking");
                 moveSpeed = 0;
+                entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
                 meleeAttack();
 
             }
