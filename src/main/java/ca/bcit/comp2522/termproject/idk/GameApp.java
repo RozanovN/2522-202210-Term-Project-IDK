@@ -40,7 +40,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
  * @author Nikolay Rozanov
  * @version 2022
  */
-public class GameApp extends GameApplication{
+public class GameApp extends GameApplication {
         /**
      * Represents the native width of the screen for the game.
      */
@@ -54,7 +54,7 @@ public class GameApp extends GameApplication{
     /**
      * Constructs the Game Application.
      */
-    public GameApp() {}
+    public GameApp() { }
 
 
     /**
@@ -162,6 +162,7 @@ public class GameApp extends GameApplication{
                     physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
                     new HealthIntComponent(100), new AttackComponent(15)
                 )
+                .zIndex(2)
                 .buildAndAttach();
     }
 
@@ -221,10 +222,10 @@ public class GameApp extends GameApplication{
      */
     @Override
     protected void initGame() {
+        player = createPlayer();
         getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
-        player = createPlayer();
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, -4550, 11550, 1915);
