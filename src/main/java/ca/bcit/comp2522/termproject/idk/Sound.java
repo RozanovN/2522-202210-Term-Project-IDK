@@ -7,7 +7,6 @@ import java.nio.file.Paths;
  * Play in game sounds.
  *
  * @author Prince Chabveka
- * @author Nikolay Rozanov
  * @version 2022
  */
 public class Sound {
