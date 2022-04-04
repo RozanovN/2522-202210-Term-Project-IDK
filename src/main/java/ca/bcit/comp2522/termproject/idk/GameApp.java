@@ -308,7 +308,7 @@ public class GameApp extends GameApplication {
      */
     @Override
     protected void initUI() {
-
+boolean userExists = false;
         //primaryStage.getIcons().add(new Image("file:user-icon.png"));
         BorderPane layout = new BorderPane();
 //        Scene newscene = new Scene(layout, 1200, 700, Color.rgb(0, 0, 0, 0));
@@ -398,7 +398,7 @@ public class GameApp extends GameApplication {
             try {
                 ResultSet rs = stmt.executeQuery("SELECT * FROM adventuregamers");
                 System.out.println("user_id\t\tpassword");
-                while (rs.next()) {
+                while (rs.next() && !userExists) {
                     String userID = rs.getString("userID");
                     String gamerName = rs.getString("UserName");
                     String gamerPassword = rs.getString("UserPassword");
@@ -408,6 +408,14 @@ public class GameApp extends GameApplication {
                         getNotificationService().pushNotification("Hello " + user);
                         String audioFile = "src/main/resources/assets/Sounds/notification.mp3";
                         Sound.playSound(audioFile, false);
+                        vbox.getChildren().remove(btn);
+                        vbox.getChildren().remove(label);
+                        vbox.getChildren().remove(username);
+                        vbox.getChildren().remove(password);
+                        root.getChildren().remove(background);
+                        root.getChildren().remove(vbox);
+
+
                     }
                     System.out.println(userID + "\t\t" + gamerPassword + "\t\t" + gamerName);
                 }
@@ -419,7 +427,6 @@ public class GameApp extends GameApplication {
 
         vbox.getChildren().addAll(label, username, password, btn);
         root.getChildren().addAll(background, vbox);
-
 
         FXGL.addUINode(vbox);
         FXGL.addUINode(root);
