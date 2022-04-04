@@ -1,39 +1,37 @@
+package ca.bcit.comp2522.termproject.idk;
 
+import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
+import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
+import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
+import com.almasb.fxgl.app.MenuItem;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.achievement.Achievement;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.Viewport;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
+import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.input.virtual.VirtualButton;
+import com.almasb.fxgl.physics.*;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.ui.Position;
+import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
+import java.util.Arrays;
+import java.util.EnumSet;
 
-        package ca.bcit.comp2522.termproject.idk;
-
-        import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
-        import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
-        import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
-        import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
-        import com.almasb.fxgl.app.MenuItem;
-        import com.almasb.fxgl.app.scene.FXGLMenu;
-        import com.almasb.fxgl.app.scene.SceneFactory;
-        import com.almasb.fxgl.achievement.Achievement;
-        import com.almasb.fxgl.app.GameApplication;
-        import com.almasb.fxgl.app.GameSettings;
-        import com.almasb.fxgl.app.scene.Viewport;
-        import com.almasb.fxgl.dsl.FXGL;
-        import com.almasb.fxgl.dsl.components.HealthIntComponent;
-        import com.almasb.fxgl.entity.Entity;
-        import com.almasb.fxgl.entity.components.CollidableComponent;
-        import com.almasb.fxgl.entity.components.IrremovableComponent;
-        import com.almasb.fxgl.input.UserAction;
-        import com.almasb.fxgl.input.virtual.VirtualButton;
-        import com.almasb.fxgl.physics.*;
-        import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-        import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-        import com.almasb.fxgl.ui.Position;
-        import javafx.geometry.Point2D;
-        import javafx.scene.Cursor;
-        import javafx.scene.input.KeyCode;
-        import javafx.scene.input.MouseButton;
-        import javafx.scene.paint.Color;
-        import java.util.Arrays;
-        import java.util.EnumSet;
-
-        import static com.almasb.fxgl.dsl.FXGL.*;
-        import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
+import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
 
 /**
  * Drives the game.
@@ -42,8 +40,8 @@
  * @author Nikolay Rozanov
  * @version 2022
  */
-public class GameApp extends GameApplication{
-    /**
+public class GameApp extends GameApplication {
+        /**
      * Represents the native width of the screen for the game.
      */
     public final static int SCREEN_WIDTH = 1280;
@@ -56,7 +54,7 @@ public class GameApp extends GameApplication{
     /**
      * Constructs the Game Application.
      */
-    public GameApp() {}
+    public GameApp() { }
 
 
     /**
@@ -161,9 +159,10 @@ public class GameApp extends GameApplication{
                 .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
                 .at(25, 1)
                 .with(
-                        physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
-                        new HealthIntComponent(100), new AttackComponent(15)
+                    physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
+                    new HealthIntComponent(100), new AttackComponent(15)
                 )
+                .zIndex(2)
                 .buildAndAttach();
     }
 
@@ -223,10 +222,10 @@ public class GameApp extends GameApplication{
      */
     @Override
     protected void initGame() {
+        player = createPlayer();
         getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
-        player = createPlayer();
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, -4550, 11550, 1915);

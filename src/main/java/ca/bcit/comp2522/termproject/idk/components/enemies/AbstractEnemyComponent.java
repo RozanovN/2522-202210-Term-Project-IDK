@@ -8,6 +8,7 @@ import com.almasb.fxgl.entity.state.EntityState;
 import com.almasb.fxgl.entity.state.StateComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.time.LocalTimer;
 
 /**
  * Represents the component shared by all enemies.
@@ -18,12 +19,13 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 public abstract class AbstractEnemyComponent extends Component {
     protected AnimatedTexture animatedTexture;
     protected boolean canAttack;
-    private final int attackSpeed;
+    protected final LocalTimer attackTimer;
+    protected final int attackSpeed;
     private final int defaultMoveSpeed;
     private int moveSpeed;
-    private final Entity player;
-    private final StateComponent state;
-    private final double defaultX;
+    protected Entity player;
+    protected StateComponent state;
+    private double defaultX;
 
     /**
      * Constructs AbstractEnemyComponent.
@@ -32,11 +34,10 @@ public abstract class AbstractEnemyComponent extends Component {
      * @param moveSpeed an int representing the enemy's move speed
      */
     public AbstractEnemyComponent(final int attackSpeed, final int moveSpeed) {
+        this.attackTimer = FXGL.newLocalTimer();
         this.attackSpeed = attackSpeed;
         this.defaultMoveSpeed = moveSpeed;
         this.player = FXGL.getGameWorld().getEntitiesByType(EntityType.PLAYER).get(0);
-        this.state = entity.getComponent(StateComponent.class);
-        this.defaultX = entity.getX();
     }
 
     public int getAttackSpeed() {
@@ -51,13 +52,9 @@ public abstract class AbstractEnemyComponent extends Component {
         this.moveSpeed = moveSpeed;
     }
 
-    @Override
-    public void onAdded() {
-        state.changeState(patrol);
-    }
 
     @Override
-    public void onUpdate(final double tpf) {
+    public void onUpdate(double tpf) {
 
     }
 
@@ -69,42 +66,46 @@ public abstract class AbstractEnemyComponent extends Component {
         }
 
         @Override
-        public void onEnteredFrom(final EntityState previousState) {
-            if (previousState == attack) {
-                moveSpeed = -defaultMoveSpeed;
-            }
-        }
-
-        @Override
         protected void onUpdate(final double tpf) {
-            if (entity.getX() - defaultX < -50) {
+            if (entity.getX() - defaultX < -150) {
                 entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
                 entity.setScaleX(1);
 
-            } else if (entity.getX() - defaultX > 50) {
-                entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
+            } else if (entity.getX() - defaultX > 150) {
+                entity.getComponent(PhysicsComponent.class).setVelocityX(-moveSpeed);
                 getEntity().setScaleX(-1);
             }
         }
 
     };
 
-    private final EntityState attack = new EntityState("attack") {
+    protected final EntityState attack = new EntityState("attack") {
         @Override
         public void onEntering() {
-            moveSpeed = 0;
+            System.out.println("enter attack stage");
         }
 
         @Override
         protected void onUpdate(final double tpf) {
 
-            if (entity.distance(player) > 20) {
-                moveSpeed = defaultMoveSpeed;
+            System.out.println(entity.distance(player));
+            if (entity.distance(player) > 100) {
+                if (entity.getX() - player.getX() < 0) {
+                    getEntity().setScaleX(1);
+                    moveSpeed = defaultMoveSpeed;
+                } else {
+                    getEntity().setScaleX(-1);
+                    moveSpeed = -defaultMoveSpeed;
+                }
                 entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
-                getEntity().setScaleX(-1);
             } else {
+                System.out.println("attacking");
+                moveSpeed = 0;
+                entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
                 meleeAttack();
+
             }
+
         }
     };
 
