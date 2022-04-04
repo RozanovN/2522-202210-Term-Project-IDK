@@ -28,13 +28,26 @@
         import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
         import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
         import com.almasb.fxgl.ui.Position;
+        import javafx.geometry.Insets;
         import javafx.geometry.Point2D;
         import javafx.scene.Cursor;
+        import javafx.scene.Group;
+        import javafx.scene.control.Button;
+        import javafx.scene.control.Label;
+        import javafx.scene.control.PasswordField;
+        import javafx.scene.control.TextField;
         import javafx.scene.input.KeyCode;
         import javafx.scene.input.MouseButton;
+        import javafx.scene.layout.BorderPane;
+        import javafx.scene.layout.VBox;
         import javafx.scene.paint.Color;
+        import javafx.scene.shape.Rectangle;
+        import javafx.scene.text.Font;
+
+        import java.sql.*;
         import java.util.Arrays;
         import java.util.EnumSet;
+        import java.util.Properties;
 
         import static com.almasb.fxgl.dsl.FXGL.*;
         import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
