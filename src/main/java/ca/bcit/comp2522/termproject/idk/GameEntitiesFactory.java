@@ -1,8 +1,8 @@
 package ca.bcit.comp2522.termproject.idk;
 
-import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
-import ca.bcit.comp2522.termproject.idk.component.enemies.EnemyInfo;
-import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
+import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.components.enemies.EnemyInfo;
+import ca.bcit.comp2522.termproject.idk.components.enemies.WizardComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
@@ -11,12 +11,12 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.state.StateComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-import com.almasb.fxgl.ui.Position;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
@@ -151,7 +151,7 @@ public class GameEntitiesFactory implements EntityFactory {
         System.out.println("built a box at" + data.getX() + " and " + data.getY());
         Point2D position = new Point2D(data.getX(), data.getY());
         EntityType type;
-        if ((Enum<?>) getGameWorld().getEntitiesAt(position).get(0).getType() == EntityType.PLAYER) {
+        if (getGameWorld().getEntitiesAt(position).get(0).getType() == EntityType.PLAYER) {
             type = EntityType.PLAYER_ATTACK;
         } else {
             type = EntityType.ENEMY_ATTACK;
@@ -161,9 +161,13 @@ public class GameEntitiesFactory implements EntityFactory {
                 .type(type)
                 .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(40, 35)))
                 .at(data.getX(), data.getY())
-                .with(new CollidableComponent(true))
-                .with(new ExpireCleanComponent(Duration.seconds(2)))
-                .with(new AttackComponent(getGameWorld().getEntitiesAt(position).get(0).getComponent(AttackComponent.class).getDamage()))
+                .with(
+                    new CollidableComponent(true),
+                    new ExpireCleanComponent(Duration.seconds(2)),
+                    new AttackComponent(getGameWorld().getEntitiesAt(position).get(0)
+                            .getComponent(AttackComponent.class).getDamage()),
+                    new StateComponent()
+                )
                 .build();
 
     }

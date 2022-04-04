@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject.idk.component;
+package ca.bcit.comp2522.termproject.idk.components.utility;
 
 import com.almasb.fxgl.entity.component.Component;
 

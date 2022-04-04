@@ -966,6 +966,5 @@
   <object id="295" type="Wall" x="2264.58" y="280.875" width="7.33333" height="37.25"/>
   <object id="296" type="Wall" x="2232.58" y="314.625" width="7.33333" height="37.25"/>
   <object id="297" type="Wall" x="2200.83" y="347.625" width="7.33333" height="37.25"/>
-  <object id="298" type="FireWizard" x="301.5" y="733" width="32" height="51"/>
  </objectgroup>
 </map>

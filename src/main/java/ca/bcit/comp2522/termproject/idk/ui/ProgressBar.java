@@ -1,7 +1,6 @@
-package ca.bcit.comp2522.termproject.idk;
+package ca.bcit.comp2522.termproject.idk.ui;
 
 
-import ca.bcit.comp2522.termproject.idk.ui.Position;
 import com.almasb.fxgl.logging.Logger;
 import javafx.animation.*;
 import javafx.beans.binding.DoubleBinding;
