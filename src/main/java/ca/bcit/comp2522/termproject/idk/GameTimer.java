@@ -10,7 +10,6 @@ import javafx.util.Duration;
  * Drives the game.
  *
  * @author Prince Chabveka
- * @author Nikolay Rozanov
  * @version 2022
  */
 public class GameTimer {
