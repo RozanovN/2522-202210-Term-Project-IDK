@@ -1,11 +1,11 @@
 
 
         package ca.bcit.comp2522.termproject.idk;
-
-        import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
-        import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
-        import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
-        import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
+//
+//        import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
+//        import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
+//        import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
+//        import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
         import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
         import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
         import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
@@ -272,13 +272,10 @@ public class GameApp extends GameApplication {
         // Node to add the bar
         addUINode(hpBar);
 
-//        Game timer, for now,
-//        GameTimer gameTime = new GameTimer();
-//        gameTime.initGameTimer();
-
         // Notifications, press F for demo
         Notifications notify = new Notifications();
         notify.notification();
+
 
         Sound gameSound = new Sound();
         final String inGameSound = "src/main/resources/assets/Sounds/epic_battle_music_1-6275.mp3";
@@ -313,7 +310,6 @@ public class GameApp extends GameApplication {
      */
     @Override
     protected void initUI() {
-
 
         //primaryStage.getIcons().add(new Image("file:user-icon.png"));
         BorderPane layout = new BorderPane();
@@ -411,12 +407,13 @@ public class GameApp extends GameApplication {
 
             // Execute the statement and receive the result...
             try {
-                ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+                ResultSet rs = stmt.executeQuery("SELECT * FROM adventuregamers");
                 System.out.println("user_id\t\tpassword");
                 while (rs.next()) {
-                    String userID = rs.getString("user_id");
-                    String gamerPassword = rs.getString("password");
-                    System.out.println(userID + "\t\t" + gamerPassword);
+                    String userID = rs.getString("userID");
+                    String gamerName = rs.getString("UserName");
+                    String gamerPassword = rs.getString("UserPassword");
+                    System.out.println(userID + "\t\t" + gamerPassword + "\t\t" + gamerName);
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
