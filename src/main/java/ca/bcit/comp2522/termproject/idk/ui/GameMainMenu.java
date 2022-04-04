@@ -34,6 +34,14 @@ import java.util.ArrayList;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.input.KeyCode.*;
 
+
+/**
+ * Represents the class for the factory of tiles.
+ *
+ * @author Nikolay Rozanov
+ * @author Prince Chabveka
+ * @version 2022
+ */
 public class GameMainMenu extends FXGLMenu {
     private final VBox scoresRoot = new VBox(10);
     private Node highScores;
