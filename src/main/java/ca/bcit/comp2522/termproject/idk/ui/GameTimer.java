@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject.idk;
+package ca.bcit.comp2522.termproject.idk.ui;
 
 
 import com.almasb.fxgl.dsl.FXGL;

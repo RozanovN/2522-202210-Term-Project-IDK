@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject.idk;
+package ca.bcit.comp2522.termproject.idk.entities;
 
 import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
 import ca.bcit.comp2522.termproject.idk.components.enemies.EnemyInfo;
@@ -23,7 +23,7 @@ import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 /**
- * Represents the class for the factory of tiles.
+ * Represents the class for the factory of entities.
  *
  * @author Nikolay Rozanov
  * @version 2022
@@ -121,7 +121,7 @@ public class GameEntitiesFactory implements EntityFactory {
      * @return Entity representing the Fire Wizard
      */
     @Spawns("FireWizard")
-    public Entity newFireWizard(SpawnData data) {
+    public Entity newFireWizard(final SpawnData data) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
         physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
@@ -147,7 +147,7 @@ public class GameEntitiesFactory implements EntityFactory {
      * @return Entity representing an attack
      */
     @Spawns("Attack")
-    public Entity newAttack(SpawnData data) {
+    public Entity newAttack(final SpawnData data) {
         System.out.println("built a box at" + data.getX() + " and " + data.getY());
         Point2D position = new Point2D(data.getX(), data.getY());
         EntityType type;
@@ -170,6 +170,5 @@ public class GameEntitiesFactory implements EntityFactory {
                     new StateComponent()
                 )
                 .build();
-
     }
 }

@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject.idk;
+package ca.bcit.comp2522.termproject.idk.sound;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.Media;
 import java.nio.file.Paths;

@@ -12,7 +12,7 @@ public final class EnemyInfo {
      */
     public static final int ALL_ENEMIES_ATTACK_SPEED = 1;
     /**
-     * Constants for both FireWizards and DarkWizards
+     * Constants for both FireWizards and DarkWizards.
      */
     public static final int WIZARD_DAMAGE = 15;
     public static final int WIZARD_MOVE_SPEED = 50;

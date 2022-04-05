@@ -1,6 +1,6 @@
 package ca.bcit.comp2522.termproject.idk.components.enemies;
 
-import ca.bcit.comp2522.termproject.idk.EntityType;
+import ca.bcit.comp2522.termproject.idk.entities.EntityType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
@@ -88,7 +88,7 @@ public abstract class AbstractEnemyComponent extends Component {
         @Override
         protected void onUpdate(final double tpf) {
 
-            System.out.println(entity.distance(player));
+            //System.out.println(entity.distance(player));
             if (entity.distance(player) > 100) {
                 if (entity.getX() - player.getX() < 0) {
                     getEntity().setScaleX(1);
@@ -99,7 +99,7 @@ public abstract class AbstractEnemyComponent extends Component {
                 }
                 entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
             } else {
-                System.out.println("attacking");
+                //System.out.println("attacking");
                 moveSpeed = 0;
                 entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
                 meleeAttack();

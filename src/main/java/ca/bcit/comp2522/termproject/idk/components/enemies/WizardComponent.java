@@ -1,6 +1,6 @@
 package ca.bcit.comp2522.termproject.idk.components.enemies;
 
-import ca.bcit.comp2522.termproject.idk.EntityType;
+import ca.bcit.comp2522.termproject.idk.entities.EntityType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.state.StateComponent;

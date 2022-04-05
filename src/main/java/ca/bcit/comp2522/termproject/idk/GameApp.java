@@ -1,56 +1,42 @@
+    package ca.bcit.comp2522.termproject.idk;
 
+    import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
+    import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+    import ca.bcit.comp2522.termproject.idk.entities.EntityType;
+    import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
+    import ca.bcit.comp2522.termproject.idk.sound.Sound;
+    import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
+    import ca.bcit.comp2522.termproject.idk.ui.Notifications;
+    import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
+    import com.almasb.fxgl.app.MenuItem;
+    import com.almasb.fxgl.app.scene.FXGLMenu;
+    import com.almasb.fxgl.app.scene.SceneFactory;
+    import com.almasb.fxgl.achievement.Achievement;
+    import com.almasb.fxgl.app.GameApplication;
+    import com.almasb.fxgl.app.GameSettings;
+    import com.almasb.fxgl.app.scene.Viewport;
+    import com.almasb.fxgl.dsl.FXGL;
+    import com.almasb.fxgl.dsl.components.HealthIntComponent;
+    import com.almasb.fxgl.entity.Entity;
+    import com.almasb.fxgl.entity.components.CollidableComponent;
+    import com.almasb.fxgl.entity.components.IrremovableComponent;
+    import com.almasb.fxgl.input.UserAction;
+    import com.almasb.fxgl.input.virtual.VirtualButton;
+    import com.almasb.fxgl.physics.*;
+    import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+    import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+    import com.almasb.fxgl.ui.Position;
+    import javafx.geometry.Point2D;
+    import javafx.scene.Cursor;
+    import javafx.scene.input.KeyCode;
+    import javafx.scene.input.MouseButton;
+    import javafx.scene.paint.Color;
 
-        package ca.bcit.comp2522.termproject.idk;
-//
-//        import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
-//        import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
-//        import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
-//        import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
-        import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
-        import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
-        import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
-        import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
-        import com.almasb.fxgl.app.MenuItem;
-        import com.almasb.fxgl.app.scene.FXGLMenu;
-        import com.almasb.fxgl.app.scene.SceneFactory;
-        import com.almasb.fxgl.achievement.Achievement;
-        import com.almasb.fxgl.app.GameApplication;
-        import com.almasb.fxgl.app.GameSettings;
-        import com.almasb.fxgl.app.scene.Viewport;
-        import com.almasb.fxgl.dsl.FXGL;
-        import com.almasb.fxgl.dsl.components.HealthIntComponent;
-        import com.almasb.fxgl.entity.Entity;
-        import com.almasb.fxgl.entity.components.CollidableComponent;
-        import com.almasb.fxgl.entity.components.IrremovableComponent;
-        import com.almasb.fxgl.input.UserAction;
-        import com.almasb.fxgl.input.virtual.VirtualButton;
-        import com.almasb.fxgl.physics.*;
-        import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-        import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-        import com.almasb.fxgl.ui.Position;
-        import javafx.geometry.Insets;
-        import javafx.geometry.Point2D;
-        import javafx.scene.Cursor;
-        import javafx.scene.Group;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.PasswordField;
-        import javafx.scene.control.TextField;
-        import javafx.scene.input.KeyCode;
-        import javafx.scene.input.MouseButton;
-        import javafx.scene.layout.BorderPane;
-        import javafx.scene.layout.VBox;
-        import javafx.scene.paint.Color;
-        import javafx.scene.shape.Rectangle;
-        import javafx.scene.text.Font;
+    import java.util.Arrays;
+    import java.util.EnumSet;
 
-        import java.sql.*;
-        import java.util.Arrays;
-        import java.util.EnumSet;
-        import java.util.Properties;
-
-        import static com.almasb.fxgl.dsl.FXGL.*;
-        import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
+    import static com.almasb.fxgl.dsl.FXGL.*;
+    import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
 
 /**
  * Drives the game.
@@ -59,20 +45,15 @@
  * @author Nikolay Rozanov
  * @version 2022
  */
-
-public class GameApp extends GameApplication{
-    /**
-=======
 public class GameApp extends GameApplication {
-        /**
->>>>>>> origin/master
+    /**
      * Represents the native width of the screen for the game.
      */
-    public final static int SCREEN_WIDTH = 1280;
+    public static final int SCREEN_WIDTH = 1280;
     /**
      * Represents the native height of the screen for the game.
      */
-    public final static int SCREEN_HEIGHT = 720;
+    public static final int SCREEN_HEIGHT = 720;
     private Entity player;
 
     /**
@@ -87,18 +68,19 @@ public class GameApp extends GameApplication {
      * @param gameSettings a GameSettings Object to configure
      */
     @Override
-    protected void initSettings(GameSettings gameSettings) {
+    protected void initSettings(final GameSettings gameSettings) {
         gameSettings.setWidth(SCREEN_WIDTH);
         gameSettings.setHeight(SCREEN_HEIGHT);
 
         // game menu
-        gameSettings.setDeveloperMenuEnabled(true);
+        gameSettings.setDeveloperMenuEnabled(true); // only for testing purposes; set to false for player experience
         gameSettings.setTitle("Castle adventure");
         gameSettings.setMainMenuEnabled(true);
         gameSettings.setGameMenuEnabled(true);
         gameSettings.setFullScreenAllowed(true);
         gameSettings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
 
+        // custom main menu
         gameSettings.setSceneFactory(new SceneFactory() {
 
             @Override
@@ -250,19 +232,20 @@ public class GameApp extends GameApplication {
         getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
+
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(0, -4550, 11550, 1915);
+        viewport.setBounds(0, 0, 9567, 1915);
         viewport.setZoom(2);
         viewport.bindToEntity(player, 500, 250);
         viewport.setLazy(false);
 
-        // Game menu bar, with score.
+        // Health bar
         ProgressBar hpBar = new ProgressBar();
         hpBar.setMaxValue(100);
         hpBar.setMinValue(0);
 
-        // will need to modify current value based on
+        // will need to modify current value based on character's health
         hpBar.setCurrentValue(40);
         hpBar.setWidth(300);
         hpBar.setLabelVisible(true);

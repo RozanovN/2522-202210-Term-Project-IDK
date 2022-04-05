@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject.idk;
+package ca.bcit.comp2522.termproject.idk.entities;
 
 /**
  * Represent different Entity types.

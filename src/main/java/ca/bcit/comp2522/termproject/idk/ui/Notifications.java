@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject.idk;
+package ca.bcit.comp2522.termproject.idk.ui;
 
 import javafx.scene.input.KeyCode;
 
@@ -18,7 +18,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
     /**
          * Greet user with notification
          */
-        protected void notification() {
+    public void notification() {
             onKeyDown(KeyCode.N, "Notify", () -> getNotificationService().pushNotification("Hello Prince")
             );
         }
