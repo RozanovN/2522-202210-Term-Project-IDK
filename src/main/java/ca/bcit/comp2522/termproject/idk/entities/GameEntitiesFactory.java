@@ -131,7 +131,7 @@ public class GameEntitiesFactory implements EntityFactory {
         return FXGL
                 .entityBuilder()
                 .type(EntityType.ENEMY)
-                .bbox(new HitBox(new Point2D(50,50), BoundingShape.box(35, 50)))
+                .bbox(new HitBox(new Point2D(50,50), BoundingShape.box(35, 45)))
                 .at(25, 1)
                 .with(
                     physicsComponent, new CollidableComponent(true), new StateComponent(), new WizardComponent(),
@@ -173,7 +173,7 @@ public class GameEntitiesFactory implements EntityFactory {
                         attackComponent.getHeight())))
                 .with(
                     new CollidableComponent(true),
-//                    new ExpireCleanComponent(Duration.seconds(2)),
+                    new ExpireCleanComponent(Duration.seconds(2)),
                     attackComponent,
                     new StateComponent()
                 )

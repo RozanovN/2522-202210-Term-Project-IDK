@@ -68,11 +68,11 @@ public abstract class AbstractEnemyComponent extends Component {
 
         @Override
         protected void onUpdate(final double tpf) {
-            if (entity.getX() - defaultX < -150) {
+            if (entity.getX() - defaultX < -50) {
                 entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
                 entity.setScaleX(1);
 
-            } else if (entity.getX() - defaultX > 150) {
+            } else if (entity.getX() - defaultX > 50) {
                 entity.getComponent(PhysicsComponent.class).setVelocityX(-moveSpeed);
                 getEntity().setScaleX(-1);
             }
