@@ -27,6 +27,7 @@ public abstract class AbstractEnemyComponent extends Component {
     protected StateComponent state;
     private double defaultX;
     protected boolean isIdle;
+    protected int attackRange;
 
     /**
      * Constructs AbstractEnemyComponent.
@@ -90,7 +91,7 @@ public abstract class AbstractEnemyComponent extends Component {
         protected void onUpdate(final double tpf) {
 
             //System.out.println(entity.distance(player));
-            if (entity.distance(player) > 100) {
+            if (entity.distance(player) > getAttackRange()) {
                 if (entity.getX() - player.getX() < 0) {
                     getEntity().setScaleX(1);
                     moveSpeed = defaultMoveSpeed;
@@ -103,12 +104,22 @@ public abstract class AbstractEnemyComponent extends Component {
                 //System.out.println("attacking");
                 moveSpeed = 0;
                 entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
-                meleeAttack();
+                defaultAttack();
 
             }
 
         }
     };
 
-    public abstract void meleeAttack();
+    /**
+     * Performs a default attack.
+     */
+    public abstract void defaultAttack();
+
+    /**
+     * Returns attack range.
+     *
+     * @return an int representing attack range
+     */
+    public abstract int getAttackRange();
 }
