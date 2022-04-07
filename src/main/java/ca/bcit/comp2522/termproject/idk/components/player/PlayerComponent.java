@@ -22,10 +22,10 @@ import static com.almasb.fxgl.dsl.FXGL.*;
  */
 public class PlayerComponent extends Component {
     private PhysicsComponent physicsComponent;
-    final private AnimationChannel idleAnimation;
-    final private AnimationChannel walkingAnimation;
-    final private AnimationChannel frontDefaultAttackingAnimation;
-    final private AnimatedTexture animatedTexture;
+    private final AnimationChannel idleAnimation;
+    private final AnimationChannel walkingAnimation;
+    private final AnimationChannel frontDefaultAttackingAnimation;
+    private final AnimatedTexture animatedTexture;
     private int moveSpeed;
     private double attackSpeed;
     private int numberOfJumps;

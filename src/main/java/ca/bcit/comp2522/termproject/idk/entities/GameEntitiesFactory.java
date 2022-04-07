@@ -131,11 +131,13 @@ public class GameEntitiesFactory implements EntityFactory {
         return FXGL
                 .entityBuilder()
                 .type(EntityType.ENEMY)
-                .bbox(new HitBox(new Point2D(55,50), BoundingShape.box(35, 50)))
+                .bbox(new HitBox(new Point2D(50,50), BoundingShape.box(35, 50)))
                 .at(25, 1)
                 .with(
                     physicsComponent, new CollidableComponent(true), new StateComponent(), new WizardComponent(),
-                    new HealthIntComponent(EnemyInfo.WIZARD_MAX_HP), new AttackComponent(EnemyInfo.WIZARD_DAMAGE)
+                    new HealthIntComponent(EnemyInfo.WIZARD_MAX_HP),
+                    new AttackComponent(EnemyInfo.WIZARD_DAMAGE, EnemyInfo.WIZARD_ATTACK_WIDTH,
+                            EnemyInfo.WIZARD_ATTACK_HEIGHT)
                 )
                 .build();
     }
@@ -151,24 +153,34 @@ public class GameEntitiesFactory implements EntityFactory {
         System.out.println("built a box at" + data.getX() + " and " + data.getY());
         Point2D position = new Point2D(data.getX(), data.getY());
         EntityType type;
+        Entity caller = getGameWorld().getEntitiesAt(position).get(0);
+        AttackComponent attackComponent = caller.getComponent(AttackComponent.class);
+        Point2D spawnPoint = new Point2D(position.getX(), position.getY());
+
+        if (caller.getScaleX() == -1) {
+            spawnPoint.subtract(attackComponent.getWidth() * 2, attackComponent.getHeight());
+        } else {
+            spawnPoint.add(attackComponent.getWidth() * 8, attackComponent.getHeight());
+        }
+
+
         if (getGameWorld().getEntitiesAt(position).get(0).getType() == EntityType.PLAYER) {
             type = EntityType.PLAYER_ATTACK;
         } else {
             type = EntityType.ENEMY_ATTACK;
         }
-        return FXGL
+        Entity attack =  FXGL
                 .entityBuilder()
                 .type(type)
-                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(
-                        getGameWorld().getEntitiesAt(position).get(0).getWidth() * 2, 35)))
-                .at(data.getX(), data.getY())
+                .bbox(new HitBox(spawnPoint, BoundingShape.box(attackComponent.getWidth(),
+                        attackComponent.getHeight())))
                 .with(
                     new CollidableComponent(true),
-                    new ExpireCleanComponent(Duration.seconds(2)),
-                    new AttackComponent(getGameWorld().getEntitiesAt(position).get(0)
-                            .getComponent(AttackComponent.class).getDamage()),
+//                    new ExpireCleanComponent(Duration.seconds(2)),
+                    attackComponent,
                     new StateComponent()
                 )
                 .build();
+        return attack;
     }
 }

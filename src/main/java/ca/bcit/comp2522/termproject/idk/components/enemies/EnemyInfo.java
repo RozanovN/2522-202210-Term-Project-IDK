@@ -8,15 +8,29 @@ package ca.bcit.comp2522.termproject.idk.components.enemies;
  */
 public final class EnemyInfo {
     /**
-     * All enemies constants.
+     * All enemies attack speed.
      */
     public static final int ALL_ENEMIES_ATTACK_SPEED = 1;
     /**
-     * Constants for both FireWizards and DarkWizards.
+     * FireWizard and DarkWizard attack's damage.
      */
     public static final int WIZARD_DAMAGE = 15;
+    /**
+     * FireWizard and DarkWizard move speed.
+     */
     public static final int WIZARD_MOVE_SPEED = 50;
+    /**
+     * FireWizards and DarkWizards maximum HP.
+     */
     public static final int WIZARD_MAX_HP = 25;
+    /**
+     * FireWizards and DarkWizards attack's width.
+     */
+    public static final int WIZARD_ATTACK_WIDTH = 45;
+    /**
+     * FireWizards and DarkWizards attack's height.
+     */
+    public static final int WIZARD_ATTACK_HEIGHT = 45;
 
     private EnemyInfo() { }
 }

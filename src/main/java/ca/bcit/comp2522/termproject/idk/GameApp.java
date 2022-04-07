@@ -1,42 +1,42 @@
-    package ca.bcit.comp2522.termproject.idk;
+package ca.bcit.comp2522.termproject.idk;
 
-    import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
-    import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
-    import ca.bcit.comp2522.termproject.idk.entities.EntityType;
-    import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
-    import ca.bcit.comp2522.termproject.idk.sound.Sound;
-    import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
-    import ca.bcit.comp2522.termproject.idk.ui.Notifications;
-    import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
-    import com.almasb.fxgl.app.MenuItem;
-    import com.almasb.fxgl.app.scene.FXGLMenu;
-    import com.almasb.fxgl.app.scene.SceneFactory;
-    import com.almasb.fxgl.achievement.Achievement;
-    import com.almasb.fxgl.app.GameApplication;
-    import com.almasb.fxgl.app.GameSettings;
-    import com.almasb.fxgl.app.scene.Viewport;
-    import com.almasb.fxgl.dsl.FXGL;
-    import com.almasb.fxgl.dsl.components.HealthIntComponent;
-    import com.almasb.fxgl.entity.Entity;
-    import com.almasb.fxgl.entity.components.CollidableComponent;
-    import com.almasb.fxgl.entity.components.IrremovableComponent;
-    import com.almasb.fxgl.input.UserAction;
-    import com.almasb.fxgl.input.virtual.VirtualButton;
-    import com.almasb.fxgl.physics.*;
-    import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-    import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-    import com.almasb.fxgl.ui.Position;
-    import javafx.geometry.Point2D;
-    import javafx.scene.Cursor;
-    import javafx.scene.input.KeyCode;
-    import javafx.scene.input.MouseButton;
-    import javafx.scene.paint.Color;
+import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
+import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.entities.EntityType;
+import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
+import ca.bcit.comp2522.termproject.idk.sound.Sound;
+import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
+import ca.bcit.comp2522.termproject.idk.ui.Notifications;
+import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
+import com.almasb.fxgl.app.MenuItem;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.achievement.Achievement;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.Viewport;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
+import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.input.virtual.VirtualButton;
+import com.almasb.fxgl.physics.*;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.ui.Position;
+import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
 
-    import java.util.Arrays;
-    import java.util.EnumSet;
+import java.util.Arrays;
+import java.util.EnumSet;
 
-    import static com.almasb.fxgl.dsl.FXGL.*;
-    import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
+import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
 
 /**
  * Drives the game.
@@ -166,7 +166,7 @@ public class GameApp extends GameApplication {
                 .at(25, 1)
                 .with(
                         physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
-                        new HealthIntComponent(100), new AttackComponent(15)
+                        new HealthIntComponent(100), new AttackComponent(15, 38, 45)
                 )
                 .zIndex(2)
                 .buildAndAttach();
