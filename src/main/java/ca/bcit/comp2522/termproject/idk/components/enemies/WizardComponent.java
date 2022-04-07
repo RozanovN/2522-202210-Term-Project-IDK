@@ -43,6 +43,7 @@ public class WizardComponent extends AbstractEnemyComponent {
         animatedTexture = new AnimatedTexture(idleAnimation);
 
         animatedTexture.loop();
+        attackRange = 100;
     }
 
     /**
@@ -94,7 +95,7 @@ public class WizardComponent extends AbstractEnemyComponent {
     }
 
     @Override
-    public void meleeAttack() {
+    public void defaultAttack() {
         if (canAttack) {
             isIdle = false;
             System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
@@ -104,6 +105,11 @@ public class WizardComponent extends AbstractEnemyComponent {
             attackTimer.capture();
             canAttack = false;
         }
+    }
+
+    @Override
+    public int getAttackRange() {
+        return attackRange;
     }
 
 }
