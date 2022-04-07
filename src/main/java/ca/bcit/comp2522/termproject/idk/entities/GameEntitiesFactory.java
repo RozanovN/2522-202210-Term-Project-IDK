@@ -6,6 +6,7 @@ import ca.bcit.comp2522.termproject.idk.components.enemies.WizardComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -29,6 +30,11 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
  * @version 2022
  */
 public class GameEntitiesFactory implements EntityFactory {
+    /**
+     * Represents the movement speed of the projectile.
+     */
+    public static final int PROJECTILE_MOVE_SPEED = 50;
+
     /**
      * Builds a Platform Entity.
      *
@@ -167,18 +173,68 @@ public class GameEntitiesFactory implements EntityFactory {
             type = EntityType.ENEMY_ATTACK;
         }
         Entity attack =  FXGL
-                .entityBuilder(data)
-                .type(type)
-                .bbox(new HitBox(BoundingShape.box(attackComponent.getWidth(),
-                        attackComponent.getHeight())))
-                .with(
-                    new CollidableComponent(true),
-                    new ExpireCleanComponent(Duration.seconds(2)),
-                    attackComponent,
-                    new StateComponent()
-                )
-                .build();
+            .entityBuilder(data)
+            .type(type)
+            .bbox(new HitBox(BoundingShape.box(attackComponent.getWidth(),
+                    attackComponent.getHeight())))
+            .with(
+                new CollidableComponent(true),
+                new ExpireCleanComponent(Duration.seconds(2)),
+                attackComponent,
+                new StateComponent()
+            )
+            .build();
         attack.translate(spawnPoint);
         return attack;
+    }
+
+    /**
+     * Builds a Flying Eye entity.
+     *
+     * @param data unused
+     * @return Entity representing the Flying Eye entity
+     */
+    @Spawns("FlyingEye")
+    public Entity newFlyingEye(final SpawnData data) {
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+        physicsComponent.setBodyType(BodyType.DYNAMIC);
+        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
+                BoundingShape.box(6, 12)));
+        physicsComponent.setFixtureDef(new FixtureDef().friction(1f));
+
+        return FXGL
+                .entityBuilder()
+                .type(EntityType.ENEMY)
+                .bbox(new HitBox(new Point2D(50,50), BoundingShape.box(35, 45)))
+                .at(25, 1)
+                .with(
+                        physicsComponent, new CollidableComponent(true), new StateComponent(), new WizardComponent(),
+                        new HealthIntComponent(EnemyInfo.FLYING_EYE_MAX_HP)
+                )
+                .build();
+    }
+
+    /**
+     * Spawns a new eye projectile for 5 seconds.
+     *
+     * @param data a SpawnData that represents the position of the spawn point
+     * @return Entity representing an eye projectile
+     */
+    public Entity newEyeProjectile(final SpawnData data) {
+        ExpireCleanComponent expireCleanComponent = new ExpireCleanComponent(Duration.seconds(5));
+        expireCleanComponent.pause();
+
+        return FXGL
+            .entityBuilder(data)
+            .at(data.getX(), data.getY())
+            .type(EntityType.ENEMY_ATTACK)
+            .viewWithBBox("Monster_Creatures_Fantasy(Version 1.3)/Flying eye/eye-projectile.png") //crop later
+            .with(
+                new CollidableComponent(true),
+                new ProjectileComponent(data.get("direction"), PROJECTILE_MOVE_SPEED),
+                expireCleanComponent
+            )
+            .rotationOrigin(0, 6.5)
+            .build();
     }
 }
