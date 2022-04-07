@@ -47,7 +47,7 @@ import static javafx.scene.input.KeyCode.*;
 public class GameMainMenu extends FXGLMenu {
     private final VBox scoresRoot = new VBox(10);
     private Node highScores;
-    private boolean hasLoggedIn = false;
+    private boolean hasLoggedIn = true;
 
     public GameMainMenu() {
         super(MenuType.MAIN_MENU);
