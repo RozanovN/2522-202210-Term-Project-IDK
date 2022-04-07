@@ -155,14 +155,11 @@ public class GameEntitiesFactory implements EntityFactory {
         EntityType type;
         Entity caller = getGameWorld().getEntitiesAt(position).get(0);
         AttackComponent attackComponent = caller.getComponent(AttackComponent.class);
-        Point2D spawnPoint = new Point2D(position.getX(), position.getY());
+        Point2D spawnPoint = new Point2D(caller.getWidth() * 2, caller.getHeight());
 
         if (caller.getScaleX() == -1) {
-            spawnPoint.subtract(attackComponent.getWidth() * 2, attackComponent.getHeight());
-        } else {
-            spawnPoint.add(attackComponent.getWidth() * 8, attackComponent.getHeight());
+            spawnPoint = new Point2D(caller.getWidth() * -1, caller.getHeight());
         }
-
 
         if (getGameWorld().getEntitiesAt(position).get(0).getType() == EntityType.PLAYER) {
             type = EntityType.PLAYER_ATTACK;
@@ -170,9 +167,9 @@ public class GameEntitiesFactory implements EntityFactory {
             type = EntityType.ENEMY_ATTACK;
         }
         Entity attack =  FXGL
-                .entityBuilder()
+                .entityBuilder(data)
                 .type(type)
-                .bbox(new HitBox(spawnPoint, BoundingShape.box(attackComponent.getWidth(),
+                .bbox(new HitBox(BoundingShape.box(attackComponent.getWidth(),
                         attackComponent.getHeight())))
                 .with(
                     new CollidableComponent(true),
@@ -181,6 +178,7 @@ public class GameEntitiesFactory implements EntityFactory {
                     new StateComponent()
                 )
                 .build();
+        attack.translate(spawnPoint);
         return attack;
     }
 }

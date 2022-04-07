@@ -26,6 +26,7 @@ public abstract class AbstractEnemyComponent extends Component {
     protected Entity player;
     protected StateComponent state;
     private double defaultX;
+    protected boolean isIdle;
 
     /**
      * Constructs AbstractEnemyComponent.

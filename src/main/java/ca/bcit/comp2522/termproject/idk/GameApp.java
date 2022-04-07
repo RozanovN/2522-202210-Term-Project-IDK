@@ -166,7 +166,7 @@ public class GameApp extends GameApplication {
                 .at(25, 1)
                 .with(
                         physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
-                        new HealthIntComponent(100), new AttackComponent(15, 38, 45)
+                        new HealthIntComponent(100), new AttackComponent(15, 38, 100)
                 )
                 .zIndex(2)
                 .buildAndAttach();

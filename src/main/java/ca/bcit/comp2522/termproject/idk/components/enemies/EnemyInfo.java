@@ -10,7 +10,7 @@ public final class EnemyInfo {
     /**
      * All enemies attack speed.
      */
-    public static final int ALL_ENEMIES_ATTACK_SPEED = 1;
+    public static final int ALL_ENEMIES_ATTACK_SPEED = 4;
     /**
      * FireWizard and DarkWizard attack's damage.
      */
@@ -26,7 +26,7 @@ public final class EnemyInfo {
     /**
      * FireWizards and DarkWizards attack's width.
      */
-    public static final int WIZARD_ATTACK_WIDTH = 45;
+    public static final int WIZARD_ATTACK_WIDTH = 65;
     /**
      * FireWizards and DarkWizards attack's height.
      */

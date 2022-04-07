@@ -70,8 +70,9 @@ public class WizardComponent extends AbstractEnemyComponent {
     public void onUpdate(final double timePerFrame) {
         if (attackTimer.elapsed(Duration.seconds(attackSpeed))) {
             canAttack = true;
+        } else if (attackTimer.elapsed(Duration.seconds(1))) {
+            isIdle = true;
         }
-
 
         if (entity.distance(player) < 150) {
             state.changeState(attack);
@@ -85,7 +86,8 @@ public class WizardComponent extends AbstractEnemyComponent {
             }
 
         } else {
-            if (animatedTexture.getAnimationChannel() != idleAnimation && canAttack) {
+            if (animatedTexture.getAnimationChannel() != idleAnimation && isIdle) {
+                System.out.println("idle");
                 animatedTexture.loopAnimationChannel(idleAnimation);
             }
         }
@@ -94,6 +96,7 @@ public class WizardComponent extends AbstractEnemyComponent {
     @Override
     public void meleeAttack() {
         if (canAttack) {
+            isIdle = false;
             System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
             SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY());
             spawn("Attack", spawnData);
