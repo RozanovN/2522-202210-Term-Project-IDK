@@ -20,8 +20,10 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 /**
- * Progress bar, to show player's health.
+ * Represents the class for the factory of tiles.
  *
+ * @author Prince Chabveka
+ * @version 2022
  */
 public final class ProgressBar extends Parent {
 
