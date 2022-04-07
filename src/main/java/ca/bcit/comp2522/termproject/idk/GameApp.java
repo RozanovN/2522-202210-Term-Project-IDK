@@ -1,42 +1,66 @@
-package ca.bcit.comp2522.termproject.idk;
 
-import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
-import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
-import ca.bcit.comp2522.termproject.idk.entities.EntityType;
-import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
-import ca.bcit.comp2522.termproject.idk.sound.Sound;
-import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
-import ca.bcit.comp2522.termproject.idk.ui.Notifications;
-import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
-import com.almasb.fxgl.app.MenuItem;
-import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.achievement.Achievement;
-import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.app.scene.Viewport;
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.HealthIntComponent;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.entity.components.IrremovableComponent;
-import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.input.virtual.VirtualButton;
-import com.almasb.fxgl.physics.*;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-import com.almasb.fxgl.ui.Position;
-import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.paint.Color;
 
-import java.util.Arrays;
-import java.util.EnumSet;
+        package ca.bcit.comp2522.termproject.idk;
+//
+//        import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
+//        import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
+//        import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
+//        import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
+        import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
+        import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+        import ca.bcit.comp2522.termproject.idk.entities.EntityType;
+        import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
+        import ca.bcit.comp2522.termproject.idk.sound.Sound;
+        import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
+        import ca.bcit.comp2522.termproject.idk.ui.Notifications;
+        import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
+        import com.almasb.fxgl.app.MenuItem;
+        import com.almasb.fxgl.app.scene.FXGLMenu;
+        import com.almasb.fxgl.app.scene.SceneFactory;
+        import com.almasb.fxgl.achievement.Achievement;
+        import com.almasb.fxgl.app.GameApplication;
+        import com.almasb.fxgl.app.GameSettings;
+        import com.almasb.fxgl.app.scene.Viewport;
+        import com.almasb.fxgl.core.math.Vec2;
+        import com.almasb.fxgl.core.serialization.Bundle;
+        import com.almasb.fxgl.dsl.FXGL;
+        import com.almasb.fxgl.dsl.components.HealthIntComponent;
+        import com.almasb.fxgl.entity.Entity;
+        import com.almasb.fxgl.entity.components.CollidableComponent;
+        import com.almasb.fxgl.entity.components.IrremovableComponent;
+        import com.almasb.fxgl.input.UserAction;
+        import com.almasb.fxgl.input.virtual.VirtualButton;
+        import com.almasb.fxgl.physics.*;
+        import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+        import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+        import com.almasb.fxgl.profile.DataFile;
+        import com.almasb.fxgl.profile.SaveLoadHandler;
+        import com.almasb.fxgl.ui.Position;
+        import javafx.geometry.Insets;
+        import javafx.geometry.Point2D;
+        import javafx.scene.Cursor;
+        import javafx.scene.Group;
+        import javafx.scene.control.Button;
+        import javafx.scene.control.Label;
+        import javafx.scene.control.PasswordField;
+        import javafx.scene.control.TextField;
+        import javafx.scene.input.KeyCode;
+        import javafx.scene.input.MouseButton;
+        import javafx.scene.layout.BorderPane;
+        import javafx.scene.layout.VBox;
+        import javafx.scene.paint.Color;
+        import javafx.scene.shape.Rectangle;
+        import javafx.scene.text.Font;
+        import javafx.scene.text.Text;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
+        import java.sql.*;
+        import java.util.Arrays;
+        import java.util.EnumSet;
+        import java.util.Map;
+        import java.util.Properties;
+
+        import static com.almasb.fxgl.dsl.FXGL.*;
+        import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
 
 /**
  * Drives the game.
@@ -45,16 +69,23 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
  * @author Nikolay Rozanov
  * @version 2022
  */
-public class GameApp extends GameApplication {
+
+public class GameApp extends GameApplication{
     /**
+=======
+public class GameApp extends GameApplication {
+        /**
+>>>>>>> origin/master
      * Represents the native width of the screen for the game.
      */
-    public static final int SCREEN_WIDTH = 1280;
+    public final static int SCREEN_WIDTH = 1280;
     /**
      * Represents the native height of the screen for the game.
      */
-    public static final int SCREEN_HEIGHT = 720;
+    public final static int SCREEN_HEIGHT = 720;
     private Entity player;
+    private int hp;
+    private ProgressBar progressBar;
 
     /**
      * Constructs the Game Application.
@@ -68,19 +99,18 @@ public class GameApp extends GameApplication {
      * @param gameSettings a GameSettings Object to configure
      */
     @Override
-    protected void initSettings(final GameSettings gameSettings) {
+    protected void initSettings(GameSettings gameSettings) {
         gameSettings.setWidth(SCREEN_WIDTH);
         gameSettings.setHeight(SCREEN_HEIGHT);
 
         // game menu
-        gameSettings.setDeveloperMenuEnabled(true); // only for testing purposes; set to false for player experience
+        gameSettings.setDeveloperMenuEnabled(true);
         gameSettings.setTitle("Castle adventure");
         gameSettings.setMainMenuEnabled(true);
         gameSettings.setGameMenuEnabled(true);
         gameSettings.setFullScreenAllowed(true);
         gameSettings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
 
-        // custom main menu
         gameSettings.setSceneFactory(new SceneFactory() {
 
             @Override
@@ -166,7 +196,7 @@ public class GameApp extends GameApplication {
                 .at(25, 1)
                 .with(
                         physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
-                        new HealthIntComponent(100), new AttackComponent(15, 38, 100)
+                        new HealthIntComponent(100), new AttackComponent(15,15,15)
                 )
                 .zIndex(2)
                 .buildAndAttach();
@@ -188,9 +218,12 @@ public class GameApp extends GameApplication {
 
             @Override
             protected void onCollisionBegin(Entity attack, Entity player) {
+//                hp is being decremeneted
                 HealthIntComponent hp = player.getComponent(HealthIntComponent.class);
                 int damage = attack.getComponent(AttackComponent.class).getDamage();
                 hp.setValue(hp.getValue() - damage);
+                GameApp.this.hp = hp.getValue();
+                GameApp.this.progressBar.setCurrentValue(GameApp.this.hp);
 
                 System.out.println("Deal damage to player leaving " + hp.getValue());
                 if (hp.isZero()) {
@@ -232,28 +265,27 @@ public class GameApp extends GameApplication {
         getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
-
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(0, 0, 9567, 1915);
+        viewport.setBounds(0, -4550, 11550, 1915);
         viewport.setZoom(2);
         viewport.bindToEntity(player, 500, 250);
         viewport.setLazy(false);
 
-        // Health bar
-        ProgressBar hpBar = new ProgressBar();
-        hpBar.setMaxValue(100);
-        hpBar.setMinValue(0);
-
-        // will need to modify current value based on character's health
-        hpBar.setCurrentValue(40);
-        hpBar.setWidth(300);
-        hpBar.setLabelVisible(true);
-        hpBar.setLabelPosition(Position.LEFT);
-        hpBar.setFill(Color.GREEN);
-        hpBar.getInnerBar();
+//         Game menu bar, with score.
+        this.progressBar = new ProgressBar();
+        HealthIntComponent hp = player.getComponent(HealthIntComponent.class);
+        this.progressBar.setMaxValue(100);
+        this.progressBar.setMinValue(0);
+//
+//      current health is not being update, need a way to make hp global
+        this.progressBar.setWidth(300);
+        this.progressBar.setLabelVisible(true);
+        this.progressBar.setLabelPosition(Position.LEFT);
+        this.progressBar.setFill(Color.GREEN);
+        this.progressBar.getInnerBar();
         // Node to add the bar
-        addUINode(hpBar);
+        addUINode(this.progressBar);
 
         // Notifications, press F for demo
         Notifications notify = new Notifications();
@@ -262,8 +294,41 @@ public class GameApp extends GameApplication {
 
         final String inGameSound = "src/main/resources/assets/Sounds/epic_battle_music_1-6275.mp3";
         Sound.playSound(inGameSound, true);
+        getWorldProperties().<Vec2>addListener("vector", (prev, now) -> System.out.println(prev + " " + now));
+        set("vector", new Vec2(300, 300));
 
     }
+
+    /**
+     * UI for score, time etc, in implementation
+     */
+    @Override
+    protected void initUI() {
+
+        Text uiScore = getUIFactoryService().newText("", Color.RED, 20.0);
+        uiScore.textProperty().bind(getip("score").asString());
+        uiScore.translateXProperty().bind(getInput().mouseXUIProperty());
+        uiScore.translateYProperty().bind(getInput().mouseYUIProperty());
+
+        addUINode(uiScore);
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        inc("score", +1);
+    }
+
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("testDouble", -1.5);
+        vars.put("testBoolean", true);
+        vars.put("vector", new Vec2(1, 1));
+
+        vars.put("score", 0);
+        vars.put("lives", 3);
+    }
+
+
 
     /*
      * Returns the user to the main menu if player's hp gets 0 or lower.
