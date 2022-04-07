@@ -345,7 +345,7 @@ public final class ProgressBar extends Parent {
         return currentValue;
     }
 
-    public void setMaxValue(double value) {
+    public void setMaxValue(int value) {
         if (value <= minValue.get()) {
             log.warning("Max value <= min value. Setting min value to max value - 1");
             minValue.set(value - 1);
