@@ -31,6 +31,18 @@ public final class EnemyInfo {
      * FireWizards and DarkWizards attack's height.
      */
     public static final int WIZARD_ATTACK_HEIGHT = 45;
+    /**
+     * Motionless enemies' movement speed.
+     */
+    public static final int MOTIONLESS_MOVE_SPEED = 0;
+    /**
+     * Flying Eye's maximum HP.
+     */
+    public static final int FLYING_EYE_MAX_HP = 15;
+    /**
+     * Flying Eye's attack damage.
+     */
+    public static final int FLYING_EYE_DAMAGE = 30;
 
     private EnemyInfo() { }
 }
