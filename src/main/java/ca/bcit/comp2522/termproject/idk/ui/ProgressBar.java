@@ -20,8 +20,10 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 /**
- * Progress bar, to show player's health.
+ * Represents the class for the factory of tiles.
  *
+ * @author Prince Chabveka
+ * @version 2022
  */
 public final class ProgressBar extends Parent {
 
@@ -343,7 +345,7 @@ public final class ProgressBar extends Parent {
         return currentValue;
     }
 
-    public void setMaxValue(double value) {
+    public void setMaxValue(int value) {
         if (value <= minValue.get()) {
             log.warning("Max value <= min value. Setting min value to max value - 1");
             minValue.set(value - 1);
