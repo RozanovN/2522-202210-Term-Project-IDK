@@ -1,5 +1,6 @@
 package ca.bcit.comp2522.termproject.idk.entities;
 
+import ca.bcit.comp2522.termproject.idk.components.enemies.FlyingEyeComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
 import ca.bcit.comp2522.termproject.idk.components.enemies.EnemyInfo;
 import ca.bcit.comp2522.termproject.idk.components.enemies.WizardComponent;
@@ -33,7 +34,7 @@ public class GameEntitiesFactory implements EntityFactory {
     /**
      * Represents the movement speed of the projectile.
      */
-    public static final int PROJECTILE_MOVE_SPEED = 50;
+    public static final int PROJECTILE_MOVE_SPEED = 150;
 
     /**
      * Builds a Platform Entity.
@@ -172,6 +173,7 @@ public class GameEntitiesFactory implements EntityFactory {
         } else {
             type = EntityType.ENEMY_ATTACK;
         }
+
         Entity attack =  FXGL
             .entityBuilder(data)
             .type(type)
@@ -205,11 +207,12 @@ public class GameEntitiesFactory implements EntityFactory {
         return FXGL
                 .entityBuilder()
                 .type(EntityType.ENEMY)
-                .bbox(new HitBox(new Point2D(50,50), BoundingShape.box(35, 45)))
-                .at(25, 1)
+                // .viewWithBBox("Monster_Creatures_Fantasy(Version 1.3)/Flying eye/FlyingEye.png")
+                .bbox(new HitBox(new Point2D(65, 65), BoundingShape.box(35, 30)))
                 .with(
-                        physicsComponent, new CollidableComponent(true), new StateComponent(), new WizardComponent(),
-                        new HealthIntComponent(EnemyInfo.FLYING_EYE_MAX_HP)
+                        physicsComponent, new CollidableComponent(true), new StateComponent(), new FlyingEyeComponent(),
+                        new HealthIntComponent(EnemyInfo.FLYING_EYE_MAX_HP),
+                        new AttackComponent(EnemyInfo.FLYING_EYE_DAMAGE, 0, 0)
                 )
                 .build();
     }
@@ -220,19 +223,23 @@ public class GameEntitiesFactory implements EntityFactory {
      * @param data a SpawnData that represents the position of the spawn point
      * @return Entity representing an eye projectile
      */
+    @Spawns("EyeProjectile")
     public Entity newEyeProjectile(final SpawnData data) {
         ExpireCleanComponent expireCleanComponent = new ExpireCleanComponent(Duration.seconds(5));
         expireCleanComponent.pause();
+        AttackComponent attackComponent = getGameWorld().getEntitiesAt(new Point2D(data.getX(), data.getY())).get(0)
+                .getComponent(AttackComponent.class);
 
         return FXGL
             .entityBuilder(data)
-            .at(data.getX(), data.getY())
+            .at(data.getX() + 25, data.getY() + 75)
             .type(EntityType.ENEMY_ATTACK)
             .viewWithBBox("Monster_Creatures_Fantasy(Version 1.3)/Flying eye/eye-projectile.png") //crop later
             .with(
                 new CollidableComponent(true),
                 new ProjectileComponent(data.get("direction"), PROJECTILE_MOVE_SPEED),
-                expireCleanComponent
+                expireCleanComponent,
+                attackComponent
             )
             .rotationOrigin(0, 6.5)
             .build();

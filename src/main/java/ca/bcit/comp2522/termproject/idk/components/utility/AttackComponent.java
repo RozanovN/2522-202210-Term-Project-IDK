@@ -10,8 +10,8 @@ import com.almasb.fxgl.entity.component.Component;
  */
 public class AttackComponent extends Component {
     private int damage;
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     /**
      * Constructs an AttackComponent.
@@ -63,7 +63,7 @@ public class AttackComponent extends Component {
     }
 
     /**
-     * Multiples this AttackComponent's damage by the given percentage
+     * Multiples this AttackComponent's damage by the given percentage.
      *
      * @param percentage a double representing the percentage multiplier
      */
@@ -72,7 +72,7 @@ public class AttackComponent extends Component {
     }
 
     /**
-     * Changes this AttackComponent's damage by the given value
+     * Changes this AttackComponent's damage by the given value.
      *
      * @param value an int representing the value
      */

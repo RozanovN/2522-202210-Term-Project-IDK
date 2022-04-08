@@ -25,9 +25,10 @@ public abstract class AbstractEnemyComponent extends Component {
     private int moveSpeed;
     protected Entity player;
     protected StateComponent state;
-    private double defaultX;
+    protected double defaultX;
     protected boolean isIdle;
     protected int attackRange;
+    private char direction;
 
     /**
      * Constructs AbstractEnemyComponent.
@@ -40,6 +41,7 @@ public abstract class AbstractEnemyComponent extends Component {
         this.attackSpeed = attackSpeed;
         this.defaultMoveSpeed = moveSpeed;
         this.player = FXGL.getGameWorld().getEntitiesByType(EntityType.PLAYER).get(0);
+        direction = 'r';
     }
 
     public int getAttackSpeed() {
@@ -54,12 +56,6 @@ public abstract class AbstractEnemyComponent extends Component {
         this.moveSpeed = moveSpeed;
     }
 
-
-    @Override
-    public void onUpdate(double tpf) {
-
-    }
-
     protected final EntityState patrol = new EntityState("patrol") {
 
         @Override
@@ -69,13 +65,18 @@ public abstract class AbstractEnemyComponent extends Component {
 
         @Override
         protected void onUpdate(final double tpf) {
-            if (entity.getX() - defaultX < -50) {
+            if (direction == 'r') {
                 entity.getComponent(PhysicsComponent.class).setVelocityX(moveSpeed);
                 entity.setScaleX(1);
-
-            } else if (entity.getX() - defaultX > 50) {
+                if (entity.getX() >= (defaultX + 350)) {
+                    direction = 'l';
+                }
+            } else if (direction == 'l') {
                 entity.getComponent(PhysicsComponent.class).setVelocityX(-moveSpeed);
                 getEntity().setScaleX(-1);
+                if (entity.getX() <= (defaultX - 250)) {
+                    direction = 'r';
+                }
             }
         }
 

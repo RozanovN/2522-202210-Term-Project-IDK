@@ -31,9 +31,9 @@ public class FlyingEyeComponent extends AbstractEnemyComponent {
     public FlyingEyeComponent() {
         super(EnemyInfo.ALL_ENEMIES_ATTACK_SPEED, EnemyInfo.MOTIONLESS_MOVE_SPEED);
 
-        Image attackImage = image("Evil Wizard/Sprites/Attack.png");
-        rangeAttackAnimation = new AnimationChannel(attackImage, 8, 150, 150,
-                Duration.seconds(1), 0, 7);
+        Image attackImage = image("Monster_Creatures_Fantasy(Version 1.3)/Flying eye/Attack3.png");
+        rangeAttackAnimation = new AnimationChannel(attackImage, 6, 150, 150,
+                Duration.seconds(2), 0, 5);
         animatedTexture = new AnimatedTexture(rangeAttackAnimation);
         animatedTexture.loop();
         attackRange = 300;
@@ -64,10 +64,11 @@ public class FlyingEyeComponent extends AbstractEnemyComponent {
 
         if (player.getScaleX() == 1) {
             entity.setScaleX(-1);
-            direction = new Point2D(-(entity.getCenter().getX() - player.getX()), entity.getCenter().getY());
+            entity.translateX(70);
+            direction = new Point2D(-(entity.getCenter().getX() - player.getX()), 0);//entity.getCenter().getY()
         } else {
             entity.setScaleX(1);
-            direction = new Point2D(entity.getCenter().getX() - player.getX(), entity.getCenter().getY());
+            direction = new Point2D(entity.getCenter().getX() - player.getX(), 0);
         }
     }
 
@@ -76,7 +77,7 @@ public class FlyingEyeComponent extends AbstractEnemyComponent {
         if (canAttack) {
             System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
             SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY()).put("direction", direction);
-            spawn("newEyeProjectile", spawnData);
+            spawn("EyeProjectile", spawnData);
             attackTimer.capture();
             canAttack = false;
         }

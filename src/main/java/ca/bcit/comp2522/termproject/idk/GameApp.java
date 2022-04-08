@@ -195,8 +195,9 @@ public class GameApp extends GameApplication {
                 .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
                 .at(25, 1)
                 .with(
-                        physicsComponent, new CollidableComponent(true), new IrremovableComponent(), new PlayerComponent(),
-                        new HealthIntComponent(100), new AttackComponent(15,15,15)
+                        physicsComponent, new CollidableComponent(true), new IrremovableComponent(),
+                        new PlayerComponent(),
+                        new HealthIntComponent(100), new AttackComponent(15,50,45)
                 )
                 .zIndex(2)
                 .buildAndAttach();
@@ -226,6 +227,7 @@ public class GameApp extends GameApplication {
                 GameApp.this.progressBar.setCurrentValue(GameApp.this.hp);
 
                 System.out.println("Deal damage to player leaving " + hp.getValue());
+                attack.removeFromWorld();
                 if (hp.isZero()) {
                     gameOver();
                 }
@@ -246,6 +248,7 @@ public class GameApp extends GameApplication {
 
                 System.out.println("foe has " + hp.getValue() + "hp");
                 System.out.println("Deal damage" + damage);
+                attack.removeFromWorld();
                 if (hp.isZero()) {
                     foe.removeFromWorld();
                 }
@@ -268,7 +271,7 @@ public class GameApp extends GameApplication {
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, -4550, 11550, 1915);
-        viewport.setZoom(2);
+        viewport.setZoom(2.25);
         viewport.bindToEntity(player, 500, 250);
         viewport.setLazy(false);
 

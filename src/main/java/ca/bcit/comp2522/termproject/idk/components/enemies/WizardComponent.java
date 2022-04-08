@@ -57,9 +57,6 @@ public class WizardComponent extends AbstractEnemyComponent {
 
         state = entity.getComponent(StateComponent.class);
         player = FXGL.getGameWorld().getEntitiesByType(EntityType.PLAYER).get(0);
-
-        state.changeState(patrol);
-
     }
 
     /**
@@ -77,7 +74,8 @@ public class WizardComponent extends AbstractEnemyComponent {
 
         if (entity.distance(player) < 150) {
             state.changeState(attack);
-        } else {
+        } else if (state.getCurrentState() != patrol) {
+            defaultX = entity.getX();
             state.changeState(patrol);
         }
 
