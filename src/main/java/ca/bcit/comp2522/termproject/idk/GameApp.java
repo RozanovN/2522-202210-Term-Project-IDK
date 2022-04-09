@@ -1,6 +1,7 @@
 package ca.bcit.comp2522.termproject.idk;
 
-import ca.bcit.comp2522.termproject.idk.components.enemies.BossComponent;
+//import ca.bcit.comp2522.termproject.idk.components.enemies.BossComponent;
+
 import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
 import ca.bcit.comp2522.termproject.idk.entities.EntityType;
@@ -9,6 +10,7 @@ import ca.bcit.comp2522.termproject.idk.sound.Sound;
 import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
 import ca.bcit.comp2522.termproject.idk.ui.Notifications;
 import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
+import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
@@ -23,11 +25,9 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
-import com.almasb.fxgl.entity.state.StateComponent;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.*;
-import com.almasb.fxgl.physics.box2d.dynamics.Body;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.Position;
@@ -37,6 +37,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Map;
@@ -64,6 +65,8 @@ public class GameApp extends GameApplication {
     private Entity player;
     private Entity boss;
     private int hp;
+    private int kills;
+    private int score;
     private ProgressBar progressBar;
 
     /**
@@ -182,21 +185,21 @@ public class GameApp extends GameApplication {
             .buildAndAttach();
     }
 
-    private Entity createBoss() {
-        SpawnData spawnData = new SpawnData(8878, 846);
-
-        return FXGL
-            .entityBuilder(spawnData)
-            .type(EntityType.ENEMY)
-            .type(EntityType.BOSS)
-            .bbox(new HitBox(new Point2D(1,1), BoundingShape.box(48, 50)))
-            .with(
-                    new CollidableComponent(true), new IrremovableComponent(), new HealthIntComponent(150),
-                    new AttackComponent(15,50,45), new BossComponent(), new StateComponent()
-            )
-            .zIndex(2)
-            .buildAndAttach();
-    }
+//    private Entity createBoss() {
+//        SpawnData spawnData = new SpawnData(8878, 846);
+//
+//        return FXGL
+//            .entityBuilder(spawnData)
+//            .type(EntityType.ENEMY)
+//            .type(EntityType.BOSS)
+//            .bbox(new HitBox(new Point2D(1,1), BoundingShape.box(48, 50)))
+//            .with(
+//                    new CollidableComponent(true), new IrremovableComponent(), new HealthIntComponent(150),
+//                    new AttackComponent(15,50,45), new BossComponent(), new StateComponent()
+//            )
+//            .zIndex(2)
+//            .buildAndAttach();
+//    }
 
     /**
      * Defines the physics in the game.
@@ -246,6 +249,8 @@ public class GameApp extends GameApplication {
                 attack.removeFromWorld();
                 if (hp.isZero()) {
                     foe.removeFromWorld();
+                    GameApp.this.kills  += 1;
+                    GameApp.this.score += 10;
                 }
             }
         };
@@ -260,7 +265,7 @@ public class GameApp extends GameApplication {
     @Override
     protected void initGame() {
         player = createPlayer();
-        boss = createBoss();
+//        boss = createBoss();
         getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
@@ -304,6 +309,7 @@ public class GameApp extends GameApplication {
     @Override
     protected void initUI() {
 
+
         Text uiScore = getUIFactoryService().newText("", Color.RED, 20.0);
         uiScore.textProperty().bind(getip("score").asString());
         uiScore.translateXProperty().bind(getInput().mouseXUIProperty());
@@ -346,6 +352,8 @@ public class GameApp extends GameApplication {
         getDialogService().showMessageBox("You won! Congratulations!");
         getGameController().gotoMainMenu();
     }
+
+
 
     /**
      * Drives the game.
