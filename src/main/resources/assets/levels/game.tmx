@@ -761,7 +761,7 @@
   <object id="78" type="Platform" x="1122.17" y="623.367" width="134" height="17.5"/>
   <object id="79" type="Trap" x="2529.92" y="431.617" width="64.3333" height="37.6667"/>
   <object id="80" type="Platform" x="2652.17" y="1185.47" width="771.333" height="24"/>
-  <object id="81" type="Stairs" x="2141.1" y="441.434" width="221.615" height="28.6667" rotation="-46"/>
+  <object id="81" type="Stairs" x="2136.6" y="437.434" width="233.262" height="28.6667" rotation="-46"/>
   <object id="83" type="Wall" x="769.337" y="2.867" width="7.33333" height="572"/>
   <object id="84" type="Platform" x="6219.66" y="351" width="2348.67" height="24"/>
   <object id="85" type="Platform" x="1599.45" y="799.333" width="161.042" height="24"/>

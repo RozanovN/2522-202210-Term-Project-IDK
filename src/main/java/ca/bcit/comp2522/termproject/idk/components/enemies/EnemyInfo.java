@@ -26,11 +26,11 @@ public final class EnemyInfo {
     /**
      * FireWizards and DarkWizards attack's width.
      */
-    public static final int WIZARD_ATTACK_WIDTH = 65;
+    public static final int WIZARD_ATTACK_WIDTH = 45;
     /**
      * FireWizards and DarkWizards attack's height.
      */
-    public static final int WIZARD_ATTACK_HEIGHT = 45;
+    public static final int WIZARD_ATTACK_HEIGHT = 35;
     /**
      * Motionless enemies' movement speed.
      */
@@ -43,6 +43,11 @@ public final class EnemyInfo {
      * Flying Eye's attack damage.
      */
     public static final int FLYING_EYE_DAMAGE = 30;
+    /**
+     *  Boss' move speed.
+     */
+    public static final int BOSS_MOVE_SPEED = 30;
+
 
     private EnemyInfo() { }
 }

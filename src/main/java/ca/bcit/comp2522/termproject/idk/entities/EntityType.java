@@ -22,5 +22,9 @@ public enum EntityType {
     /**
      * Represents the enemy's attack.
      */
-    ENEMY_ATTACK
+    ENEMY_ATTACK,
+    /**
+     * Represents the boss.
+     */
+    BOSS
 }

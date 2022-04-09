@@ -1,66 +1,48 @@
+package ca.bcit.comp2522.termproject.idk;
 
+import ca.bcit.comp2522.termproject.idk.components.enemies.BossComponent;
+import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
+import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.entities.EntityType;
+import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
+import ca.bcit.comp2522.termproject.idk.sound.Sound;
+import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
+import ca.bcit.comp2522.termproject.idk.ui.Notifications;
+import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
+import com.almasb.fxgl.app.MenuItem;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.achievement.Achievement;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.Viewport;
+import com.almasb.fxgl.core.math.Vec2;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
+import com.almasb.fxgl.entity.state.StateComponent;
+import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.input.virtual.VirtualButton;
+import com.almasb.fxgl.physics.*;
+import com.almasb.fxgl.physics.box2d.dynamics.Body;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.ui.Position;
+import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Map;
 
-        package ca.bcit.comp2522.termproject.idk;
-//
-//        import ca.bcit.comp2522.termproject.idk.component.AttackComponent;
-//        import ca.bcit.comp2522.termproject.idk.component.PlayerComponent;
-//        import ca.bcit.comp2522.termproject.idk.component.enemies.AbstractEnemyComponent;
-//        import ca.bcit.comp2522.termproject.idk.component.enemies.WizardComponent;
-        import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
-        import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
-        import ca.bcit.comp2522.termproject.idk.entities.EntityType;
-        import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
-        import ca.bcit.comp2522.termproject.idk.sound.Sound;
-        import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
-        import ca.bcit.comp2522.termproject.idk.ui.Notifications;
-        import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
-        import com.almasb.fxgl.app.MenuItem;
-        import com.almasb.fxgl.app.scene.FXGLMenu;
-        import com.almasb.fxgl.app.scene.SceneFactory;
-        import com.almasb.fxgl.achievement.Achievement;
-        import com.almasb.fxgl.app.GameApplication;
-        import com.almasb.fxgl.app.GameSettings;
-        import com.almasb.fxgl.app.scene.Viewport;
-        import com.almasb.fxgl.core.math.Vec2;
-        import com.almasb.fxgl.core.serialization.Bundle;
-        import com.almasb.fxgl.dsl.FXGL;
-        import com.almasb.fxgl.dsl.components.HealthIntComponent;
-        import com.almasb.fxgl.entity.Entity;
-        import com.almasb.fxgl.entity.components.CollidableComponent;
-        import com.almasb.fxgl.entity.components.IrremovableComponent;
-        import com.almasb.fxgl.input.UserAction;
-        import com.almasb.fxgl.input.virtual.VirtualButton;
-        import com.almasb.fxgl.physics.*;
-        import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-        import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-        import com.almasb.fxgl.profile.DataFile;
-        import com.almasb.fxgl.profile.SaveLoadHandler;
-        import com.almasb.fxgl.ui.Position;
-        import javafx.geometry.Insets;
-        import javafx.geometry.Point2D;
-        import javafx.scene.Cursor;
-        import javafx.scene.Group;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.PasswordField;
-        import javafx.scene.control.TextField;
-        import javafx.scene.input.KeyCode;
-        import javafx.scene.input.MouseButton;
-        import javafx.scene.layout.BorderPane;
-        import javafx.scene.layout.VBox;
-        import javafx.scene.paint.Color;
-        import javafx.scene.shape.Rectangle;
-        import javafx.scene.text.Font;
-        import javafx.scene.text.Text;
-
-        import java.sql.*;
-        import java.util.Arrays;
-        import java.util.EnumSet;
-        import java.util.Map;
-        import java.util.Properties;
-
-        import static com.almasb.fxgl.dsl.FXGL.*;
-        import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
+import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
 
 /**
  * Drives the game.
@@ -70,20 +52,17 @@
  * @version 2022
  */
 
-public class GameApp extends GameApplication{
-    /**
-=======
 public class GameApp extends GameApplication {
-        /**
->>>>>>> origin/master
+    /**
      * Represents the native width of the screen for the game.
      */
-    public final static int SCREEN_WIDTH = 1280;
+    public static final int SCREEN_WIDTH = 1280;
     /**
      * Represents the native height of the screen for the game.
      */
-    public final static int SCREEN_HEIGHT = 720;
+    public static final int SCREEN_HEIGHT = 720;
     private Entity player;
+    private Entity boss;
     private int hp;
     private ProgressBar progressBar;
 
@@ -99,7 +78,7 @@ public class GameApp extends GameApplication {
      * @param gameSettings a GameSettings Object to configure
      */
     @Override
-    protected void initSettings(GameSettings gameSettings) {
+    protected void initSettings(final GameSettings gameSettings) {
         gameSettings.setWidth(SCREEN_WIDTH);
         gameSettings.setHeight(SCREEN_HEIGHT);
 
@@ -188,19 +167,35 @@ public class GameApp extends GameApplication {
         physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
                 BoundingShape.box(6, 12)));
         physicsComponent.setFixtureDef(new FixtureDef().friction(0f));
+        SpawnData spawnData = new SpawnData(8678, 846);
 
         return FXGL
-                .entityBuilder()
-                .type(EntityType.PLAYER)
-                .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
-                .at(25, 1)
-                .with(
-                        physicsComponent, new CollidableComponent(true), new IrremovableComponent(),
-                        new PlayerComponent(),
-                        new HealthIntComponent(100), new AttackComponent(15,50,45)
-                )
-                .zIndex(2)
-                .buildAndAttach();
+            .entityBuilder(spawnData)
+            .type(EntityType.PLAYER)
+            .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
+            .with(
+                    physicsComponent, new CollidableComponent(true), new IrremovableComponent(),
+                    new PlayerComponent(),
+                    new HealthIntComponent(100), new AttackComponent(15,50,45)
+            )
+            .zIndex(2)
+            .buildAndAttach();
+    }
+
+    private Entity createBoss() {
+        SpawnData spawnData = new SpawnData(8878, 846);
+
+        return FXGL
+            .entityBuilder(spawnData)
+            .type(EntityType.ENEMY)
+            .type(EntityType.BOSS)
+            .bbox(new HitBox(new Point2D(1,1), BoundingShape.box(48, 50)))
+            .with(
+                    new CollidableComponent(true), new IrremovableComponent(), new HealthIntComponent(150),
+                    new AttackComponent(15,50,45), new BossComponent(), new StateComponent()
+            )
+            .zIndex(2)
+            .buildAndAttach();
     }
 
     /**
@@ -265,13 +260,14 @@ public class GameApp extends GameApplication {
     @Override
     protected void initGame() {
         player = createPlayer();
+        boss = createBoss();
         getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, -4550, 11550, 1915);
-        viewport.setZoom(2.25);
+        viewport.setZoom(2.6);
         viewport.bindToEntity(player, 500, 250);
         viewport.setLazy(false);
 
