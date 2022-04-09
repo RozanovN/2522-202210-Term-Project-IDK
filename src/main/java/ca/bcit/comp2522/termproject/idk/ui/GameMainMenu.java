@@ -43,8 +43,9 @@ import static javafx.scene.input.KeyCode.*;
 public class GameMainMenu extends FXGLMenu {
     private final VBox scoresRoot = new VBox(10); //to be implemented later
     private Node highScores; //to be implemented later
-    private boolean hasLoggedIn = true;
+    public boolean hasLoggedIn = true;
     private boolean isLoadedScore = false;
+    private int userId;
 
     /**
      * Constructs a main menu.
@@ -226,8 +227,10 @@ public class GameMainMenu extends FXGLMenu {
         scoresRoot.setAlignment(Pos.TOP_LEFT);
     }
 
+
+
     private Rectangle constructBackground() {
-//        Color foreground = Color.rgb(255, 255, 255, 0.9);
+
 
         Rectangle background = new Rectangle(320, 250);
         background.setX(50);
@@ -316,7 +319,7 @@ public class GameMainMenu extends FXGLMenu {
     private Properties setUpConnectionProperties() {
         Properties connectionProperties = new Properties();
         connectionProperties.put("user", "root");
-        connectionProperties.put("password", "12345");
+        connectionProperties.put("password", "root");
 
         return connectionProperties;
     }
@@ -352,6 +355,7 @@ public class GameMainMenu extends FXGLMenu {
                 if ((gamerName.equals(user) && gamerPassword.equals(gamerPassword))) {
                     System.out.println("User exists");
                     getNotificationService().pushNotification("Hello " + user);
+                    this.userId = Integer.parseInt(userID);
                     String audioFile = "src/main/resources/assets/Sounds/notification.mp3";
                     Sound.playSound(audioFile, false);
                     loginBox.getChildren().remove(btn);
@@ -368,4 +372,8 @@ public class GameMainMenu extends FXGLMenu {
             ex.printStackTrace();
         }
     }
+
+
+
+
 }
