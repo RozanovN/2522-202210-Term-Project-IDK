@@ -4,6 +4,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Data source for SQL connection.
+ *
+ * @author Prince Chabveka
+ * @version 2022
+ */
 public class Datasource {
     public static final String DB_NAME = "comp2522.db";
 
@@ -30,6 +37,12 @@ public class Datasource {
 
     private PreparedStatement queryAchievements;
 
+
+    /**
+     * check if database is successfully connected.
+     *
+     * @return a boolean
+     */
     public boolean open() {
         try {
             connection = DriverManager.getConnection(CONNECTION_STRING);
@@ -41,6 +54,9 @@ public class Datasource {
         }
     }
 
+    /**
+     * Close connection after database connection, when needed.
+     */
     public void close() {
         try {
 
@@ -56,7 +72,10 @@ public class Datasource {
         }
     }
 
-
+    /**
+     * Query through gamer achievements and display results.
+     * @return a list
+     */
     public List<GamerProfile> queryGamerAchievements() {
 
         StringBuilder sb = new StringBuilder("SELECT * FROM ");
