@@ -167,7 +167,7 @@ public class GameApp extends GameApplication {
         physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
                 BoundingShape.box(6, 12)));
         physicsComponent.setFixtureDef(new FixtureDef().friction(0f));
-        SpawnData spawnData = new SpawnData(8678, 846);
+        SpawnData spawnData = new SpawnData(25, 646);
 
         return FXGL
             .entityBuilder(spawnData)
@@ -270,6 +270,7 @@ public class GameApp extends GameApplication {
         viewport.setZoom(2.6);
         viewport.bindToEntity(player, 500, 250);
         viewport.setLazy(false);
+        getGameScene().setBackgroundRepeat("Medieval_Castle_Asset_Pack/Background/layer_1.png");
 
 //         Game menu bar, with score.
         this.progressBar = new ProgressBar();
