@@ -29,6 +29,8 @@ public class Sound {
 
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Sound{}";
+    }
 }

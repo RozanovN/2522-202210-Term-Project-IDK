@@ -11,11 +11,13 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
+import java.util.Objects;
+
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 /**
  * Represents a Component of the player's Entity.
- *
+ * @author Prince Chabveka
  * @author Nikolay Rozanov
  * @version 2022
  * @see Component
@@ -134,7 +136,9 @@ public class PlayerComponent extends Component {
         physicsComponent.setVelocityX(stop);
     }
 
-
+    /**
+     * Player's default attack.
+     */
     public void frontDefaultAttack() {
         if (canAttack) {
             System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
@@ -147,4 +151,31 @@ public class PlayerComponent extends Component {
         }
     }
 
+    /**
+     * Player components are the same if they have the same values below.
+     * @param other an on object
+     * @return a boolean
+     */
+    @Override
+    public boolean equals(final Object other) {
+        if (this == other) return true;
+        if (other== null || getClass() != other.getClass()) return false;
+        PlayerComponent that = (PlayerComponent) other;
+        return moveSpeed == that.moveSpeed && Double.compare(that.attackSpeed, attackSpeed) == 0 &&
+                numberOfJumps == that.numberOfJumps && canAttack == that.canAttack && Objects.equals(physicsComponent,
+                that.physicsComponent) && Objects.equals(idleAnimation, that.idleAnimation)
+                && Objects.equals(walkingAnimation, that.walkingAnimation) &&
+                Objects.equals(frontDefaultAttackingAnimation, that.frontDefaultAttackingAnimation) &&
+                Objects.equals(animatedTexture, that.animatedTexture) && Objects.equals(attackTimer, that.attackTimer);
+    }
+
+
+    /**
+     *
+     * @return hashcode.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(physicsComponent, idleAnimation, walkingAnimation, frontDefaultAttackingAnimation, animatedTexture, moveSpeed, attackSpeed, numberOfJumps, attackTimer, canAttack);
+    }
 }

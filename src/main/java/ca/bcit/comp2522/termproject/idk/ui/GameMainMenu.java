@@ -41,10 +41,15 @@ import static javafx.scene.input.KeyCode.*;
  * @version 2022
  */
 public class GameMainMenu extends FXGLMenu {
+    /**
+     * Shows the game main menu
+     */
+
     private final VBox scoresRoot = new VBox(10); //to be implemented later
     private Node highScores; //to be implemented later
-    private boolean hasLoggedIn = true;
+    public boolean hasLoggedIn = true;
     private boolean isLoadedScore = false;
+    private int userId;
 
     /**
      * Constructs a main menu.
@@ -63,8 +68,12 @@ public class GameMainMenu extends FXGLMenu {
 
     private static class ColorBlock extends Rectangle {
 
-
-        public ColorBlock(int size, Color color) {
+        /**
+         * Construct colorblock class.
+         * @param size an int
+         * @param color an object of type color
+         */
+        ColorBlock(final int size, final Color color) {
             super(size, size, color);
             setArcWidth(8);
             setArcHeight(8);
@@ -226,8 +235,10 @@ public class GameMainMenu extends FXGLMenu {
         scoresRoot.setAlignment(Pos.TOP_LEFT);
     }
 
+
+
     private Rectangle constructBackground() {
-//        Color foreground = Color.rgb(255, 255, 255, 0.9);
+
 
         Rectangle background = new Rectangle(320, 250);
         background.setX(50);
@@ -245,7 +256,7 @@ public class GameMainMenu extends FXGLMenu {
         VBox vbox = new VBox(25);
         vbox.setTranslateX(50);
         vbox.setTranslateY(getAppHeight() - 280);
-        vbox.setPadding(new Insets(10,0,0,10));
+        vbox.setPadding(new Insets(10, 0, 0, 10));
 
         return vbox;
     }
@@ -257,7 +268,7 @@ public class GameMainMenu extends FXGLMenu {
         return label;
     }
 
-    private TextField constructUsernameField () {
+    private TextField constructUsernameField() {
         TextField username = new TextField();
         username.setFont(Font.font("SanSerif", 20));
         username.setPromptText("Username");
@@ -316,7 +327,7 @@ public class GameMainMenu extends FXGLMenu {
     private Properties setUpConnectionProperties() {
         Properties connectionProperties = new Properties();
         connectionProperties.put("user", "root");
-        connectionProperties.put("password", "12345");
+        connectionProperties.put("password", "root");
 
         return connectionProperties;
     }
@@ -342,7 +353,6 @@ public class GameMainMenu extends FXGLMenu {
             boolean userExists = false;
             String user = username.getText();
             String pass = password.getText();
-            System.out.println(user + "has password " + pass);
             ResultSet rs = statement.executeQuery("SELECT * FROM adventuregamers");
             while (rs.next() && !userExists) {
                 String userID = rs.getString("userID");
@@ -352,6 +362,7 @@ public class GameMainMenu extends FXGLMenu {
                 if ((gamerName.equals(user) && gamerPassword.equals(gamerPassword))) {
                     System.out.println("User exists");
                     getNotificationService().pushNotification("Hello " + user);
+                    this.userId = Integer.parseInt(userID);
                     String audioFile = "src/main/resources/assets/Sounds/notification.mp3";
                     Sound.playSound(audioFile, false);
                     loginBox.getChildren().remove(btn);
@@ -368,4 +379,8 @@ public class GameMainMenu extends FXGLMenu {
             ex.printStackTrace();
         }
     }
+
+
+
+
 }
