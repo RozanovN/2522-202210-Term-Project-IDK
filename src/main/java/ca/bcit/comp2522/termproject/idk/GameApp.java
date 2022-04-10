@@ -96,10 +96,8 @@ public class GameApp extends GameApplication {
     } for(GamerProfile gamer : gamers) {
         System.out.println("ID = " + gamer.getId() + ", Name = " + gamer.getName());
     }
-
+datasource.close();
 }
-
-
 
 
 
