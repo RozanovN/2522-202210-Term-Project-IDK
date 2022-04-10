@@ -154,10 +154,10 @@ public class PlayerComponent extends Component {
     /**
      * Player components are the same if they have the same values below.
      * @param other an on object
-     * @return
+     * @return a boolean
      */
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (this == other) return true;
         if (other== null || getClass() != other.getClass()) return false;
         PlayerComponent that = (PlayerComponent) other;
@@ -172,7 +172,7 @@ public class PlayerComponent extends Component {
 
     /**
      *
-     * @return hascode.
+     * @return hashcode.
      */
     @Override
     public int hashCode() {
