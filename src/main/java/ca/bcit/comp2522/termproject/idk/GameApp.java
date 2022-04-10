@@ -13,6 +13,7 @@ import ca.bcit.comp2522.termproject.idk.sound.Sound;
 import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
 import ca.bcit.comp2522.termproject.idk.ui.Notifications;
 import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
+import com.almasb.fxgl.animation.Interpolators;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
@@ -34,12 +35,16 @@ import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.Position;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -334,34 +339,45 @@ datasource.close();
 
     }
 
+
     /**
-     * UI for score, time etc, in implementation
+     * Add scoreboard. Still in implementation.
      */
     @Override
     protected void initUI() {
 
+        var text = getUIFactoryService().newText("", 24);
+        text.textProperty().bind(getip("score").asString("Score: [%d]"));
 
-        Text uiScore = getUIFactoryService().newText("", Color.RED, 20.0);
-        uiScore.textProperty().bind(getip("score").asString());
-        uiScore.translateXProperty().bind(getInput().mouseXUIProperty());
-        uiScore.translateYProperty().bind(getInput().mouseYUIProperty());
+        getWorldProperties().addListener("score", (prev, now) -> {
+            animationBuilder()
+                    .duration(Duration.seconds(0.5))
+                    .interpolator(Interpolators.BOUNCE.EASE_OUT())
+                    .repeat(2)
+                    .autoReverse(true)
+                    .scale(text)
+                    .from(new Point2D(1, 1))
+                    .to(new Point2D(1.2, 1.2));
+//                    .buildAndPlay();
+        });
 
-        addUINode(uiScore);
+        addUINode(text, 20, 50);
     }
 
-    @Override
-    protected void onUpdate(double tpf) {
-        inc("score", +1);
-    }
+
+//    @Override
+//    protected void onUpdate(double tpf) {
+//        inc("score", this.kills);
+//    }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("testDouble", -1.5);
+        vars.put("testDouble", 1);
         vars.put("testBoolean", true);
         vars.put("vector", new Vec2(1, 1));
 
-        vars.put("score", 0);
-        vars.put("lives", 3);
+        vars.put("score", GameApp.this.kills);
+
     }
 
 
