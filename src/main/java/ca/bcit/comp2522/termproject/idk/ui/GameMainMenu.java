@@ -41,6 +41,10 @@ import static javafx.scene.input.KeyCode.*;
  * @version 2022
  */
 public class GameMainMenu extends FXGLMenu {
+    /**
+     * Shows the game main menu
+     */
+
     private final VBox scoresRoot = new VBox(10); //to be implemented later
     private Node highScores; //to be implemented later
     public boolean hasLoggedIn = true;
@@ -64,8 +68,12 @@ public class GameMainMenu extends FXGLMenu {
 
     private static class ColorBlock extends Rectangle {
 
-
-        public ColorBlock(int size, Color color) {
+        /**
+         * Construct colorblock class.
+         * @param size an int
+         * @param color an object of type color
+         */
+        ColorBlock(final int size, final Color color) {
             super(size, size, color);
             setArcWidth(8);
             setArcHeight(8);
@@ -248,7 +256,7 @@ public class GameMainMenu extends FXGLMenu {
         VBox vbox = new VBox(25);
         vbox.setTranslateX(50);
         vbox.setTranslateY(getAppHeight() - 280);
-        vbox.setPadding(new Insets(10,0,0,10));
+        vbox.setPadding(new Insets(10, 0, 0, 10));
 
         return vbox;
     }
@@ -260,7 +268,7 @@ public class GameMainMenu extends FXGLMenu {
         return label;
     }
 
-    private TextField constructUsernameField () {
+    private TextField constructUsernameField() {
         TextField username = new TextField();
         username.setFont(Font.font("SanSerif", 20));
         username.setPromptText("Username");
@@ -345,7 +353,6 @@ public class GameMainMenu extends FXGLMenu {
             boolean userExists = false;
             String user = username.getText();
             String pass = password.getText();
-            System.out.println(user + "has password " + pass);
             ResultSet rs = statement.executeQuery("SELECT * FROM adventuregamers");
             while (rs.next() && !userExists) {
                 String userID = rs.getString("userID");
