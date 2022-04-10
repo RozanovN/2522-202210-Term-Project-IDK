@@ -7,6 +7,8 @@ import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
 import ca.bcit.comp2522.termproject.idk.entities.EntityType;
 import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
+import ca.bcit.comp2522.termproject.idk.jdbc.Datasource;
+import ca.bcit.comp2522.termproject.idk.jdbc.GamerProfile;
 import ca.bcit.comp2522.termproject.idk.sound.Sound;
 import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
 import ca.bcit.comp2522.termproject.idk.ui.Notifications;
@@ -41,6 +43,7 @@ import javafx.scene.text.Text;
 
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -70,10 +73,34 @@ public class GameApp extends GameApplication {
     private int score;
     private ProgressBar progressBar;
 
+
+
     /**
      * Constructs the Game Application.
      */
     public GameApp() { }
+
+    /**
+     * Query all gamers
+     */
+    public void getGamers(){
+    Datasource datasource = new Datasource();
+    if(!datasource.open()) {
+        System.out.println("Can't open datasource");
+    }
+
+    List<GamerProfile> gamers = datasource.queryGamerAchievements();
+    if(gamers == null) {
+        System.out.println("No gamers!");
+
+    } for(GamerProfile gamer : gamers) {
+        System.out.println("ID = " + gamer.getId() + ", Name = " + gamer.getName());
+    }
+
+}
+
+
+
 
 
     /**
@@ -115,6 +142,10 @@ public class GameApp extends GameApplication {
                 "description2", "", 1));
 
     }
+
+
+
+
 
     /**
      * Reads Player's input.
