@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public  class Datasource {
     /**
-     * Connection to database to run various queries
+     * Connection to database to run various queries.
      */
     public static final String DB_NAME = "comp2522.db";
     public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME;
@@ -67,7 +67,7 @@ public  class Datasource {
     public void close() {
         try {
 
-            if(queryAchievements != null) {
+            if (queryAchievements != null) {
                 queryAchievements.close();
             }
             if (connection != null) {
@@ -109,9 +109,13 @@ public  class Datasource {
         }
     }
 
-
+    /**
+     * Check if datasources are equal.
+     * @param o
+     * @return a boolean
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -122,11 +126,19 @@ public  class Datasource {
         return Objects.equals(connection, that.connection) && Objects.equals(queryAchievements, that.queryAchievements);
     }
 
+    /**
+     * Generate hashcode.
+     * @return an int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(connection, queryAchievements);
     }
 
+    /**
+     * Generate toString method.
+     * @return
+     */
     @Override
     public String toString() {
         return "Datasource{"
