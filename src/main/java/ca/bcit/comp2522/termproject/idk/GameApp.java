@@ -3,8 +3,10 @@ package ca.bcit.comp2522.termproject.idk;
 //import ca.bcit.comp2522.termproject.idk.components.enemies.BossComponent;
 
 import ca.bcit.comp2522.termproject.idk.components.enemies.BossComponent;
+import ca.bcit.comp2522.termproject.idk.components.enemies.EnemyInfo;
 import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.components.utility.ProjectileInfoComponent;
 import ca.bcit.comp2522.termproject.idk.entities.EntityType;
 import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
 import ca.bcit.comp2522.termproject.idk.sound.Sound;
@@ -168,19 +170,22 @@ public class GameApp extends GameApplication {
     private Entity createPlayer() {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
-        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
+        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(1, 64),
                 BoundingShape.box(6, 12)));
         physicsComponent.setFixtureDef(new FixtureDef().friction(0f));
-        SpawnData spawnData = new SpawnData(8878, 846); // (25, 646);
+        SpawnData spawnData = new SpawnData(8925, 846);// (25, 646);
 
         return FXGL
             .entityBuilder(spawnData)
             .type(EntityType.PLAYER)
             .bbox(new HitBox(new Point2D(50,25), BoundingShape.box(24, 35)))
             .with(
-                    physicsComponent, new CollidableComponent(true), new IrremovableComponent(),
-                    new PlayerComponent(),
-                    new HealthIntComponent(100), new AttackComponent(15,50,45)
+                physicsComponent,
+                new CollidableComponent(true),
+                new IrremovableComponent(),
+                new PlayerComponent(),
+                new HealthIntComponent(100),
+                new AttackComponent(15,50,45)
             )
             .zIndex(2)
             .buildAndAttach();
@@ -188,15 +193,24 @@ public class GameApp extends GameApplication {
 
     private Entity createBoss() {
         SpawnData spawnData = new SpawnData(8878, 846);
+        ProjectileInfoComponent projectileInfoComponent = new ProjectileInfoComponent(EnemyInfo.BOSS_PROJECTILE_DAMAGE,
+                EnemyInfo.BOSS_PROJECTILE_IMAGE);
 
         return FXGL
             .entityBuilder(spawnData)
             .type(EntityType.ENEMY)
-            .type(EntityType.BOSS)
             .bbox(new HitBox(new Point2D(1,1), BoundingShape.box(48, 50)))
             .with(
-                    new CollidableComponent(true), new IrremovableComponent(), new HealthIntComponent(150),
-                    new AttackComponent(15,50,45), new StateComponent(), new BossComponent()
+                    projectileInfoComponent,
+                new CollidableComponent(true),
+                new IrremovableComponent(),
+                new HealthIntComponent(150),
+                new AttackComponent(
+                        EnemyInfo.BOSS_ATTACK_DAMAGE,
+                        EnemyInfo.BOSS_ATTACK_WIDTH,
+                        EnemyInfo.BOSS_ATTACK_HEIGHT),
+                new StateComponent(),
+                new BossComponent()
             )
             .zIndex(2)
             .buildAndAttach();
@@ -252,6 +266,9 @@ public class GameApp extends GameApplication {
                     foe.removeFromWorld();
                     GameApp.this.kills  += 1;
                     GameApp.this.score += 10;
+                    if (foe.equals(boss)) {
+                        victory();
+                    }
                 }
             }
         };
@@ -266,10 +283,10 @@ public class GameApp extends GameApplication {
     @Override
     protected void initGame() {
         player = createPlayer();
-        boss = createBoss();
         getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
         setLevelFromMap("game.tmx");
+        boss = createBoss();
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, -4550, 11550, 1915);
@@ -350,7 +367,7 @@ public class GameApp extends GameApplication {
      * Returns the user to the main menu if boss' hp gets 0 or lower.
      * Displays the victory message.
      */
-    private void Victory() {
+    private void victory() {
         getDialogService().showMessageBox("You won! Congratulations!");
         getGameController().gotoMainMenu();
     }

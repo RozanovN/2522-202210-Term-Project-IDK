@@ -1,11 +1,10 @@
 package ca.bcit.comp2522.termproject.idk.components.enemies;
 
+import ca.bcit.comp2522.termproject.idk.components.utility.ProjectileInfoComponent;
 import ca.bcit.comp2522.termproject.idk.entities.EntityType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.state.StateComponent;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
@@ -23,7 +22,6 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
  */
 public class FlyingEyeComponent extends AbstractEnemyComponent {
     private final AnimationChannel rangeAttackAnimation;
-    Point2D direction;
 
     /**
      * Constructs this Component.
@@ -65,10 +63,12 @@ public class FlyingEyeComponent extends AbstractEnemyComponent {
         if (player.getScaleX() == 1) {
             entity.setScaleX(-1);
             entity.translateX(70);
-            direction = new Point2D(-(entity.getCenter().getX() - player.getX()), 0);//entity.getCenter().getY()
+            entity.getComponent(ProjectileInfoComponent.class)
+                .setDirection(new Point2D(-(entity.getCenter().getX() - player.getX()), 0));
         } else {
             entity.setScaleX(1);
-            direction = new Point2D(entity.getCenter().getX() - player.getX(), 0);
+            entity.getComponent(ProjectileInfoComponent.class)
+                    .setDirection(new Point2D(entity.getCenter().getX() - player.getX(), 0));
         }
     }
 
@@ -76,8 +76,8 @@ public class FlyingEyeComponent extends AbstractEnemyComponent {
     public void defaultAttack() {
         if (canAttack) {
             System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
-            SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY()).put("direction", direction);
-            spawn("EyeProjectile", spawnData);
+            SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY());
+            spawn("Projectile", spawnData);
             attackTimer.capture();
             canAttack = false;
         }

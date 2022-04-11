@@ -4,6 +4,7 @@ import ca.bcit.comp2522.termproject.idk.components.enemies.FlyingEyeComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
 import ca.bcit.comp2522.termproject.idk.components.enemies.EnemyInfo;
 import ca.bcit.comp2522.termproject.idk.components.enemies.WizardComponent;
+import ca.bcit.comp2522.termproject.idk.components.utility.ProjectileInfoComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
@@ -22,6 +23,8 @@ import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
+import javax.swing.*;
+
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 /**
@@ -31,10 +34,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
  * @version 2022
  */
 public class GameEntitiesFactory implements EntityFactory {
-    /**
-     * Represents the movement speed of the projectile.
-     */
-    public static final int PROJECTILE_MOVE_SPEED = 150;
 
     /**
      * Builds a Platform Entity.
@@ -131,7 +130,7 @@ public class GameEntitiesFactory implements EntityFactory {
     public Entity newFireWizard(final SpawnData data) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
-        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
+        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(1, 1),
                 BoundingShape.box(6, 12)));
         physicsComponent.setFixtureDef(new FixtureDef().friction(1f));
 
@@ -200,9 +199,11 @@ public class GameEntitiesFactory implements EntityFactory {
     public Entity newFlyingEye(final SpawnData data) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
         physicsComponent.setBodyType(BodyType.DYNAMIC);
-        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(4, 64),
+        physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(1, 1),
                 BoundingShape.box(6, 12)));
         physicsComponent.setFixtureDef(new FixtureDef().friction(1f));
+        ProjectileInfoComponent projectileInfoComponent = new ProjectileInfoComponent(EnemyInfo.FLYING_EYE_DAMAGE,
+                EnemyInfo.FLYING_EYE_PROJECTILE_IMAGE);
 
         return FXGL
                 .entityBuilder()
@@ -211,37 +212,104 @@ public class GameEntitiesFactory implements EntityFactory {
                 .bbox(new HitBox(new Point2D(65, 65), BoundingShape.box(35, 30)))
                 .with(
                         physicsComponent, new CollidableComponent(true), new StateComponent(), new FlyingEyeComponent(),
-                        new HealthIntComponent(EnemyInfo.FLYING_EYE_MAX_HP),
-                        new AttackComponent(EnemyInfo.FLYING_EYE_DAMAGE, 0, 0)
+                        new HealthIntComponent(EnemyInfo.FLYING_EYE_MAX_HP), projectileInfoComponent
                 )
                 .build();
     }
 
     /**
-     * Spawns a new eye projectile for 5 seconds.
+     * Spawns a new projectile for 5 seconds.
      *
      * @param data a SpawnData that represents the position of the spawn point
      * @return Entity representing an eye projectile
      */
-    @Spawns("EyeProjectile")
-    public Entity newEyeProjectile(final SpawnData data) {
+    @Spawns("Projectile")
+    public Entity newProjectile(final SpawnData data) {
         ExpireCleanComponent expireCleanComponent = new ExpireCleanComponent(Duration.seconds(5));
         expireCleanComponent.pause();
-        AttackComponent attackComponent = getGameWorld().getEntitiesAt(new Point2D(data.getX(), data.getY())).get(0)
-                .getComponent(AttackComponent.class);
+        ProjectileInfoComponent projectileInfoComponent = getGameWorld().getEntitiesAt(new Point2D(data.getX(),
+                        data.getY())).get(0).getComponent(ProjectileInfoComponent.class);
 
         return FXGL
             .entityBuilder(data)
             .at(data.getX() + 25, data.getY() + 75)
             .type(EntityType.ENEMY_ATTACK)
-            .viewWithBBox("Monster_Creatures_Fantasy(Version 1.3)/Flying eye/eye-projectile.png") //crop later
+            .viewWithBBox(projectileInfoComponent.getProjectilePicture())
             .with(
                 new CollidableComponent(true),
-                new ProjectileComponent(data.get("direction"), PROJECTILE_MOVE_SPEED),
+                new ProjectileComponent(projectileInfoComponent.getDirection(), projectileInfoComponent.getMoveSpeed()),
                 expireCleanComponent,
-                attackComponent
+                new AttackComponent(projectileInfoComponent.getDamage(), 0, 0)
             )
             .rotationOrigin(0, 6.5)
             .build();
+    }
+
+    /**
+     * Spawns a new projectile for 5 seconds.
+     *
+     * @param data a SpawnData that represents the position of the spawn point
+     * @return Entity representing an eye projectile
+     */
+    @Spawns("BossProjectile")
+    public Entity newBossProjectile(final SpawnData data) {
+        ExpireCleanComponent expireCleanComponent = new ExpireCleanComponent(Duration.seconds(5));
+        expireCleanComponent.pause();
+        Entity boss = getGameWorld().getEntitiesAt(new Point2D(data.getX(), data.getY())).get(0);
+        ProjectileInfoComponent projectileInfoComponent = boss.getComponent(ProjectileInfoComponent.class);
+        int xCorrection = 55;
+
+        if (boss.getScaleX() == -1) {
+            xCorrection = -xCorrection;
+        }
+
+        return FXGL
+                .entityBuilder(data)
+                .at(data.getX() + xCorrection, data.getY())
+                .type(EntityType.ENEMY_ATTACK)
+                .viewWithBBox(projectileInfoComponent.getProjectilePicture())
+                .with(
+                        new CollidableComponent(true),
+                        new ProjectileComponent(projectileInfoComponent.getDirection(), projectileInfoComponent.getMoveSpeed()),
+                        expireCleanComponent,
+                        new AttackComponent(projectileInfoComponent.getDamage(), 0, 0)
+                )
+                .rotationOrigin(0, 6.5)
+                .build();
+    }
+
+    /**
+     * Spawns an attack entity for 2 seconds.
+     *
+     * @param data a SpawnData that represents the position of the spawn point
+     * @return Entity representing an attack
+     */
+    @Spawns("BossAttack")
+    public Entity newBossAttack(final SpawnData data) {
+        Point2D position = new Point2D(data.getX(), data.getY());
+        Entity caller = getGameWorld().getEntitiesAt(position).get(0);
+        AttackComponent attackComponent = caller.getComponent(AttackComponent.class);
+        Point2D spawnPoint = new Point2D(caller.getWidth() * 2, caller.getHeight());
+
+        if (caller.getScaleX() == 1) {
+            spawnPoint = new Point2D(50, 25);
+        } else {
+            spawnPoint = new Point2D(-75, 0);
+        }
+
+        Entity attack =  FXGL
+                .entityBuilder(data)
+                .type(EntityType.ENEMY_ATTACK)
+                .bbox(new HitBox(BoundingShape.box(attackComponent.getWidth(),
+                        attackComponent.getHeight())))
+                .with(
+                        new CollidableComponent(true),
+                new ExpireCleanComponent(Duration.seconds(2)),
+                        attackComponent,
+                        new StateComponent()
+                )
+                .build();
+        attack.translate(spawnPoint);
+        return attack;
     }
 }

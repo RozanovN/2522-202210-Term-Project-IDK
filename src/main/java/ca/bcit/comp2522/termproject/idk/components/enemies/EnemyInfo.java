@@ -47,6 +47,31 @@ public final class EnemyInfo {
      *  Boss' move speed.
      */
     public static final int BOSS_MOVE_SPEED = 30;
+    /**
+     * Flying Eye's path to the projectile attack image.
+     */
+    public static final String FLYING_EYE_PROJECTILE_IMAGE =
+            "Monster_Creatures_Fantasy(Version 1.3)/Flying eye/eye-projectile.png";
+    /**
+     * Boss' projectile damage.
+     */
+    public static final int BOSS_PROJECTILE_DAMAGE = 20;
+    /**
+     * Boss' path to the projectile attack image.
+     */
+    public static final String BOSS_PROJECTILE_IMAGE = "Mecha-stone Golem 0.1/weapon PNG/arm_projectile.png";
+    /**
+     * Boss' melee attack damage.
+     */
+    public static final int BOSS_ATTACK_DAMAGE = 25;
+    /**
+     * Boss' melee attack width.
+     */
+    public static final int BOSS_ATTACK_WIDTH = 20;
+    /**
+     * Boss' melee attack height.
+     */
+    public static final int BOSS_ATTACK_HEIGHT = 45;
 
 
     private EnemyInfo() { }

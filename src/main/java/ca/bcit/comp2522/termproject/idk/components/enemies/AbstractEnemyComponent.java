@@ -31,31 +31,8 @@ public abstract class AbstractEnemyComponent extends Component {
     private char direction;
 
     /**
-     * Constructs AbstractEnemyComponent.
-     *
-     * @param attackSpeed an int that represents the enemy's attack speed
-     * @param moveSpeed an int representing the enemy's move speed
+     * Represents a patrol AI state.
      */
-    public AbstractEnemyComponent(final int attackSpeed, final int moveSpeed) {
-        this.attackTimer = FXGL.newLocalTimer();
-        this.attackSpeed = attackSpeed;
-        this.defaultMoveSpeed = moveSpeed;
-        this.player = FXGL.getGameWorld().getEntitiesByType(EntityType.PLAYER).get(0);
-        direction = 'r';
-    }
-
-    public int getAttackSpeed() {
-        return attackSpeed;
-    }
-
-    public int getMoveSpeed() {
-        return moveSpeed;
-    }
-
-    public void setMoveSpeed(final int moveSpeed) {
-        this.moveSpeed = moveSpeed;
-    }
-
     protected final EntityState patrol = new EntityState("patrol") {
 
         @Override
@@ -82,6 +59,9 @@ public abstract class AbstractEnemyComponent extends Component {
 
     };
 
+    /**
+     * Represents an attack AI state.
+     */
     protected final EntityState attack = new EntityState("attack") {
         @Override
         public void onEntering() {
@@ -111,6 +91,20 @@ public abstract class AbstractEnemyComponent extends Component {
 
         }
     };
+
+    /**
+     * Constructs AbstractEnemyComponent.
+     *
+     * @param attackSpeed an int that represents the enemy's attack speed
+     * @param moveSpeed an int representing the enemy's move speed
+     */
+    public AbstractEnemyComponent(final int attackSpeed, final int moveSpeed) {
+        this.attackTimer = FXGL.newLocalTimer();
+        this.attackSpeed = attackSpeed;
+        this.defaultMoveSpeed = moveSpeed;
+        this.player = FXGL.getGameWorld().getEntitiesByType(EntityType.PLAYER).get(0);
+        direction = 'r';
+    }
 
     /**
      * Performs a default attack.
