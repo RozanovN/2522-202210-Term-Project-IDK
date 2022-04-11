@@ -44,6 +44,34 @@ public final class BossComponent extends AbstractEnemyComponent {
             }
         }
     };
+    private final EntityState battle = new EntityState("battle") {
+        @Override
+        public void onEntering() {
+            System.out.println("enter attack stage");
+        }
+
+        @Override
+        protected void onUpdate(final double tpf) {
+            if (!(player.getX() > 8320 && player.getX() < 9400 && player.getY() > 630 && player.getY() < 1000)) {
+                state.changeState(defaultState);
+            }
+
+            if (entity.distance(player) > getAttackRange() && entity.getScaleX() == 1
+                    || entity.distance(player) > getAttackRange() + 100. && entity.getScaleX() == -1) {
+                if (isIdle) {
+                    navigateToThePoint(player.getCenter());
+                }
+            } else {
+                if (Math.random() > 0.5) {
+                    defaultAttack();
+                } else {
+                    invulnerability();
+                }
+
+            }
+
+        }
+    };
 
     /**
      * Constructs BossComponent.
@@ -84,6 +112,11 @@ public final class BossComponent extends AbstractEnemyComponent {
         state.changeState(defaultState);
     }
 
+    /**
+     * Updates the state of the boss component at every state.
+     *
+     * @param tpf a double representing time per frames
+     */
     @Override
     public void onUpdate(final double tpf) {
         if (attackTimer.elapsed(Duration.seconds(attackSpeed))) {
@@ -113,36 +146,9 @@ public final class BossComponent extends AbstractEnemyComponent {
                     .setDirection(new Point2D(entity.getCenter().getX() + player.getX(), 0));
         }
     }
-
-    private final EntityState battle = new EntityState("battle") {
-        @Override
-        public void onEntering() {
-            System.out.println("enter attack stage");
-        }
-
-        @Override
-        protected void onUpdate(final double tpf) {
-            if (!(player.getX() > 8320 && player.getX() < 9400 && player.getY() > 630 && player.getY() < 1000)) {
-                state.changeState(defaultState);
-            }
-
-            if (entity.distance(player) > getAttackRange() && entity.getScaleX() == 1
-                    || entity.distance(player) > getAttackRange() + 100. && entity.getScaleX() == -1) {
-                if (isIdle) {
-                    navigateToThePoint(player.getCenter());
-                }
-            } else {
-                if (Math.random() > 0.5) {
-                    defaultAttack();
-                } else {
-                    invulnerability();
-                }
-
-            }
-
-        }
-    };
-
+    /*
+    * Navigates the entity to the given point.
+     */
     private void navigateToThePoint(final Point2D point) {
         if (entity.getX() < point.getX()) {
             entity.getTransformComponent().moveRight(1);
@@ -156,6 +162,9 @@ public final class BossComponent extends AbstractEnemyComponent {
         }
     }
 
+    /**
+     * Represents the default attack.
+     */
     @Override
     public void defaultAttack() {
         if (canAttack) {
@@ -167,7 +176,9 @@ public final class BossComponent extends AbstractEnemyComponent {
             }
         }
     }
-
+    /*
+    * Represents the melee attack
+     */
     private void meleeAttack() {
         canAttack = false;
         SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY());
@@ -175,7 +186,9 @@ public final class BossComponent extends AbstractEnemyComponent {
         animatedTexture.playAnimationChannel(meleeAttackAnimation);
         attackTimer.capture();
     }
-
+    /*
+    * Represents the range attack.
+     */
     private void rangeAttack() {
         canAttack = false;
         animatedTexture.playAnimationChannel(projectileAttackAnimation);
@@ -183,7 +196,9 @@ public final class BossComponent extends AbstractEnemyComponent {
         spawn("BossProjectile", spawnData);
         attackTimer.capture();
     }
-
+    /*
+    * Makes the entity invulnerable.
+     */
     private void invulnerability() {
         if (canBecomeInvul) {
             isIdle = false;
@@ -196,6 +211,11 @@ public final class BossComponent extends AbstractEnemyComponent {
 
     }
 
+    /**
+     * Returns the attack range of this entity.
+     *
+     * @return an int representing the attack range.
+     */
     @Override
     public int getAttackRange() {
         return attackRange;

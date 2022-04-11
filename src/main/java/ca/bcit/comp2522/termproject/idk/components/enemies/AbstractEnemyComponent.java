@@ -17,17 +17,44 @@ import com.almasb.fxgl.time.LocalTimer;
  * @version 2022
  */
 public abstract class AbstractEnemyComponent extends Component {
+    /**
+     * Represents animated texture of the entity.
+     */
     protected AnimatedTexture animatedTexture;
+    /**
+     * Represents if the entity can attack.
+     */
     protected boolean canAttack;
+    /**
+     * Represents the timer that captures the time between attacks.
+     */
     protected final LocalTimer attackTimer;
+    /**
+     * Represents attack speed.
+     */
     protected final int attackSpeed;
+    /**
+     * Represents the player entity.
+     */
+    protected Entity player;
+    /**
+     * Represents AI State component.
+     */
+    protected StateComponent state;
+    /**
+     * Represents the default x coordinates of the entity.
+     */
+    protected double defaultX;
+    /**
+     * Represents if the entity is idle.
+     */
+    protected boolean isIdle;
+    /**
+     * Represents the attack range of the entity.
+     */
+    protected int attackRange;
     private final int defaultMoveSpeed;
     private int moveSpeed;
-    protected Entity player;
-    protected StateComponent state;
-    protected double defaultX;
-    protected boolean isIdle;
-    protected int attackRange;
     private char direction;
 
     /**

@@ -38,10 +38,15 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.Position;
 import javafx.beans.binding.Bindings;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -80,17 +85,15 @@ public class GameApp extends GameApplication {
     private int score;
     private ProgressBar progressBar;
 
-
-
     /**
      * Constructs the Game Application.
      */
     public GameApp() { }
 
     /**
-     * Query all gamers
+     * Query all gamers.
      */
-    public void getGamers(){
+    public void getGamers() {
     Datasource datasource = new Datasource();
     if(!datasource.open()) {
         System.out.println("Can't open datasource");
@@ -148,10 +151,6 @@ datasource.close();
 
     }
 
-
-
-
-
     /**
      * Reads Player's input.
      */
@@ -186,7 +185,7 @@ datasource.close();
         getInput().addAction(new UserAction("Jump") {
             @Override
             protected void onActionBegin() {
-                player.getComponent(PlayerComponent.class).Jump();
+                player.getComponent(PlayerComponent.class).jump();
             }
         }, KeyCode.W, VirtualButton.A);
 
@@ -207,7 +206,7 @@ datasource.close();
         physicsComponent.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(1, 64),
                 BoundingShape.box(6, 12)));
         physicsComponent.setFixtureDef(new FixtureDef().friction(0f));
-        SpawnData spawnData = new SpawnData(8925, 846);// (25, 646);
+        SpawnData spawnData = new SpawnData(25, 646); // (8925, 846);
 
         return FXGL
             .entityBuilder(spawnData)
@@ -404,8 +403,20 @@ datasource.close();
      * Displays the game over message.
      */
     private void gameOver() {
-        getDialogService().showMessageBox("You died...");
-        getGameController().gotoMainMenu();
+        GridPane pane = new GridPane();
+        if (!FXGL.isMobile()) {
+            pane.setEffect(new DropShadow(5, 3.5, 3.5, Color.BLUE));
+        }
+        pane.setHgap(25);
+        pane.setVgap(10);
+        Button button = new Button("Exit Game");
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            public void handle(final ActionEvent e) {
+                getGameController().exit();
+            }
+        };
+        button.setOnAction(event);
+        getDialogService().showBox("You died..", pane, button);
     }
 
     /*
@@ -413,8 +424,20 @@ datasource.close();
      * Displays the victory message.
      */
     private void victory() {
-        getDialogService().showMessageBox("You won! Congratulations!");
-        getGameController().gotoMainMenu();
+        GridPane pane = new GridPane();
+        if (!FXGL.isMobile()) {
+            pane.setEffect(new DropShadow(5, 3.5, 3.5, Color.BLUE));
+        }
+        pane.setHgap(25);
+        pane.setVgap(10);
+        Button button = new Button("Exit Game");
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            public void handle(final ActionEvent e) {
+                getGameController().exit();
+            }
+        };
+        button.setOnAction(event);
+        getDialogService().showBox("You won! Congratulations!", pane, button);
     }
 
 

@@ -33,22 +33,47 @@ public final class ProjectileInfoComponent extends Component {
         this.direction = null;
     }
 
+    /**
+     * Returns this projectile's damage.
+     *
+     * @return an int represents this projectile's damage
+     */
     public int getDamage() {
         return damage;
     }
 
+    /**
+     * Returns the path to this projectile's image.
+     *
+     * @return a String path to this projectile's image.
+     */
     public String getProjectilePicture() {
         return projectilePicture;
     }
 
+    /**
+     * Returns this projectile's move speed.
+     *
+     * @return an int representing this projectile's move speed.
+     */
     public int getMoveSpeed() {
         return moveSpeed;
     }
 
+    /**
+     * Returns this projectile's direction.
+     *
+     * @return a Point2D representing this projectile's direction
+     */
     public Point2D getDirection() {
         return direction;
     }
 
+    /**
+     * Set this projectile's direction.
+     *
+     * @param direction a Point2D representing new projectile's direction
+     */
     public void setDirection(final Point2D direction) {
         this.direction = direction;
     }

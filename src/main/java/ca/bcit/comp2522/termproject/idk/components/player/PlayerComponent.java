@@ -118,10 +118,11 @@ public class PlayerComponent extends Component {
     /**
      * Moves the player up if player has a positive number of jumps.
      */
-    public void Jump() {
+    public void jump() {
         final float jumpBoost = 2.8f;
-        if (numberOfJumps == 0)
+        if (numberOfJumps == 0) {
             return;
+        }
         System.out.println("jump");
         physicsComponent.setVelocityY(-moveSpeed * jumpBoost);
         numberOfJumps--;
@@ -141,7 +142,6 @@ public class PlayerComponent extends Component {
      */
     public void frontDefaultAttack() {
         if (canAttack) {
-            System.out.println("Attacking on " + this.entity.getX() + "and " + this.entity.getY());
             SpawnData spawnData = new SpawnData(this.entity.getX(), this.entity.getY());
             spawn("Attack", spawnData);
             animatedTexture.playAnimationChannel(frontDefaultAttackingAnimation);
@@ -149,33 +149,5 @@ public class PlayerComponent extends Component {
             canAttack = false;
             moveSpeed = 0;
         }
-    }
-
-    /**
-     * Player components are the same if they have the same values below.
-     * @param other an on object
-     * @return a boolean
-     */
-    @Override
-    public boolean equals(final Object other) {
-        if (this == other) return true;
-        if (other== null || getClass() != other.getClass()) return false;
-        PlayerComponent that = (PlayerComponent) other;
-        return moveSpeed == that.moveSpeed && Double.compare(that.attackSpeed, attackSpeed) == 0 &&
-                numberOfJumps == that.numberOfJumps && canAttack == that.canAttack && Objects.equals(physicsComponent,
-                that.physicsComponent) && Objects.equals(idleAnimation, that.idleAnimation)
-                && Objects.equals(walkingAnimation, that.walkingAnimation) &&
-                Objects.equals(frontDefaultAttackingAnimation, that.frontDefaultAttackingAnimation) &&
-                Objects.equals(animatedTexture, that.animatedTexture) && Objects.equals(attackTimer, that.attackTimer);
-    }
-
-
-    /**
-     *
-     * @return hashcode.
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(physicsComponent, idleAnimation, walkingAnimation, frontDefaultAttackingAnimation, animatedTexture, moveSpeed, attackSpeed, numberOfJumps, attackTimer, canAttack);
     }
 }

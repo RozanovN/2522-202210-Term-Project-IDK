@@ -23,8 +23,6 @@ import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
-import javax.swing.*;
-
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 /**
@@ -246,7 +244,7 @@ public class GameEntitiesFactory implements EntityFactory {
     }
 
     /**
-     * Spawns a new projectile for 5 seconds.
+     * Spawns the boss' projectile for 5 seconds.
      *
      * @param data a SpawnData that represents the position of the spawn point
      * @return Entity representing an eye projectile
@@ -279,7 +277,7 @@ public class GameEntitiesFactory implements EntityFactory {
     }
 
     /**
-     * Spawns an attack entity for 2 seconds.
+     * Spawns the boss' attack entity for 2 seconds.
      *
      * @param data a SpawnData that represents the position of the spawn point
      * @return Entity representing an attack

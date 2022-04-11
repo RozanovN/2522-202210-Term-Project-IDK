@@ -72,6 +72,9 @@ public class FlyingEyeComponent extends AbstractEnemyComponent {
         }
     }
 
+    /**
+     * Performs the default attack.
+     */
     @Override
     public void defaultAttack() {
         if (canAttack) {
@@ -82,7 +85,11 @@ public class FlyingEyeComponent extends AbstractEnemyComponent {
             canAttack = false;
         }
     }
-
+    /**
+     * Returns the attack range of this entity.
+     *
+     * @return an int representing the attack range.
+     */
     @Override
     public int getAttackRange() {
         return attackRange;

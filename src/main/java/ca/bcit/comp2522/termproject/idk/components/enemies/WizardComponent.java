@@ -91,7 +91,9 @@ public class WizardComponent extends AbstractEnemyComponent {
             }
         }
     }
-
+    /**
+     * Performs the default attack.
+     */
     @Override
     public void defaultAttack() {
         if (canAttack) {
@@ -105,6 +107,11 @@ public class WizardComponent extends AbstractEnemyComponent {
         }
     }
 
+    /**
+     * Returns the attack range of this entity.
+     *
+     * @return an int representing the attack range.
+     */
     @Override
     public int getAttackRange() {
         return attackRange;

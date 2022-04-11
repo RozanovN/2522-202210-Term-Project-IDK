@@ -84,7 +84,7 @@ public class GameMainMenu extends FXGLMenu {
     }
 
     private void showCredits() {
-        getDialogService().showMessageBox("Add something here later");
+        getDialogService().showMessageBox("Prince Chabveka\nNikolay Rozanov");
     }
 
 
