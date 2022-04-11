@@ -3,6 +3,8 @@ package ca.bcit.comp2522.termproject.idk.jdbc;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Properties;
 
 
 /**
@@ -11,9 +13,11 @@ import java.util.List;
  * @author Prince Chabveka
  * @version 2022
  */
-public class Datasource {
+public  class Datasource {
+    /**
+     * Connection to database to run various queries.
+     */
     public static final String DB_NAME = "comp2522.db";
-
     public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME;
     public static final String TABLE_ACHIEVEMENTS = "achievements";
     public static final String COLUMN_ACHIEVEMENTS_ID = "Id";
@@ -26,17 +30,17 @@ public class Datasource {
     public static final int INDEX_COLUMN_KILLS = 3;
     public static final int INDEX_PLAYS = 4;
 
+    public static final String QUERY_ALL_ACHIEVEMENTS =
+            "SELECT " + TABLE_ACHIEVEMENTS + '.' + COLUMN_ACHIEVEMENTS_ID + " FROM " + TABLE_ACHIEVEMENTS;
 
-
-    public static final String QUERY_ALBUMS_BY_ARTIST_START =
-            "SELECT " + TABLE_ACHIEVEMENTS + '.' + COLUMN_ACHIEVEMENTS_ID + " FROM " + TABLE_ACHIEVEMENTS +
-                    " WHERE " + TABLE_ACHIEVEMENTS + "." + COLUMN_ACHIEVEMENTS_ID + " = \"";
 
 
     private Connection connection;
-
     private PreparedStatement queryAchievements;
 
+
+    public Datasource() {
+    }
 
     /**
      * check if database is successfully connected.
@@ -45,8 +49,11 @@ public class Datasource {
      */
     public boolean open() {
         try {
-            connection = DriverManager.getConnection(CONNECTION_STRING);
-            queryAchievements = connection.prepareStatement(QUERY_ALBUMS_BY_ARTIST_START);
+            final Properties connectionProperties = new Properties();
+            connectionProperties.put("user", "root");
+            connectionProperties.put("password", "root");
+            connection = DriverManager.getConnection(CONNECTION_STRING, connectionProperties);
+            queryAchievements = connection.prepareStatement(QUERY_ALL_ACHIEVEMENTS);
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't connect to database: " + e.getMessage());
@@ -60,10 +67,9 @@ public class Datasource {
     public void close() {
         try {
 
-            if(queryAchievements != null) {
+            if (queryAchievements != null) {
                 queryAchievements.close();
             }
-
             if (connection != null) {
                 connection.close();
             }
@@ -92,8 +98,6 @@ public class Datasource {
                 gamerProfile.setId(results.getInt(INDEX_COLUMN_KILLS));
                 gamerProfile.setId(results.getInt(INDEX_PLAYS));
                 gamerProfile.setId(results.getInt(INDEX_HIGH_SCORE));
-
-
                 gamerAchievements.add(gamerProfile);
             }
 
@@ -105,4 +109,47 @@ public class Datasource {
         }
     }
 
+    /**
+     * Check if datasources are equal.
+     * @param o
+     * @return a boolean
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Datasource that = (Datasource) o;
+        return Objects.equals(connection, that.connection) && Objects.equals(queryAchievements, that.queryAchievements);
+    }
+
+    /**
+     * Generate hashcode.
+     * @return an int
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(connection, queryAchievements);
+    }
+
+    /**
+     * Generate toString method.
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Datasource{"
+                +
+                "connection="
+                + connection
+                +
+                ", queryAchievements="
+                +
+                queryAchievements
+                +
+                '}';
+    }
 }

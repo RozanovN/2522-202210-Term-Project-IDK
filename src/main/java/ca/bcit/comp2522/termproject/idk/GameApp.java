@@ -9,10 +9,13 @@ import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.ProjectileInfoComponent;
 import ca.bcit.comp2522.termproject.idk.entities.EntityType;
 import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
+import ca.bcit.comp2522.termproject.idk.jdbc.Datasource;
+import ca.bcit.comp2522.termproject.idk.jdbc.GamerProfile;
 import ca.bcit.comp2522.termproject.idk.sound.Sound;
 import ca.bcit.comp2522.termproject.idk.ui.GameMainMenu;
 import ca.bcit.comp2522.termproject.idk.ui.Notifications;
 import ca.bcit.comp2522.termproject.idk.ui.ProgressBar;
+import com.almasb.fxgl.animation.Interpolators;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
@@ -34,15 +37,20 @@ import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.Position;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -72,10 +80,32 @@ public class GameApp extends GameApplication {
     private int score;
     private ProgressBar progressBar;
 
+
+
     /**
      * Constructs the Game Application.
      */
     public GameApp() { }
+
+    /**
+     * Query all gamers
+     */
+    public void getGamers(){
+    Datasource datasource = new Datasource();
+    if(!datasource.open()) {
+        System.out.println("Can't open datasource");
+    }
+
+    List<GamerProfile> gamers = datasource.queryGamerAchievements();
+    if(gamers == null) {
+        System.out.println("No gamers!");
+
+    } for(GamerProfile gamer : gamers) {
+        System.out.println("ID = " + gamer.getId() + ", Name = " + gamer.getName());
+    }
+datasource.close();
+}
+
 
 
     /**
@@ -117,6 +147,10 @@ public class GameApp extends GameApplication {
                 "description2", "", 1));
 
     }
+
+
+
+
 
     /**
      * Reads Player's input.
@@ -322,34 +356,45 @@ public class GameApp extends GameApplication {
 
     }
 
+
     /**
-     * UI for score, time etc, in implementation
+     * Add scoreboard. Still in implementation.
      */
     @Override
     protected void initUI() {
 
+        var text = getUIFactoryService().newText("", 24);
+        text.textProperty().bind(getip("score").asString("Score: [%d]"));
 
-        Text uiScore = getUIFactoryService().newText("", Color.RED, 20.0);
-        uiScore.textProperty().bind(getip("score").asString());
-        uiScore.translateXProperty().bind(getInput().mouseXUIProperty());
-        uiScore.translateYProperty().bind(getInput().mouseYUIProperty());
+        getWorldProperties().addListener("score", (prev, now) -> {
+            animationBuilder()
+                    .duration(Duration.seconds(0.5))
+                    .interpolator(Interpolators.BOUNCE.EASE_OUT())
+                    .repeat(2)
+                    .autoReverse(true)
+                    .scale(text)
+                    .from(new Point2D(1, 1))
+                    .to(new Point2D(1.2, 1.2));
+//                    .buildAndPlay();
+        });
 
-        addUINode(uiScore);
+        addUINode(text, 20, 50);
     }
 
-    @Override
-    protected void onUpdate(double tpf) {
-        inc("score", +1);
-    }
+
+//    @Override
+//    protected void onUpdate(double tpf) {
+//        inc("score", this.kills);
+//    }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("testDouble", -1.5);
+        vars.put("testDouble", 1);
         vars.put("testBoolean", true);
         vars.put("vector", new Vec2(1, 1));
 
-        vars.put("score", 0);
-        vars.put("lives", 3);
+        vars.put("score", GameApp.this.kills);
+
     }
 
 
