@@ -26,5 +26,9 @@ public enum EntityType {
     /**
      * Represents the boss.
      */
-    BOSS
+    BOSS,
+    /**
+     * Represents the potion.
+     */
+    POTION
 }

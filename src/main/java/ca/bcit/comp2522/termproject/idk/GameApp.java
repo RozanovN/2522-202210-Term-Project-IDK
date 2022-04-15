@@ -6,6 +6,7 @@ import ca.bcit.comp2522.termproject.idk.components.enemies.BossComponent;
 import ca.bcit.comp2522.termproject.idk.components.enemies.EnemyInfo;
 import ca.bcit.comp2522.termproject.idk.components.player.PlayerComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
+import ca.bcit.comp2522.termproject.idk.components.utility.PotionComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.ProjectileInfoComponent;
 import ca.bcit.comp2522.termproject.idk.entities.EntityType;
 import ca.bcit.comp2522.termproject.idk.entities.GameEntitiesFactory;
@@ -264,7 +265,7 @@ datasource.close();
         CollisionHandler enemyAttack = new CollisionHandler(EntityType.ENEMY_ATTACK, EntityType.PLAYER) {
 
             @Override
-            protected void onCollisionBegin(Entity attack, Entity player) {
+            protected void onCollisionBegin(final Entity attack, final Entity player) {
 //                hp is being decremeneted
                 HealthIntComponent hp = player.getComponent(HealthIntComponent.class);
                 int damage = attack.getComponent(AttackComponent.class).getDamage();
@@ -286,7 +287,7 @@ datasource.close();
         CollisionHandler playerAttack = new CollisionHandler(EntityType.PLAYER_ATTACK, EntityType.ENEMY) {
 
             @Override
-            protected void onCollisionBegin(Entity attack, Entity foe) {
+            protected void onCollisionBegin(final Entity attack, final Entity foe) {
                 HealthIntComponent hp = foe.getComponent(HealthIntComponent.class);
                 int damage = attack.getComponent(AttackComponent.class).getDamage();
 
@@ -297,6 +298,7 @@ datasource.close();
                 attack.removeFromWorld();
                 if (hp.isZero()) {
                     foe.removeFromWorld();
+                    spawn("Potion", foe.getPosition());
                     GameApp.this.kills  += 1;
                     GameApp.this.score += 10;
                     if (foe.equals(boss)) {
@@ -306,6 +308,15 @@ datasource.close();
             }
         };
 
+        CollisionHandler potionPickup = new CollisionHandler(EntityType.PLAYER, EntityType.POTION) {
+            @Override
+            protected void onCollisionBegin(final Entity player, final Entity potion) {
+                potion.getComponent(PotionComponent.class).getEffect().accept(player);
+                potion.removeFromWorld();
+            }
+        };
+
+        physicsWorld.addCollisionHandler(potionPickup);
         physicsWorld.addCollisionHandler(playerAttack);
         physicsWorld.addCollisionHandler(enemyAttack);
     }
@@ -331,7 +342,7 @@ datasource.close();
 //         Game menu bar, with score.
         this.progressBar = new ProgressBar();
         HealthIntComponent hp = player.getComponent(HealthIntComponent.class);
-        this.progressBar.setMaxValue(100);
+        this.progressBar.setMaxValue(hp.getMaxValue());
         this.progressBar.setMinValue(0);
 //
 //      current health is not being update, need a way to make hp global
@@ -340,6 +351,7 @@ datasource.close();
         this.progressBar.setLabelPosition(Position.LEFT);
         this.progressBar.setFill(Color.GREEN);
         this.progressBar.getInnerBar();
+        this.progressBar.setCurrentValue(GameApp.this.hp);
         // Node to add the bar
         addUINode(this.progressBar);
 
@@ -396,25 +408,14 @@ datasource.close();
 
     }
 
-
-
     /*
      * Returns the user to the main menu if player's hp gets 0 or lower.
      * Displays the game over message.
      */
     private void gameOver() {
-        GridPane pane = new GridPane();
-        if (!FXGL.isMobile()) {
-            pane.setEffect(new DropShadow(5, 3.5, 3.5, Color.BLUE));
-        }
-        pane.setHgap(25);
-        pane.setVgap(10);
+        GridPane pane = creatGridPane();
         Button button = new Button("Exit Game");
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(final ActionEvent e) {
-                getGameController().exit();
-            }
-        };
+        EventHandler<ActionEvent> event = e -> getGameController().exit();
         button.setOnAction(event);
         getDialogService().showBox("You died..", pane, button);
     }
@@ -424,23 +425,20 @@ datasource.close();
      * Displays the victory message.
      */
     private void victory() {
-        GridPane pane = new GridPane();
-        if (!FXGL.isMobile()) {
-            pane.setEffect(new DropShadow(5, 3.5, 3.5, Color.BLUE));
-        }
-        pane.setHgap(25);
-        pane.setVgap(10);
+        GridPane pane = creatGridPane();
         Button button = new Button("Exit Game");
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(final ActionEvent e) {
-                getGameController().exit();
-            }
-        };
+        EventHandler<ActionEvent> event = e -> getGameController().exit();
         button.setOnAction(event);
         getDialogService().showBox("You won! Congratulations!", pane, button);
     }
 
-
+    private GridPane creatGridPane() {
+        GridPane pane = new GridPane();
+        pane.setEffect(new DropShadow(5, 3.5, 3.5, Color.BLUE));
+        pane.setHgap(25);
+        pane.setVgap(10);
+        return pane;
+    }
 
     /**
      * Drives the game.

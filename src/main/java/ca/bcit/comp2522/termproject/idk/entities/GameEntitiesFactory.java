@@ -4,6 +4,7 @@ import ca.bcit.comp2522.termproject.idk.components.enemies.FlyingEyeComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.AttackComponent;
 import ca.bcit.comp2522.termproject.idk.components.enemies.EnemyInfo;
 import ca.bcit.comp2522.termproject.idk.components.enemies.WizardComponent;
+import ca.bcit.comp2522.termproject.idk.components.utility.PotionComponent;
 import ca.bcit.comp2522.termproject.idk.components.utility.ProjectileInfoComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
@@ -287,7 +288,7 @@ public class GameEntitiesFactory implements EntityFactory {
         Point2D position = new Point2D(data.getX(), data.getY());
         Entity caller = getGameWorld().getEntitiesAt(position).get(0);
         AttackComponent attackComponent = caller.getComponent(AttackComponent.class);
-        Point2D spawnPoint = new Point2D(caller.getWidth() * 2, caller.getHeight());
+        Point2D spawnPoint;
 
         if (caller.getScaleX() == 1) {
             spawnPoint = new Point2D(50, 25);
@@ -309,5 +310,29 @@ public class GameEntitiesFactory implements EntityFactory {
                 .build();
         attack.translate(spawnPoint);
         return attack;
+    }
+
+    /**
+     * Spawns a new potion entity.
+     *
+     * @param data a SpawnData that represents the position of the spawn point
+     * @return an Entity representing potion
+     */
+    @Spawns("Potion")
+    public Entity newPotion(final SpawnData data) {
+        PotionComponent potionComponent = new PotionComponent();
+        Entity potion =
+            FXGL
+            .entityBuilder(data)
+            .type(EntityType.POTION)
+            .viewWithBBox(potionComponent.getImagePath())
+            .with(
+                new CollidableComponent(true),
+                potionComponent,
+                new ExpireCleanComponent(Duration.seconds(15))
+            )
+            .build();
+//        potion.translateY(-65);
+        return potion;
     }
 }
