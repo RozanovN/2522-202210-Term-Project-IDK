@@ -96,18 +96,16 @@ public final class ProgressBar extends Parent {
 
                 barGroup.getChildren().add(text);
 
-                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.66), text);
-                tt.setToY(0);
+                TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.66), text);
+                translateTransition.setToY(0);
 
-                FadeTransition ft = new FadeTransition(Duration.seconds(0.66), text);
-                ft.setToValue(0);
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.66), text);
+                fadeTransition.setToValue(0);
 
-                ParallelTransition pt = new ParallelTransition(ft);
+                ParallelTransition pt = new ParallelTransition(fadeTransition);
                 pt.setOnFinished(e -> barGroup.getChildren().remove(text));
                 pt.play();
             }
-
-            // trace shown as a flash
 
             Rectangle trace = new Rectangle(Math.abs(newWidth - innerBar.getWidth()), height.get() - 6);
             trace.setArcWidth(innerBar.getArcWidth());
@@ -121,10 +119,10 @@ public final class ProgressBar extends Parent {
             if (trace.getWidth() > 50) {
                 barGroup.getChildren().add(trace);
 
-                FadeTransition ft2 = new FadeTransition(Duration.seconds(0.5), trace);
-                ft2.setToValue(0);
-                ft2.setOnFinished(e -> barGroup.getChildren().remove(trace));
-                ft2.play();
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), trace);
+                fadeTransition.setToValue(0);
+                fadeTransition.setOnFinished(e -> barGroup.getChildren().remove(trace));
+                fadeTransition.play();
             }
 
             // smooth fill animation
@@ -183,10 +181,10 @@ public final class ProgressBar extends Parent {
 
     /**
      *
-     * @param b
+     * @param bar
      */
-    public void setLabelVisible(boolean b) {
-        if (!b) {
+    public void setLabelVisible(final boolean bar) {
+        if (!bar) {
             getChildren().remove(label);
             barGroup.translateXProperty().unbind();
             barGroup.translateYProperty().unbind();
@@ -199,13 +197,20 @@ public final class ProgressBar extends Parent {
     }
 
     /**
+     *Check if label is visible.
      *
-     * @return
+     * @return child root
      */
     public boolean isLabelVisible() {
         return getChildren().contains(label);
     }
 
+
+    /**
+     * Set label position.
+     *
+     * @param pos an object of type Position
+     */
     public void setLabelPosition(Position pos) {
         labelPosition = pos;
         if (!isLabelVisible())
