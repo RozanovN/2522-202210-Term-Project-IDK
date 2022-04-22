@@ -272,8 +272,8 @@ public final class ProgressBar extends Parent {
 
 
     /**
-     *
-     * @param value
+     * Set bar height.
+     * @param value a double
      */
     public void setHeight(double value) {
         if (value <= 0)
@@ -284,7 +284,7 @@ public final class ProgressBar extends Parent {
 
     /**
      *
-     * @param value
+     * @param value a double
      */
     public void setMinValue(double value) {
         if (value > currentValue.get()) {
@@ -298,14 +298,6 @@ public final class ProgressBar extends Parent {
         }
 
         minValue.set(value);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public DoubleProperty minValueProperty() {
-        return minValue;
     }
 
 
