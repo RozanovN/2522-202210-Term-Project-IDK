@@ -81,11 +81,11 @@ How to run it from the CLI:
   ```
 * Compile the GameApp.java
   ```sh
-  javac Main.java
+  javac GameApp.java
   ```
 * Run it!
   ```sh
-  java Main.java
+  java GameApp.java
   ```  
 
 <!-- ROADMAP -->
