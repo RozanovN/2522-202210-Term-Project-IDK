@@ -10,13 +10,17 @@ import java.nio.file.Paths;
  * @version 2022
  */
 public class Sound {
-
+    /**
+     * Plays various game sounds, including gameplay and notifications.
+     */
     static MediaPlayer mediaPlayer;
 
     /**
-     * Play game sound indefinitely
+     * Play specified sound. Indefinitely if true, else just one.
+     * @param filename sound file name
+     * @param indefinitely a boolean
      */
-    public static void playSound(String filename, boolean indefinitely) {
+    public static void playSound(final String filename, final boolean indefinitely) {
         Media media = new Media(Paths.get(filename).toUri().toString());
         mediaPlayer = new MediaPlayer(media);
         if (indefinitely) {
