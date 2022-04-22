@@ -28,11 +28,9 @@ import javafx.util.Duration;
 public final class ProgressBar extends Parent {
 
     private static final Logger log = Logger.get("FXGL.ProgressBar");
-
-    private DoubleProperty minValue = new SimpleDoubleProperty(0.0);
-    private DoubleProperty currentValue = new SimpleDoubleProperty(0.0);
-    private DoubleProperty maxValue = new SimpleDoubleProperty(100.0);
-
+    private final DoubleProperty minValue = new SimpleDoubleProperty(0.0);
+    private final DoubleProperty currentValue = new SimpleDoubleProperty(0.0);
+    private final DoubleProperty maxValue = new SimpleDoubleProperty(100.0);
     private final DoubleProperty width = new SimpleDoubleProperty(200.0);
     private final DoubleProperty height = new SimpleDoubleProperty(10.0);
 
