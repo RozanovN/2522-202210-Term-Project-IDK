@@ -352,4 +352,7 @@ public final class ProgressBar extends Parent {
 
         maxValue.set(value);
     }
+
+    public void setLabelPosition(com.almasb.fxgl.ui.Position left) {
+    }
 }
