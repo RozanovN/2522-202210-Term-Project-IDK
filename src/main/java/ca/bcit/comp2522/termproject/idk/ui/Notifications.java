@@ -12,12 +12,15 @@ import static com.almasb.fxgl.dsl.FXGL.*;
  */
     public class Notifications {
 
+    /**
+     * Construct the notification object.
+     */
     public Notifications() {
     }
 
     /**
-         * Greet user with notification
-         */
+     * Greet user with notification.
+     */
     public void notification() {
             onKeyDown(KeyCode.N, "Notify", () -> getNotificationService().pushNotification("Hello Gamer")
             );
