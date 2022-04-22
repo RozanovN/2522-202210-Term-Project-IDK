@@ -177,14 +177,6 @@ public final class ProgressBar extends Parent {
      *
      * @param color
      */
-    public void setLabelFill(Paint color) {
-        label.setTextFill(color);
-    }
-
-    /**
-     *
-     * @param color
-     */
     public void setTraceFill(Paint color) {
         traceFill = color;
     }
