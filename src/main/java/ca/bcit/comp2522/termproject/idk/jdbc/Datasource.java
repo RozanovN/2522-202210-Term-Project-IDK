@@ -17,15 +17,15 @@ public  class Datasource {
     /**
      * Connection to database to run various queries.
      */
-    public static final String DB_NAME = "comp2522.db";
-    public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME;
-    public static final String TABLE_ACHIEVEMENTS = "achievements";
-    public static final String COLUMN_ACHIEVEMENTS_ID = "Id";
-    public static final int INDEX_ACHIEVEMENTS_ID = 1;
-    public static final int INDEX_HIGH_SCORE = 2;
-    public static final int INDEX_COLUMN_KILLS = 3;
-    public static final int INDEX_PLAYS = 4;
-    public static final String QUERY_ALL_ACHIEVEMENTS =
+    private static final String DB_NAME = "comp2522.db";
+    private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME;
+    private static final String TABLE_ACHIEVEMENTS = "achievements";
+    private static final String COLUMN_ACHIEVEMENTS_ID = "Id";
+    private static final int INDEX_ACHIEVEMENTS_ID = 1;
+    private static final int INDEX_HIGH_SCORE = 2;
+    private static final int INDEX_COLUMN_KILLS = 3;
+    private static final int INDEX_PLAYS = 4;
+    private static final String QUERY_ALL_ACHIEVEMENTS =
             "SELECT " + TABLE_ACHIEVEMENTS + '.' + COLUMN_ACHIEVEMENTS_ID + " FROM " + TABLE_ACHIEVEMENTS;
     private Connection connection;
     private PreparedStatement queryAchievements;
