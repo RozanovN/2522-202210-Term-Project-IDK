@@ -29,6 +29,11 @@ public class Sound {
 
     }
 
+    /**
+     * Add string method.
+     *
+     * @return a string
+     */
     @Override
     public String toString() {
         return "Sound{}";
