@@ -49,6 +49,12 @@ public final class ProgressBar extends Parent {
         this(true);
     }
 
+
+    /**
+     * Show various changes on progress bar.
+     *
+     * @param showChanges a boolean
+     */
     public ProgressBar(final boolean showChanges) {
         innerBar.setTranslateX(5);
         innerBar.setTranslateY(3);
@@ -257,8 +263,8 @@ public final class ProgressBar extends Parent {
      * @param value a double
      */
     public void setWidth(double value) {
-        if (value <= 0)
-            throw new IllegalArgumentException("Width must be > 0");
+        if (value <= 0){
+            throw new IllegalArgumentException("Width must be > 0");}
 
         width.set(value);
         update.changed(currentValue, currentValue.get(), currentValue.get());
