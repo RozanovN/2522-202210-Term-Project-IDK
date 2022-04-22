@@ -302,8 +302,9 @@ public final class ProgressBar extends Parent {
 
 
     /**
+     * Set current value on progress bar.
      *
-     * @param value
+     * @param value a double
      */
     public void setCurrentValue(double value) {
         double newValue = value;
