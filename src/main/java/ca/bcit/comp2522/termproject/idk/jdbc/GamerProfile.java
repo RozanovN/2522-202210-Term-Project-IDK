@@ -1,8 +1,6 @@
 package ca.bcit.comp2522.termproject.idk.jdbc;
 
 
-import com.almasb.fxgl.entity.component.Component;
-
 import java.util.Objects;
 
 /**
@@ -11,41 +9,63 @@ import java.util.Objects;
  * @version 2022
  */
     public class GamerProfile {
-
         private int id;
         private String name;
 
-        public int getId() {
+    /**
+     * Get user id.
+     * @return an int
+     */
+    public int getId() {
             return id;
         }
 
-        public void setId(int id) {
+    /**
+     * set user Id.
+     *
+     * @param id an int
+     */
+    public void setId(final int id) {
             this.id = id;
         }
 
-        public String getName() {
+    /**
+     * Get username.
+     *
+     * @return a string.
+     */
+    public String getName() {
             return name;
         }
 
-        public void setName(String name) {
+    /**
+     * Set user's name.
+     *
+     * @param name a string
+     */
+    public void setName(final String name) {
             this.name = name;
         }
-
 
     /**
      * Gamers are the same if they have the same id, username and name.
      * @return boolean
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         GamerProfile that = (GamerProfile) o;
         return id == that.id && Objects.equals(name, that.name);
     }
 
     /**
-     * Generate hashcode
+     * Generate hashcode.
+     *
      * @return an int
      */
     @Override

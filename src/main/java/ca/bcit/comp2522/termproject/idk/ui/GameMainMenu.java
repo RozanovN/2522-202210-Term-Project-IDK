@@ -42,14 +42,15 @@ import static javafx.scene.input.KeyCode.*;
  */
 public class GameMainMenu extends FXGLMenu {
     /**
-     * Shows the game main menu
+     * Shows the game main menu.
      */
 
     private final VBox scoresRoot = new VBox(10); //to be implemented later
     private Node highScores; //to be implemented later
-    public boolean hasLoggedIn = true;
     private boolean isLoadedScore = false;
     private int userId;
+    private boolean hasLoggedIn = true;
+
 
     /**
      * Constructs a main menu.
@@ -206,7 +207,7 @@ public class GameMainMenu extends FXGLMenu {
             upperBlock.setTranslateX(blockStartX + i * 50);
             upperBlock.setTranslateY(100);
             ColorBlock block = new ColorBlock(40, color);
-            block.setTranslateX(blockStartX + i*50);
+            block.setTranslateX(blockStartX + i * 50);
             block.setTranslateY(220);
             blocks.add(upperBlock);
             getContentRoot().getChildren().add(upperBlock);
@@ -245,7 +246,7 @@ public class GameMainMenu extends FXGLMenu {
         background.setY(getAppHeight() - 280);
         background.setArcHeight(15);
         background.setArcWidth(15);
-        background.setFill(Color.rgb(0 ,0 , 0, 0.01));
+        background.setFill(Color.rgb(0 , 0 , 0, 0.01));
 //        background.setStroke(foreground);
         background.setStrokeWidth(1.5);
 

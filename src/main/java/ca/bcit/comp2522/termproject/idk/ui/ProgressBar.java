@@ -26,52 +26,44 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
  * Represents the class for the factory of tiles.
  *
  * @author Prince Chabveka
+ * @author Nikolay Rozanov
  * @version 2022
  */
 public final class ProgressBar extends Parent {
-
     private static final Logger log = Logger.get("FXGL.ProgressBar");
-
-    private DoubleProperty minValue = new SimpleDoubleProperty(0.0);
-    private DoubleProperty currentValue = new SimpleDoubleProperty(0.0);
-    private DoubleProperty maxValue = new SimpleDoubleProperty(100.0);
-
-    private final DoubleProperty width = new SimpleDoubleProperty(185.0);
-    private final DoubleProperty height = new SimpleDoubleProperty(30.0);
-
+    private final DoubleProperty minValue = new SimpleDoubleProperty(0.0);
+    private final DoubleProperty currentValue = new SimpleDoubleProperty(0.0);
+    private final  DoubleProperty maxValue = new SimpleDoubleProperty(100.0);
+    private final DoubleProperty width = new SimpleDoubleProperty(200.0);
+    private final DoubleProperty height = new SimpleDoubleProperty(10.0);
     private final Rectangle backgroundBar = new Rectangle();
     private final Rectangle innerBar = new Rectangle();
-
     private final Group barGroup = new Group();
-
     private final Label label = new Label();
     private Position labelPosition = Position.BOTTOM;
-
     private Paint traceFill = Color.WHITE;
-
     private final Timeline timeline = new Timeline();
-
     private final ChangeListener<Number> update;
 
+    /**
+     * Constructs a Progress Bar that shows changes.
+     */
     public ProgressBar() {
         this(true);
     }
 
-    public ProgressBar(boolean showChanges) {
+    /**
+     * Constructs a Progress Bar.
+     */
+    public ProgressBar(final boolean showChanges) {
         innerBar.setTranslateX(15);
         innerBar.setTranslateY(3);
-//        innerBar.setFill(Color.RED);
 
         backgroundBar.setFill(new ImagePattern(image("Medieval_Castle_Asset_Pack/HUD/bar.png")));
         backgroundBar.widthProperty().bind(width);
         backgroundBar.heightProperty().bind(height);
 
         innerBar.heightProperty().bind(height.subtract(10));
-
-//        backgroundBar.arcWidthProperty().bind(width.divide(8));
-//        backgroundBar.arcHeightProperty().bind(width.divide(8));
-//        innerBar.arcWidthProperty().bind(width.divide(10));
-//        innerBar.arcHeightProperty().bind(width.divide(10));
 
         DropShadow ds = new DropShadow(10, Color.WHITE);
         ds.setInput(new Glow(0.3));
@@ -90,8 +82,8 @@ public final class ProgressBar extends Parent {
             if (!showChanges)
                 return;
 
-            double newWidth = (width.get() - 10) *
-                    (currentValue.get() - minValue.get()) / (maxValue.get() - minValue.get());
+            double newWidth = (width.get() - 10)
+                    * (currentValue.get() - minValue.get()) / (maxValue.get() - minValue.get());
             int diff = newValue.intValue() - oldValue.intValue();
 
             // text value animation
@@ -166,24 +158,21 @@ public final class ProgressBar extends Parent {
         }
     }
 
-    public Rectangle getBackgroundBar() {
-        return backgroundBar;
-    }
-
+    /**
+     * Returns the inner bar.
+     *
+     * @return Rectangle representation of inner bar
+     */
     public Rectangle getInnerBar() {
         return innerBar;
     }
-
-    public void setBackgroundFill(Paint color) {
-        backgroundBar.setFill(color);
-    }
-
-
+    
     /**
+     * Sets the fill color for inner bar.
      *
      * @param color color type
      */
-    public void setFill(Color color) {
+    public void setFill(final Color color) {
         innerBar.setFill(color);
         DropShadow ds = new DropShadow(15, color);
         ds.setInput(new Glow(0.5));
@@ -191,26 +180,29 @@ public final class ProgressBar extends Parent {
     }
 
     /**
+     * Sets the fill color for labels.
      *
-     * @param color
+     * @param color color type
      */
-    public void setLabelFill(Paint color) {
+    public void setLabelFill(final Paint color) {
         label.setTextFill(color);
     }
 
     /**
+     * Sets the trace color.
      *
-     * @param color
+     * @param color color type
      */
-    public void setTraceFill(Paint color) {
+    public void setTraceFill(final Paint color) {
         traceFill = color;
     }
 
     /**
+     * Makes labels visible.
      *
-     * @param b
+     * @param b no idea, ask Prince.
      */
-    public void setLabelVisible(boolean b) {
+    public void setLabelVisible(final boolean b) {
         if (!b) {
             getChildren().remove(label);
             barGroup.translateXProperty().unbind();
@@ -224,14 +216,20 @@ public final class ProgressBar extends Parent {
     }
 
     /**
+     * Checks if label is visible.
      *
-     * @return
+     * @return true if label is visible, otherwise false
      */
     public boolean isLabelVisible() {
         return getChildren().contains(label);
     }
 
-    public void setLabelPosition(Position pos) {
+    /**
+     * Sets label position.
+     *
+     * @param pos a Position representing new position
+     */
+    public void setLabelPosition(final Position pos) {
         labelPosition = pos;
         if (!isLabelVisible())
             return;
@@ -273,10 +271,11 @@ public final class ProgressBar extends Parent {
 
 
     /**
+     * Sets width.
      *
-     * @param value a double
+     * @param value a double representing width
      */
-    public void setWidth(double value) {
+    public void setWidth(final double value) {
         if (value <= 0)
             throw new IllegalArgumentException("Width must be > 0");
 
@@ -286,10 +285,11 @@ public final class ProgressBar extends Parent {
 
 
     /**
+     * Sets height.
      *
-     * @param value
+     * @param value a double representing height.
      */
-    public void setHeight(double value) {
+    public void setHeight(final double value) {
         if (value <= 0)
             throw new IllegalArgumentException("Height must be > 0");
 
@@ -297,10 +297,11 @@ public final class ProgressBar extends Parent {
     }
 
     /**
+     * Sets minimum value of the bar.
      *
-     * @param value
+     * @param value a double representing new minimum value
      */
-    public void setMinValue(double value) {
+    public void setMinValue(final double value) {
         if (value > currentValue.get()) {
             log.warning("Current value < min value. Setting min value as current");
             currentValue.set(value);
@@ -315,19 +316,11 @@ public final class ProgressBar extends Parent {
     }
 
     /**
+     * Sets current value for the inner bar.
      *
-     * @return
+     * @param value a double representing new value of the bar.
      */
-    public DoubleProperty minValueProperty() {
-        return minValue;
-    }
-
-
-    /**
-     *
-     * @param value
-     */
-    public void setCurrentValue(double value) {
+    public void setCurrentValue(final double value) {
         double newValue = value;
 
         if (value < minValue.get()) {
@@ -341,15 +334,12 @@ public final class ProgressBar extends Parent {
         currentValue.set(newValue);
     }
 
-    public double getCurrentValue() {
-        return currentValue.get();
-    }
-
-    public DoubleProperty currentValueProperty() {
-        return currentValue;
-    }
-
-    public void setMaxValue(int value) {
+    /**
+     * Sets max value of the bar.
+     *
+     * @param value an int representing new maximum value
+     */
+    public void setMaxValue(final int value) {
         if (value <= minValue.get()) {
             log.warning("Max value <= min value. Setting min value to max value - 1");
             minValue.set(value - 1);
@@ -361,40 +351,5 @@ public final class ProgressBar extends Parent {
         }
 
         maxValue.set(value);
-    }
-
-    public DoubleProperty maxValueProperty() {
-        return maxValue;
-    }
-
-
-    /**
-     *
-     * @return bar object
-     */
-    public static ProgressBar makeHPBar() {
-        ProgressBar bar = new ProgressBar();
-        bar.setHeight(25);
-        bar.setFill(Color.RED.brighter());
-        bar.setTraceFill(Color.RED.brighter());
-        bar.setLabelVisible(true);
-        return bar;
-    }
-
-
-    /**
-     *
-     * @return object of type bar.
-     */
-    public static ProgressBar makeSkillBar() {
-        ProgressBar bar = new ProgressBar();
-        bar.setHeight(25);
-        bar.setFill(Color.BLUE.brighter().brighter());
-        bar.setTraceFill(Color.BLUE);
-        bar.setLabelVisible(true);
-        return bar;
-    }
-
-    public void setLabelPosition(com.almasb.fxgl.ui.Position left) {
     }
 }
