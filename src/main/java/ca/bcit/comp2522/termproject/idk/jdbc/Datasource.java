@@ -44,8 +44,8 @@ public  class Datasource {
     public boolean open() {
         try {
             final Properties connectionProperties = new Properties();
-            connectionProperties.put("user", "root");
-            connectionProperties.put("password", "root");
+            connectionProperties.put("user", "comp2522");
+            connectionProperties.put("password", "I was born in 1973");
             connection = DriverManager.getConnection(CONNECTION_STRING, connectionProperties);
             queryAchievements = connection.prepareStatement(QUERY_ALL_ACHIEVEMENTS);
             return true;
