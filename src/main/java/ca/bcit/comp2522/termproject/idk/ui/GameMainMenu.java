@@ -49,7 +49,7 @@ public class GameMainMenu extends FXGLMenu {
     private Node highScores; //to be implemented later
     private boolean isLoadedScore = false;
     private int userId;
-    public boolean hasLoggedIn = true;
+    private boolean hasLoggedIn = true;
 
 
     /**
