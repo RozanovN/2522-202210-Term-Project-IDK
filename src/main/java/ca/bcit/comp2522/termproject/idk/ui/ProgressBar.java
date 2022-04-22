@@ -65,14 +65,14 @@ public final class ProgressBar extends Parent {
 
         innerBar.heightProperty().bind(height.subtract(10));
 
-        DropShadow ds = new DropShadow(10, Color.WHITE);
-        ds.setInput(new Glow(0.3));
-        ds.setWidth(50);
-        backgroundBar.setEffect(ds);
+        DropShadow dropShadow = new DropShadow(10, Color.WHITE);
+        dropShadow.setInput(new Glow(0.3));
+        dropShadow.setWidth(50);
+        backgroundBar.setEffect(dropShadow);
 
-        ds = new DropShadow(5, Color.GOLD);
-        ds.setInput(new Glow(0.1));
-        innerBar.setEffect(ds);
+        dropShadow = new DropShadow(5, Color.GOLD);
+        dropShadow.setInput(new Glow(0.1));
+        innerBar.setEffect(dropShadow);
 
         label.setFont(Font.font(16));
         label.setTextFill(Color.RED);
@@ -97,8 +97,8 @@ public final class ProgressBar extends Parent {
 
                 barGroup.getChildren().add(text);
 
-                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.66), text);
-                tt.setToY(0);
+                TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.66), text);
+                translateTransition.setToY(0);
 
                 FadeTransition ft = new FadeTransition(Duration.seconds(0.66), text);
                 ft.setToValue(0);
@@ -122,10 +122,10 @@ public final class ProgressBar extends Parent {
             if (trace.getWidth() > 50) {
                 barGroup.getChildren().add(trace);
 
-                FadeTransition ft2 = new FadeTransition(Duration.seconds(0.5), trace);
-                ft2.setToValue(0);
-                ft2.setOnFinished(e -> barGroup.getChildren().remove(trace));
-                ft2.play();
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), trace);
+                fadeTransition.setToValue(0);
+                fadeTransition.setOnFinished(e -> barGroup.getChildren().remove(trace));
+                fadeTransition.play();
             }
 
             // smooth fill animation
@@ -200,10 +200,10 @@ public final class ProgressBar extends Parent {
     /**
      * Makes labels visible.
      *
-     * @param b no idea, ask Prince.
+     * @param bar a boolean
      */
-    public void setLabelVisible(final boolean b) {
-        if (!b) {
+    public void setLabelVisible(final boolean bar) {
+        if (!bar) {
             getChildren().remove(label);
             barGroup.translateXProperty().unbind();
             barGroup.translateYProperty().unbind();
@@ -227,7 +227,7 @@ public final class ProgressBar extends Parent {
     /**
      * Sets label position.
      *
-     * @param pos a Position representing new position
+     * @param pos an object of type Position representing new position
      */
     public void setLabelPosition(final Position pos) {
         labelPosition = pos;
@@ -353,6 +353,10 @@ public final class ProgressBar extends Parent {
         maxValue.set(value);
     }
 
-    public void setLabelPosition(com.almasb.fxgl.ui.Position left) {
+
+    /**
+     *Set position of label relative to screen.
+     */
+    public void setLabelPosition() {
     }
 }
