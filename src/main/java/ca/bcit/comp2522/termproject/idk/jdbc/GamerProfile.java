@@ -41,7 +41,7 @@ import java.util.Objects;
     /**
      * Set user's name.
      *
-     * @param name
+     * @param name a string
      */
     public void setName(final String name) {
             this.name = name;
