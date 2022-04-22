@@ -19,7 +19,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
          * Greet user with notification
          */
     public void notification() {
-            onKeyDown(KeyCode.N, "Notify", () -> getNotificationService().pushNotification("Hello Prince")
+            onKeyDown(KeyCode.N, "Notify", () -> getNotificationService().pushNotification("Hello Gamer")
             );
         }
 
