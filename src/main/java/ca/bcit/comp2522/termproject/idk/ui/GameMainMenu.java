@@ -328,7 +328,7 @@ public class GameMainMenu extends FXGLMenu {
     private Properties setUpConnectionProperties() {
         Properties connectionProperties = new Properties();
         connectionProperties.put("user", "root");
-        connectionProperties.put("password", "root");
+        connectionProperties.put("password", "12345");
 
         return connectionProperties;
     }
