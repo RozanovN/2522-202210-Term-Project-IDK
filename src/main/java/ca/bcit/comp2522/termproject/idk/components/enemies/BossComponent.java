@@ -59,6 +59,11 @@ public final class BossComponent extends AbstractEnemyComponent {
         player = FXGL.getGameWorld().getEntitiesByType(EntityType.PLAYER).get(0);
     }
 
+
+    /**
+     *
+     * @param tpf a double
+     */
     @Override
     public void onUpdate(final double tpf) {
         if (player.getX() > 8320 && player.getX() < 9400 && player.getY() > 630 && player.getY() < 1000) {
