@@ -33,21 +33,18 @@ public final class ProgressBar extends Parent {
     private final DoubleProperty maxValue = new SimpleDoubleProperty(100.0);
     private final DoubleProperty width = new SimpleDoubleProperty(200.0);
     private final DoubleProperty height = new SimpleDoubleProperty(10.0);
-
     private final Rectangle backgroundBar = new Rectangle();
     private final Rectangle innerBar = new Rectangle();
-
     private final Group barGroup = new Group();
-
     private final Label label = new Label();
     private Position labelPosition = Position.BOTTOM;
-
     private Paint traceFill = Color.WHITE;
-
     private final Timeline timeline = new Timeline();
-
     private final ChangeListener<Number> update;
 
+    /**
+     * Constructor for progressbar object.
+     */
     public ProgressBar() {
         this(true);
     }
