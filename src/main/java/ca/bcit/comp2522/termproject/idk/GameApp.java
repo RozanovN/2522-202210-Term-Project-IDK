@@ -31,6 +31,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
+import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.entity.state.StateComponent;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
@@ -44,6 +45,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -85,6 +87,7 @@ public class GameApp extends GameApplication {
     private int kills;
     private int score;
     private ProgressBar progressBar;
+    private Level level;
 
     /**
      * Constructs the Game Application.
@@ -312,6 +315,7 @@ datasource.close();
             @Override
             protected void onCollisionBegin(final Entity player, final Entity potion) {
                 potion.getComponent(PotionComponent.class).getEffect().accept(player);
+                GameApp.this.progressBar.setCurrentValue(player.getComponent(HealthIntComponent.class).getValue());
                 potion.removeFromWorld();
             }
         };
@@ -326,11 +330,13 @@ datasource.close();
      */
     @Override
     protected void initGame() {
-        player = createPlayer();
-        getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use NONE
         getGameWorld().addEntityFactory(new GameEntitiesFactory());
-        setLevelFromMap("game.tmx");
-        boss = createBoss();
+        if (player == null) {
+            player = createPlayer();
+            boss = createBoss();
+            level = setLevelFromMap("game.tmx");
+        }
+        getGameScene().setCursor(Cursor.DEFAULT); // DEFAULT for testing purposes, for production use
         // Camera settings
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, -4550, 11550, 1915);
@@ -362,8 +368,8 @@ datasource.close();
 
         final String inGameSound = "src/main/resources/assets/Sounds/epic_battle_music_1-6275.mp3";
         Sound.playSound(inGameSound, true);
-        getWorldProperties().<Vec2>addListener("vector", (prev, now) -> System.out.println(prev + " " + now));
-        set("vector", new Vec2(300, 300));
+//        getWorldProperties().<Vec2>addListener("vector", (prev, now) -> System.out.println(prev + " " + now));
+//        set("vector", new Vec2(300, 300));
 
     }
 
@@ -374,22 +380,22 @@ datasource.close();
     @Override
     protected void initUI() {
 
-        var text = getUIFactoryService().newText("", 24);
-        text.textProperty().bind(getip("score").asString("Score: [%d]"));
-
-        getWorldProperties().addListener("score", (prev, now) -> {
-            animationBuilder()
-                    .duration(Duration.seconds(0.5))
-                    .interpolator(Interpolators.BOUNCE.EASE_OUT())
-                    .repeat(2)
-                    .autoReverse(true)
-                    .scale(text)
-                    .from(new Point2D(1, 1))
-                    .to(new Point2D(1.2, 1.2));
-//                    .buildAndPlay();
-        });
-
-        addUINode(text, 20, 50);
+//        var text = getUIFactoryService().newText("", 24);
+//        text.textProperty().bind(getip("score").asString("Score: [%d]"));
+//
+//        getWorldProperties().addListener("score", (prev, now) -> {
+//            animationBuilder()
+//                    .duration(Duration.seconds(0.5))
+//                    .interpolator(Interpolators.BOUNCE.EASE_OUT())
+//                    .repeat(2)
+//                    .autoReverse(true)
+//                    .scale(text)
+//                    .from(new Point2D(1, 1))
+//                    .to(new Point2D(1.2, 1.2));
+////                    .buildAndPlay();
+//        });
+//
+//        addUINode(text, 20, 50);
     }
 
 

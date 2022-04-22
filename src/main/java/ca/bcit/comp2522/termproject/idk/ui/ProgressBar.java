@@ -13,11 +13,14 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
 
 /**
  * Represents the class for the factory of tiles.
@@ -33,8 +36,8 @@ public final class ProgressBar extends Parent {
     private DoubleProperty currentValue = new SimpleDoubleProperty(0.0);
     private DoubleProperty maxValue = new SimpleDoubleProperty(100.0);
 
-    private final DoubleProperty width = new SimpleDoubleProperty(200.0);
-    private final DoubleProperty height = new SimpleDoubleProperty(10.0);
+    private final DoubleProperty width = new SimpleDoubleProperty(185.0);
+    private final DoubleProperty height = new SimpleDoubleProperty(30.0);
 
     private final Rectangle backgroundBar = new Rectangle();
     private final Rectangle innerBar = new Rectangle();
@@ -55,19 +58,20 @@ public final class ProgressBar extends Parent {
     }
 
     public ProgressBar(boolean showChanges) {
-        innerBar.setTranslateX(5);
+        innerBar.setTranslateX(15);
         innerBar.setTranslateY(3);
-        innerBar.setFill(Color.rgb(255, 239, 211));
+//        innerBar.setFill(Color.RED);
 
+        backgroundBar.setFill(new ImagePattern(image("Medieval_Castle_Asset_Pack/HUD/bar.png")));
         backgroundBar.widthProperty().bind(width);
         backgroundBar.heightProperty().bind(height);
 
-        innerBar.heightProperty().bind(height.subtract(6));
+        innerBar.heightProperty().bind(height.subtract(10));
 
-        backgroundBar.arcWidthProperty().bind(width.divide(8));
-        backgroundBar.arcHeightProperty().bind(width.divide(8));
-        innerBar.arcWidthProperty().bind(width.divide(8));
-        innerBar.arcHeightProperty().bind(width.divide(8));
+//        backgroundBar.arcWidthProperty().bind(width.divide(8));
+//        backgroundBar.arcHeightProperty().bind(width.divide(8));
+//        innerBar.arcWidthProperty().bind(width.divide(10));
+//        innerBar.arcHeightProperty().bind(width.divide(10));
 
         DropShadow ds = new DropShadow(10, Color.WHITE);
         ds.setInput(new Glow(0.3));
@@ -79,7 +83,7 @@ public final class ProgressBar extends Parent {
         innerBar.setEffect(ds);
 
         label.setFont(Font.font(16));
-        label.setTextFill(Color.GOLD);
+        label.setTextFill(Color.RED);
         label.textProperty().bind(currentValue.asString("%.0f").concat("/").concat(maxValue.asString("%.0f")));
 
         update = (obs, oldValue, newValue) -> {
@@ -142,7 +146,7 @@ public final class ProgressBar extends Parent {
 
         currentValue.addListener(update);
 
-        barGroup.getChildren().addAll(backgroundBar, innerBar);
+        barGroup.getChildren().addAll(innerBar, backgroundBar);
         getChildren().addAll(barGroup, label);
         setLabelPosition(labelPosition);
         setLabelVisible(false);
@@ -371,8 +375,8 @@ public final class ProgressBar extends Parent {
     public static ProgressBar makeHPBar() {
         ProgressBar bar = new ProgressBar();
         bar.setHeight(25);
-        bar.setFill(Color.GREEN.brighter());
-        bar.setTraceFill(Color.GREEN.brighter());
+        bar.setFill(Color.RED.brighter());
+        bar.setTraceFill(Color.RED.brighter());
         bar.setLabelVisible(true);
         return bar;
     }
