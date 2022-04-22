@@ -49,7 +49,7 @@ public final class ProgressBar extends Parent {
         this(true);
     }
 
-    public ProgressBar(boolean showChanges) {
+    public ProgressBar(final boolean showChanges) {
         innerBar.setTranslateX(5);
         innerBar.setTranslateY(3);
         innerBar.setFill(Color.rgb(255, 239, 211));
@@ -157,16 +157,8 @@ public final class ProgressBar extends Parent {
         }
     }
 
-    public Rectangle getBackgroundBar() {
-        return backgroundBar;
-    }
-
     public Rectangle getInnerBar() {
         return innerBar;
-    }
-
-    public void setBackgroundFill(Paint color) {
-        backgroundBar.setFill(color);
     }
 
 
