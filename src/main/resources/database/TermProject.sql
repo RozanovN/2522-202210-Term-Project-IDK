@@ -21,7 +21,8 @@ FOREIGN KEY (`Id`) REFERENCES `AdventureGamers`(`UserID`));
 -- Example of current gamer 
 
 INSERT INTO adventuregamers (UserID, UserName, UserPassword) 
-VALUES (1, "Chris", "gamer");
+VALUES (1, "Chris", "gamer"),
+       (2, "comp2522", "I was born in 1973");
 
 -- Example of current achievements
 
